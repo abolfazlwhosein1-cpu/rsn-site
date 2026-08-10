@@ -1,87 +1,101 @@
-<!DOCTYPE html><html lang="fa" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>تست سایت RSN</title>
+<?php
+// ============================================
+// ربات NiloRSN - نسخه کامل با API
+// ============================================
 
-<style>
-    * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
 
-    body {
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #0b0b12;
-        color: white;
-        font-family: Tahoma, sans-serif;
-    }
+$token = "BAJCIJ0LKGISKLKGGEBYKFABDSDHOJGVQFWLEIRXYHJJXDTMWIXAJOZXJNLWGNJW";
+$group_id = "BAAHEDCDH0KZHHRLRHBPHQMLRALNYQXI";
 
-    .card {
-        width: 90%;
-        max-width: 500px;
-        padding: 40px 25px;
-        text-align: center;
-        border-radius: 25px;
-        background: #151522;
-        box-shadow: 0 0 40px rgba(120, 70, 255, 0.25);
-    }
+// ============================================
+// دریافت اکشن از اپ
+// ============================================
+$action = $_GET['action'] ?? '';
+$text = $_POST['text'] ?? '';
 
-    h1 {
-        font-size: 42px;
-        margin-bottom: 15px;
-    }
+// ============================================
+// متن تبلیغاتی پیش‌فرض
+// ============================================
+$default_text = "🌸 سلام! وقت بخیر 🌸
 
-    p {
-        color: #aaa;
-        font-size: 17px;
-        margin-bottom: 25px;
-    }
+🎮 برنامه بازی، سایت، آموزش برنامه‌نویسی
+🔥 پر از چالش با جوایز بسیار بالا
+💎 کاملاً رایگان
 
-    button {
-        border: none;
-        padding: 14px 30px;
-        border-radius: 12px;
-        background: #704cff;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-    }
+📢 به کانال RSN بپیوندید:
+@RSN_ONE
 
-    button:active {
-        transform: scale(0.95);
-    }
+✨ منتظرت هستیم ✨";
 
-    #result {
-        margin-top: 20px;
-        color: #55ff99;
-        min-height: 24px;
-    }
-</style>
+// ============================================
+// توابع ارسال
+// ============================================
+function sendMessage($chat_id, $text) {
+    global $token;
+    $url = "https://rubika.ir/api/bot/$token/sendMessage";
+    
+    $data = [
+        'chat_id' => $chat_id,
+        'text' => $text
+    ];
+    
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+    
+    $response = curl_exec($ch);
+    curl_close($ch);
+    
+    return $response;
+}
 
-</head><body><div class="card">
-    <h1>RSN</h1>
-
-    <p>
-        اگر این صفحه را می‌بینی، سایت با موفقیت اجرا شده است.
-    </p>
-
-    <button onclick="testSite()">
-        تست سایت
-    </button>
-
-    <div id="result"></div>
-</div>
-
-<script>
-    function testSite() {
-        document.getElementById("result").textContent =
-            "✅ HTML + CSS + JavaScript درست کار می‌کند!";
-    }
-</script>
-
-</body>
-</html>
+// ============================================
+// مدیریت اکشن‌ها
+// ============================================
+switch ($action) {
+    
+    // ===== شروع ربات =====
+    case 'start':
+        file_put_contents('bot_status.txt', 'active');
+        echo json_encode(['status' => 'active', 'message' => 'ربات فعال شد']);
+        break;
+    
+    // ===== توقف ربات =====
+    case 'stop':
+        file_put_contents('bot_status.txt', 'stopped');
+        echo json_encode(['status' => 'stopped', 'message' => 'ربات متوقف شد']);
+        break;
+    
+    // ===== دریافت وضعیت =====
+    case 'status':
+        $status = file_get_contents('bot_status.txt') ?: 'stopped';
+        echo json_encode(['status' => $status]);
+        break;
+    
+    // ===== ارسال پیام =====
+    case 'send':
+        $msg = $text ?: $default_text;
+        $result = sendMessage($group_id, $msg);
+        echo json_encode(['sent' => true, 'message' => 'پیام ارسال شد']);
+        break;
+    
+    // ===== ارسال خودکار (Cron) =====
+    case 'auto':
+        $status = file_get_contents('bot_status.txt') ?: 'stopped';
+        if ($status == 'active') {
+            sendMessage($group_id, $default_text);
+            echo "✅ پیام خودکار ارسال شد!";
+        } else {
+            echo "⏹️ ربات متوقف است";
+        }
+        break;
+    
+    default:
+        echo json_encode(['error' => 'اکشن نامعتبر']);
+}
+?>
