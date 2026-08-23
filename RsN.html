@@ -22,10 +22,10 @@
         .page-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:10px}
         
         .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;align-content:center}
-        .menu-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border-radius:18px;border:1px solid rgba(108,92,231,0.08);padding:24px 16px;text-align:center;cursor:pointer;transition:0.3s;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .menu-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border-radius:18px;border:1px solid rgba(108,92,231,0.08);padding:20px 12px;text-align:center;cursor:pointer;transition:0.3s;min-height:85px;display:flex;flex-direction:column;align-items:center;justify-content:center}
         .menu-card:active{transform:scale(0.95)}
-        .menu-card .icon{font-size:32px;margin-bottom:4px}
-        .menu-card .title{font-size:14px;font-weight:700}
+        .menu-card .icon{font-size:28px;margin-bottom:2px}
+        .menu-card .title{font-size:13px;font-weight:700}
         
         .form-group{margin-bottom:12px}
         .form-group label{display:block;color:rgba(255,255,255,0.4);font-size:12px;font-weight:700;margin-bottom:4px}
@@ -63,7 +63,11 @@
         ::-webkit-scrollbar{width:3px}
         ::-webkit-scrollbar-thumb{background:rgba(108,92,231,0.3);border-radius:10px}
         
-        @media(max-width:480px){.menu-grid{grid-template-columns:1fr}.dice-grid,.plan-grid{grid-template-columns:1fr}.row .col{min-width:100%}}
+        .coming-soon{background:rgba(108,92,231,0.05);border:1px solid rgba(108,92,231,0.1);border-radius:12px;padding:20px;text-align:center;margin:auto;max-width:300px}
+        .coming-soon .icon{font-size:48px;display:block;margin-bottom:8px}
+        .coming-soon .text{font-size:16px;color:rgba(255,255,255,0.5)}
+        
+        @media(max-width:480px){.menu-grid{gap:8px}.menu-card{min-height:70px;padding:12px}.dice-grid,.plan-grid{grid-template-columns:1fr}.row .col{min-width:100%}}
     </style>
 </head>
 <body>
@@ -79,6 +83,7 @@
         <p>ساخته شده توسط Rick از RSN</p>
     </div>
     <div class="menu-grid">
+        <!-- ردیف اول -->
         <div class="menu-card" onclick="openPage('dice')">
             <span class="icon">🎲</span>
             <span class="title">چالش من</span>
@@ -87,6 +92,7 @@
             <span class="icon">📅</span>
             <span class="title">کیومرث پلن</span>
         </div>
+        <!-- ردیف دوم -->
         <div class="menu-card" onclick="openPage('goal')">
             <span class="icon">🎯</span>
             <span class="title">هدف من</span>
@@ -95,6 +101,7 @@
             <span class="icon">💪</span>
             <span class="title">حمایت از RSN</span>
         </div>
+        <!-- ردیف سوم -->
         <div class="menu-card" onclick="openPage('bot')">
             <span class="icon">🤖</span>
             <span class="title">پخمه بات</span>
@@ -103,12 +110,23 @@
             <span class="icon">🍀</span>
             <span class="title">شانس امروز</span>
         </div>
+        <!-- ردیف چهارم (جدید) -->
+        <div class="menu-card" onclick="openPage('code')">
+            <span class="icon">📚</span>
+            <span class="title">آموزش کده</span>
+        </div>
+        <div class="menu-card" onclick="openPage('mod')">
+            <span class="icon">⚡</span>
+            <span class="title">ماد</span>
+        </div>
     </div>
 </div>
 
 <!-- ============================================ -->
-<!-- ===== صفحه 1: چالش من ===== -->
+<!-- ===== صفحات (دایس، پلن، گال، حمایت، بات، شانس) ===== -->
 <!-- ============================================ -->
+
+<!-- ===== صفحه 1: چالش من ===== -->
 <div class="page" id="page-dice">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">🎲 چالش من</div>
@@ -125,9 +143,7 @@
     <div class="result-box" id="diceResult">نتیجه تاس اینجا نمایش داده میشه...</div>
 </div>
 
-<!-- ============================================ -->
 <!-- ===== صفحه 2: کیومرث پلن ===== -->
-<!-- ============================================ -->
 <div class="page" id="page-plan">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">📅 کیومرث پلن</div>
@@ -146,9 +162,7 @@
     <div class="result-box" id="planResult">پلن هفتگی اینجا نمایش داده میشه...</div>
 </div>
 
-<!-- ============================================ -->
 <!-- ===== صفحه 3: هدف من ===== -->
-<!-- ============================================ -->
 <div class="page" id="page-goal">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">🎯 هدف من</div>
@@ -160,22 +174,18 @@
     <div class="result-box" id="goalResult">نتیجه محاسبه اینجا نمایش داده میشه...</div>
 </div>
 
-<!-- ============================================ -->
-<!-- ===== صفحه 4: حمایت از RSN ===== -->
-<!-- ============================================ -->
+<!-- ===== صفحه 4: حمایت از RSN (روبیکا) ===== -->
 <div class="page" id="page-support">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">💪 حمایت از RSN</div>
     <div class="support-box">
         <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم خوب RSN، جوین بشین:</p>
-        <a href="https://t.me/ONE_RSN" target="_blank">📱 جوین کانال RSN</a>
+        <a href="https://rubika.ir/ONE_RSN" target="_blank">📱 جوین کانال RSN در روبیکا</a>
         <p style="color:rgba(255,255,255,0.1);font-size:11px;margin-top:8px;">با جوین شدن، به ما انرژی میدید! ❤️</p>
     </div>
 </div>
 
-<!-- ============================================ -->
 <!-- ===== صفحه 5: پخمه بات ===== -->
-<!-- ============================================ -->
 <div class="page" id="page-bot">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">🤖 پخمه بات</div>
@@ -195,15 +205,39 @@
     <div class="result-box" id="botStatus">پخمه بات آماده است! بهش یاد بده.</div>
 </div>
 
-<!-- ============================================ -->
 <!-- ===== صفحه 6: شانس امروز ===== -->
-<!-- ============================================ -->
 <div class="page" id="page-luck">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">🍀 شانس امروز</div>
     <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">هر روز فقط یک بار میتونی شانس خودت رو امتحان کنی!</p>
     <button class="btn btn-primary" onclick="getLuck()">🍀 شانس من</button>
     <div class="result-box" id="luckResult">روی دکمه بزن تا شانس امروزتو ببینی...</div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== صفحه 7: آموزش کده (Coming Soon) ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-code">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">📚 آموزش کده</div>
+    <div class="coming-soon">
+        <span class="icon">📖</span>
+        <div class="text">به زودی در اختیار شما قرار خواهد گرفت</div>
+        <div style="margin-top:12px;color:rgba(255,255,255,0.1);font-size:12px;">RSN</div>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== صفحه 8: ماد (Coming Soon) ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-mod">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">⚡ ماد</div>
+    <div class="coming-soon">
+        <span class="icon">⚡</span>
+        <div class="text">به زودی در اختیار شما قرار خواهد گرفت</div>
+        <div style="margin-top:12px;color:rgba(255,255,255,0.1);font-size:12px;">RSN</div>
+    </div>
 </div>
 
 <script>
@@ -400,4 +434,4 @@ if(savedPlan) {
 </script>
 
 </body>
-                                                                                          </html>
+    </html>
