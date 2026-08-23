@@ -3,1128 +3,401 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>RSN STUDIO</title>
+    <title>استاردو ولی</title>
     <style>
-        /* ============================================
-           RESET & BASE
-        ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&display=swap');
-
-        :root {
-            --primary: #4facfe;
-            --primary-dark: #3b8fd9;
-            --secondary: #00f2fe;
-            --accent: #f5576c;
-            --gold: #ffd700;
-            --bg: #0a0a0f;
-            --card-bg: rgba(255,255,255,0.03);
-            --border: rgba(79,172,254,0.08);
-            --text: #ffffff;
-            --text-secondary: rgba(255,255,255,0.5);
-            --text-muted: rgba(255,255,255,0.15);
-            --radius: 16px;
-            --shadow: 0 20px 60px rgba(0,0,0,0.6);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            min-height: 100vh;
-            background: #0a0a0f;
-            font-family: 'Rajdhani', sans-serif;
-            overflow-x: hidden;
-            color: white;
-            padding: 16px;
-        }
-
-        /* ============================================
-           PARTICLES
-        ============================================ */
-        #particlesCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        /* ============================================
-           SCROLLBAR
-        ============================================ */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0a0a0f;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #4facfe, #00f2fe);
-            border-radius: 10px;
-        }
-
-        /* ============================================
-           CONTAINER
-        ============================================ */
-        .container {
-            position: relative;
-            z-index: 1;
-            max-width: 1100px;
-            margin: 0 auto;
-        }
-
-        /* ============================================
-           GLASS CARD
-        ============================================ */
-        .glass-card {
-            background: rgba(255,255,255,0.02);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 24px;
-            border: 1px solid rgba(79,172,254,0.05);
-            padding: 30px 35px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .glass-card:hover {
-            border-color: rgba(79,172,254,0.08);
-        }
-
-        /* ============================================
-           HEADER / NAV
-        ============================================ */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-icon {
-            font-size: 32px;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-
-        .logo-text {
-            font-size: 22px;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #4facfe, #00f2fe, #4facfe);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: shimmer 3s ease-in-out infinite;
-            letter-spacing: 2px;
-        }
-
-        @keyframes shimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .logo-sub {
-            font-size: 9px;
-            color: rgba(255,255,255,0.1);
-            letter-spacing: 3px;
-        }
-
-        .nav {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .nav-btn {
-            padding: 8px 18px;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(79,172,254,0.06);
-            border-radius: 12px;
-            color: rgba(255,255,255,0.25);
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .nav-btn:hover {
-            background: rgba(79,172,254,0.08);
-            border-color: rgba(79,172,254,0.15);
-            color: #4facfe;
-            transform: translateY(-2px);
-            box-shadow: 0 0 30px rgba(79,172,254,0.05);
-        }
-
-        .nav-btn.active {
-            background: rgba(79,172,254,0.1);
-            border-color: rgba(79,172,254,0.2);
-            color: #4facfe;
-        }
-
-        /* ============================================
-           HERO
-        ============================================ */
-        .hero {
-            text-align: center;
-            padding: 40px 0 30px;
-            position: relative;
-        }
-
-        .hero::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(79,172,254,0.15), transparent);
-        }
-
-        .hero-badge {
-            display: inline-block;
-            padding: 4px 20px;
-            background: rgba(79,172,254,0.06);
-            border: 1px solid rgba(79,172,254,0.08);
-            border-radius: 30px;
-            color: rgba(79,172,254,0.4);
-            font-size: 9px;
-            font-weight: 600;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            margin-bottom: 16px;
-        }
-
-        .hero-title {
-            font-size: 52px;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            background: linear-gradient(135deg, #4facfe, #00f2fe, #4facfe);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: heroShimmer 4s ease-in-out infinite;
-            letter-spacing: 3px;
-            line-height: 1.1;
-        }
-
-        @keyframes heroShimmer {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero-sub {
-            font-size: 16px;
-            color: rgba(255,255,255,0.15);
-            letter-spacing: 4px;
-            margin-top: 8px;
-            font-weight: 300;
-        }
-
-        .hero-desc {
-            font-size: 14px;
-            color: rgba(255,255,255,0.12);
-            margin-top: 12px;
-            letter-spacing: 2px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-            line-height: 1.6;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .hero-btn {
-            padding: 10px 28px;
-            border-radius: 14px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            border: none;
-        }
-
-        .hero-btn-primary {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            color: #0a0a0f;
-        }
-
-        .hero-btn-primary:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(79,172,254,0.15);
-        }
-
-        .hero-btn-secondary {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(79,172,254,0.06);
-            color: rgba(255,255,255,0.2);
-        }
-
-        .hero-btn-secondary:hover {
-            background: rgba(79,172,254,0.05);
-            border-color: rgba(79,172,254,0.1);
-            color: #4facfe;
-            transform: scale(1.05);
-        }
-
-        /* ============================================
-           SECTION TITLE
-        ============================================ */
-        .section-title {
-            font-size: 20px;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            color: rgba(255,255,255,0.1);
-            letter-spacing: 3px;
-            margin-bottom: 20px;
-            text-align: center;
-            position: relative;
-        }
-
-        .section-title span {
-            background: linear-gradient(135deg, #4facfe, #00f2fe);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .section-title::after {
-            content: '';
-            display: block;
-            width: 40px;
-            height: 2px;
-            background: linear-gradient(90deg, #4facfe, #00f2fe);
-            margin: 8px auto 0;
-            border-radius: 10px;
-            opacity: 0.3;
-        }
-
-        /* ============================================
-           ABOUT
-        ============================================ */
-        .about-text {
-            font-size: 14px;
-            color: rgba(255,255,255,0.2);
-            line-height: 2;
-            text-align: center;
-            max-width: 700px;
-            margin: 0 auto;
-            font-weight: 300;
-            letter-spacing: 0.5px;
-        }
-
-        .about-text strong {
-            color: #4facfe;
-            font-weight: 600;
-        }
-
-        /* ============================================
-           SERVICES
-        ============================================ */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        .service-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 16px;
-            padding: 20px 18px;
-            border: 1px solid rgba(79,172,254,0.03);
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .service-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(79,172,254,0.08);
-            background: rgba(79,172,254,0.02);
-        }
-
-        .service-card .s-icon {
-            font-size: 32px;
-            margin-bottom: 8px;
-        }
-
-        .service-card .s-name {
-            font-size: 13px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.3);
-            letter-spacing: 1px;
-        }
-
-        .service-card .s-desc {
-            font-size: 10px;
-            color: rgba(255,255,255,0.08);
-            margin-top: 4px;
-            line-height: 1.6;
-        }
-
-        /* ============================================
-           TEAM
-        ============================================ */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .team-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 16px;
-            padding: 20px 16px;
-            border: 1px solid rgba(79,172,254,0.03);
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .team-card:hover {
-            transform: translateY(-8px);
-            border-color: rgba(79,172,254,0.08);
-            background: rgba(79,172,254,0.02);
-            box-shadow: 0 0 40px rgba(79,172,254,0.03);
-        }
-
-        .team-card .t-avatar {
-            width: 90px;
-            height: 90px;
-            border-radius: 50%;
-            margin: 0 auto 10px;
-            overflow: hidden;
-            border: 2px solid rgba(79,172,254,0.06);
-            transition: 0.3s;
-        }
-
-        .team-card:hover .t-avatar {
-            border-color: rgba(79,172,254,0.15);
-            transform: scale(1.05);
-        }
-
-        .team-card .t-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .team-card .t-name {
-            font-size: 16px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.4);
-            letter-spacing: 1px;
-        }
-
-        .team-card .t-role {
-            font-size: 10px;
-            color: rgba(79,172,254,0.25);
-            margin-top: 2px;
-            letter-spacing: 1px;
-        }
-
-        .team-card .t-desc {
-            font-size: 10px;
-            color: rgba(255,255,255,0.06);
-            margin-top: 6px;
-            line-height: 1.6;
-        }
-
-        /* ============================================
-           PROJECTS
-        ============================================ */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 16px;
-        }
-
-        .project-card {
-            background: rgba(255,255,255,0.02);
-            border-radius: 14px;
-            padding: 18px 16px;
-            border: 1px solid rgba(79,172,254,0.03);
-            text-align: center;
-            transition: 0.3s;
-        }
-
-        .project-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(79,172,254,0.06);
-            background: rgba(79,172,254,0.02);
-        }
-
-        .project-card .p-icon {
-            font-size: 28px;
-        }
-
-        .project-card .p-name {
-            font-size: 12px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.25);
-            margin-top: 4px;
-        }
-
-        .project-card .p-desc {
-            font-size: 9px;
-            color: rgba(255,255,255,0.06);
-            margin-top: 2px;
-        }
-
-        .project-card .p-btn {
-            margin-top: 8px;
-            padding: 4px 16px;
-            background: rgba(79,172,254,0.04);
-            border: 1px solid rgba(79,172,254,0.04);
-            border-radius: 8px;
-            color: rgba(79,172,254,0.15);
-            font-size: 9px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
-        }
-
-        .project-card .p-btn:hover {
-            background: rgba(79,172,254,0.06);
-            color: #4facfe;
-            border-color: rgba(79,172,254,0.06);
-        }
-
-        /* ============================================
-           TIMELINE
-        ============================================ */
-        .timeline {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            gap: 30px;
-            padding: 10px 0;
-            position: relative;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            top: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(79,172,254,0.08), transparent);
-        }
-
-        .timeline-item {
-            text-align: center;
-            flex: 1;
-            max-width: 200px;
-            position: relative;
-        }
-
-        .timeline-item .t-number {
-            font-size: 32px;
-            font-weight: 900;
-            font-family: 'Orbitron', sans-serif;
-            color: rgba(79,172,254,0.05);
-            letter-spacing: 2px;
-        }
-
-        .timeline-item .t-title {
-            font-size: 13px;
-            font-weight: 700;
-            color: rgba(255,255,255,0.2);
-            margin-top: 4px;
-            letter-spacing: 1px;
-        }
-
-        .timeline-item .t-desc {
-            font-size: 10px;
-            color: rgba(255,255,255,0.06);
-            margin-top: 2px;
-        }
-
-        .timeline-item .t-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #4facfe;
-            margin: 8px auto 0;
-            opacity: 0.1;
-            transition: 0.3s;
-        }
-
-        .timeline-item:hover .t-dot {
-            opacity: 0.4;
-            box-shadow: 0 0 20px rgba(79,172,254,0.1);
-        }
-
-        /* ============================================
-           CONTACT
-        ============================================ */
-        .contact-box {
-            background: rgba(255,255,255,0.02);
-            border-radius: 16px;
-            padding: 24px 20px;
-            border: 1px solid rgba(79,172,254,0.04);
-            text-align: center;
-        }
-
-        .contact-box .c-title {
-            font-size: 18px;
-            font-weight: 700;
-            font-family: 'Orbitron', sans-serif;
-            color: rgba(255,255,255,0.1);
-            letter-spacing: 2px;
-        }
-
-        .contact-box .c-desc {
-            font-size: 13px;
-            color: rgba(255,255,255,0.1);
-            margin-top: 6px;
-            letter-spacing: 1px;
-        }
-
-        /* ============================================
-           GREEN BUTTON
-        ============================================ */
-        .btn-green {
-            display: inline-block;
-            padding: 10px 32px;
-            background: linear-gradient(135deg, #00e676, #00c853);
-            border: none;
-            border-radius: 14px;
-            color: #0a0a0f;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            letter-spacing: 1px;
-            text-decoration: none;
-            margin-top: 12px;
-        }
-
-        .btn-green:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(0,230,118,0.12);
-        }
-
-        .btn-green:active {
-            transform: scale(0.95);
-        }
-
-        /* ============================================
-           FOOTER
-        ============================================ */
-        .footer {
-            text-align: center;
-            padding: 16px 0 6px;
-            border-top: 1px solid rgba(255,255,255,0.02);
-            margin-top: 10px;
-        }
-
-        .footer-text {
-            font-size: 10px;
-            color: rgba(255,255,255,0.02);
-            letter-spacing: 2px;
-        }
-
-        .footer-text span {
-            color: #4facfe;
-            font-weight: 700;
-        }
-
-        .footer-tagline {
-            font-size: 9px;
-            color: rgba(255,255,255,0.01);
-            letter-spacing: 4px;
-            margin-top: 4px;
-        }
-
-        /* ============================================
-           RESPONSIVE
-        ============================================ */
-        @media (max-width: 992px) {
-            .services-grid { grid-template-columns: repeat(2, 1fr); }
-            .projects-grid { grid-template-columns: repeat(2, 1fr); }
-            .team-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        @media (max-width: 768px) {
-            body { padding: 10px; }
-            .glass-card { padding: 20px; }
-            .header { flex-direction: column; align-items: center; text-align: center; }
-            .hero-title { font-size: 32px; }
-            .logo-text { font-size: 18px; }
-            .services-grid { grid-template-columns: 1fr; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .team-grid { grid-template-columns: 1fr; }
-            .nav { justify-content: center; }
-            .timeline { flex-direction: column; align-items: center; gap: 20px; }
-            .timeline::before { display: none; }
-            .timeline-item { max-width: 100%; }
-            .hero-buttons { flex-direction: column; align-items: center; }
-            .hero-btn { width: 80%; }
-            .section-title { font-size: 17px; }
-            .team-card .t-avatar { width: 70px; height: 70px; }
-            .about-text { font-size: 13px; }
-        }
-
-        @media (max-width: 480px) {
-            body { padding: 6px; }
-            .glass-card { padding: 14px; border-radius: 16px; }
-            .hero-title { font-size: 24px; }
-            .logo-text { font-size: 16px; }
-            .logo-icon { font-size: 24px; }
-            .nav-btn { font-size: 8px; padding: 4px 12px; }
-            .btn-green { padding: 8px 20px; font-size: 11px; }
-            .service-card { padding: 14px 12px; }
-            .project-card { padding: 14px 12px; }
-            .team-card { padding: 14px 12px; }
-            .hero-desc { font-size: 12px; }
-            .hero-sub { font-size: 12px; }
-        }
+        *{margin:0;padding:0;box-sizing:border-box}
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+        body{font-family:'Vazirmatn',sans-serif;background:#0a0a0f;color:#fff;height:100vh;overflow:hidden}
+        
+        #particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0}
+        
+        .page{display:none;flex-direction:column;height:100vh;padding:16px;position:relative;z-index:1;overflow-y:auto}
+        .page.active{display:flex}
+        
+        .header{text-align:center;padding:12px 0 6px}
+        .header h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,#6c5ce7,#00cec9);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .header p{font-size:12px;color:rgba(255,255,255,0.2)}
+        
+        .back-btn{background:0;border:0;color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;align-self:flex-start;margin-bottom:6px}
+        .page-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:10px}
+        
+        .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;align-content:center}
+        .menu-card{background:rgba(255,255,255,0.03);backdrop-filter:blur(20px);border-radius:18px;border:1px solid rgba(108,92,231,0.08);padding:24px 16px;text-align:center;cursor:pointer;transition:0.3s;min-height:100px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+        .menu-card:active{transform:scale(0.95)}
+        .menu-card .icon{font-size:32px;margin-bottom:4px}
+        .menu-card .title{font-size:14px;font-weight:700}
+        
+        .form-group{margin-bottom:12px}
+        .form-group label{display:block;color:rgba(255,255,255,0.4);font-size:12px;font-weight:700;margin-bottom:4px}
+        .form-group input,.form-group textarea{width:100%;padding:10px;border:0;border-radius:10px;background:rgba(255,255,255,0.03);color:#fff;font-size:14px;font-family:'Vazirmatn',sans-serif;border:1px solid rgba(255,255,255,0.05)}
+        .form-group input:focus,.form-group textarea:focus{outline:1px solid #6c5ce7}
+        
+        .btn{width:100%;padding:10px;border:0;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:0.3s;margin-top:4px}
+        .btn-primary{background:linear-gradient(135deg,#6c5ce7,#00cec9);color:#0a0a0f}
+        .btn-success{background:linear-gradient(135deg,#00b894,#00cec9);color:#0a0a0f}
+        .btn-danger{background:linear-gradient(135deg,#d63031,#f5576c);color:#fff}
+        .btn:active{transform:scale(0.95)}
+        
+        .result-box{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin:8px 0;min-height:30px;border:1px solid rgba(255,255,255,0.05);font-size:13px}
+        
+        .chat-box{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding:6px 0}
+        .msg{max-width:85%;padding:6px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-wrap:break-word}
+        .msg.user{align-self:flex-end;background:#2a2a3e;border-bottom-right-radius:4px}
+        .msg.bot{align-self:flex-start;background:#1a1a2e;border-bottom-left-radius:4px;color:#6c5ce7}
+        
+        .input-row{display:flex;gap:6px;margin-top:4px}
+        .input-row input{flex:1;padding:8px 12px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:#fff;font-size:13px;border:1px solid rgba(255,255,255,0.05)}
+        .input-row input:focus{outline:1px solid #6c5ce7}
+        .input-row button{padding:8px 14px;border:0;border-radius:8px;background:linear-gradient(135deg,#6c5ce7,#00cec9);color:#0a0a0f;font-weight:700;cursor:pointer}
+        
+        .support-box{background:linear-gradient(135deg,#1a0a2e,#0a0a0f);border-radius:12px;padding:16px;text-align:center;border:1px solid #6c5ce7}
+        .support-box a{display:inline-block;background:#6c5ce7;color:#0a0a0f;padding:8px 20px;border-radius:8px;font-weight:700;text-decoration:none;margin:6px 0}
+        
+        .row{display:flex;gap:8px;flex-wrap:wrap}
+        .row .col{flex:1;min-width:120px}
+        .dice-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .dice-grid input{width:100%}
+        .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+        .plan-grid input{width:100%}
+        
+        ::-webkit-scrollbar{width:3px}
+        ::-webkit-scrollbar-thumb{background:rgba(108,92,231,0.3);border-radius:10px}
+        
+        @media(max-width:480px){.menu-grid{grid-template-columns:1fr}.dice-grid,.plan-grid{grid-template-columns:1fr}.row .col{min-width:100%}}
     </style>
 </head>
 <body>
 
-    <!-- ===== PARTICLES ===== -->
-    <canvas id="particlesCanvas"></canvas>
+<canvas id="particleCanvas"></canvas>
 
-    <!-- ===== MAIN ===== -->
-    <div class="container">
-
-        <div class="glass-card">
-
-            <!-- ===== HEADER ===== -->
-            <div class="header">
-                <div class="logo">
-                    <span class="logo-icon">⚡</span>
-                    <div>
-                        <div class="logo-text">RSN STUDIO</div>
-                        <div class="logo-sub">فراتر از کد، ساخت یک تجربه</div>
-                    </div>
-                </div>
-                <div class="nav">
-                    <button class="nav-btn active" data-tab="home">🏠 خانه</button>
-                    <button class="nav-btn" data-tab="about">👤 درباره</button>
-                    <button class="nav-btn" data-tab="team">👥 تیم</button>
-                    <button class="nav-btn" data-tab="projects">📁 پروژه‌ها</button>
-                    <button class="nav-btn" data-tab="contact">📬 ارتباط</button>
-                </div>
-            </div>
-
-            <!-- ===== HERO ===== -->
-            <div class="hero">
-                <div class="hero-badge">🔥 RSN STUDIO</div>
-                <h1 class="hero-title">BUILD · CODE · CREATE</h1>
-                <p class="hero-sub">اینجا جایی‌ست که ایده‌ها به پروژه تبدیل می‌شوند</p>
-                <p class="hero-desc">از طراحی سایت و اپلیکیشن تا ساخت بازی و ابزارهای هوشمند</p>
-                <div class="hero-buttons">
-                    <button class="hero-btn hero-btn-primary" onclick="scrollToSection('projects')">🚀 مشاهده پروژه‌ها</button>
-                    <button class="hero-btn hero-btn-secondary" onclick="scrollToSection('about')">📖 درباره RSN</button>
-                    <button class="hero-btn hero-btn-secondary" onclick="scrollToSection('contact')">💬 ارتباط با ما</button>
-                </div>
-            </div>
-
-            <!-- ===== ABOUT ===== -->
-            <div id="aboutSection">
-                <div class="section-title"><span>RSN دقیقاً چیه؟</span></div>
-                <div class="about-text">
-                    <strong>RSN</strong> یک مجموعه خلاق در زمینه برنامه‌نویسی و توسعه پروژه‌های دیجیتال است.<br>
-                    از طراحی سایت و اپلیکیشن گرفته تا ساخت بازی، ابزارهای کاربردی و پروژه‌های Python؛<br>
-                    هدف ما اینه که هر ایده رو به یک پروژه واقعی، زیبا و قابل استفاده تبدیل کنیم.
-                </div>
-            </div>
-
-            <!-- ===== SERVICES ===== -->
-            <div style="margin-top:20px;">
-                <div class="section-title"><span>خدمات ما</span></div>
-                <div class="services-grid">
-                    <div class="service-card">
-                        <div class="s-icon">💻</div>
-                        <div class="s-name">Web Development</div>
-                        <div class="s-desc">طراحی و توسعه سایت‌های مدرن و Responsive</div>
-                    </div>
-                    <div class="service-card">
-                        <div class="s-icon">📱</div>
-                        <div class="s-name">App Development</div>
-                        <div class="s-desc">ساخت اپلیکیشن‌های اندرویدی و ابزارهای کاربردی</div>
-                    </div>
-                    <div class="service-card">
-                        <div class="s-icon">🐍</div>
-                        <div class="s-name">Python</div>
-                        <div class="s-desc">ساخت ابزار، برنامه و پروژه‌های Python</div>
-                    </div>
-                    <div class="service-card">
-                        <div class="s-icon">🎮</div>
-                        <div class="s-name">Game Development</div>
-                        <div class="s-desc">ساخت بازی‌ها و پروژه‌های تعاملی</div>
-                    </div>
-                    <div class="service-card">
-                        <div class="s-icon">⚡</div>
-                        <div class="s-name">UI / UX</div>
-                        <div class="s-desc">طراحی رابط‌های مدرن، تاریک و حرفه‌ای</div>
-                    </div>
-                    <div class="service-card">
-                        <div class="s-icon">🛠️</div>
-                        <div class="s-name">Custom Projects</div>
-                        <div class="s-desc">تبدیل ایده‌های خاص به پروژه واقعی</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== TEAM ===== -->
-            <div id="teamSection" style="margin-top:20px;">
-                <div class="section-title"><span>تیم RSN</span></div>
-                <div class="team-grid">
-
-                    <!-- RICK -->
-                    <div class="team-card">
-                        <div class="t-avatar">
-                            <img src="assets/rick.jpg" alt="RICK" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2290%22 height=%2290%22%3E%3Crect width=%2290%22 height=%2290%22 fill=%22%230a0a2e%22 rx=%2245%22/%3E%3Ctext x=%2245%22 y=%2254%22 text-anchor=%22middle%22 fill=%22%234facfe%22 font-size=%2236%22 font-weight=%22bold%22%3E⚡%3C/text%3E%3C/svg%3E'">
-                        </div>
-                        <div class="t-name">⚡ RICK</div>
-                        <div class="t-role">Founder / Developer</div>
-                        <div class="t-desc">برنامه‌نویس و بنیانگذار RSN</div>
-                    </div>
-
-                    <!-- NEGAN -->
-                    <div class="team-card">
-                        <div class="t-avatar">
-                            <img src="assets/negan.jpg" alt="NEGAN" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2290%22 height=%2290%22%3E%3Crect width=%2290%22 height=%2290%22 fill=%22%230a0a2e%22 rx=%2245%22/%3E%3Ctext x=%2245%22 y=%2254%22 text-anchor=%22middle%22 fill=%22%23f5576c%22 font-size=%2236%22 font-weight=%22bold%22%3E🔥%3C/text%3E%3C/svg%3E'">
-                        </div>
-                        <div class="t-name">🔥 NEGAN</div>
-                        <div class="t-role">Python / Backend Developer</div>
-                        <div class="t-desc">متخصص پایتون و هوش مصنوعی</div>
-                    </div>
-
-                    <!-- DARYL -->
-                    <div class="team-card">
-                        <div class="t-avatar">
-                            <img src="assets/daryl.jpg" alt="DARYL" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2290%22 height=%2290%22%3E%3Crect width=%2290%22 height=%2290%22 fill=%22%230a0a2e%22 rx=%2245%22/%3E%3Ctext x=%2245%22 y=%2254%22 text-anchor=%22middle%22 fill=%22%2300e676%22 font-size=%2236%22 font-weight=%22bold%22%3E🏹%3C/text%3E%3C/svg%3E'">
-                        </div>
-                        <div class="t-name">🏹 DARYL</div>
-                        <div class="t-role">Support / Team</div>
-                        <div class="t-desc">پشتیبانی و مدیریت تیم</div>
-                    </div>
-
-                </div>
-            </div>
-
-            <!-- ===== PROJECTS ===== -->
-            <div id="projectsSection" style="margin-top:20px;">
-                <div class="section-title"><span>پروژه‌های RSN</span></div>
-                <div class="projects-grid">
-                    <div class="project-card">
-                        <div class="p-icon">🌐</div>
-                        <div class="p-name">Web Projects</div>
-                        <div class="p-desc">سایت‌های مدرن و ریسپانسیو</div>
-                        <button class="p-btn">مشاهده پروژه</button>
-                    </div>
-                    <div class="project-card">
-                        <div class="p-icon">📱</div>
-                        <div class="p-name">Android Apps</div>
-                        <div class="p-desc">اپلیکیشن‌های اندرویدی</div>
-                        <button class="p-btn">مشاهده پروژه</button>
-                    </div>
-                    <div class="project-card">
-                        <div class="p-icon">🐍</div>
-                        <div class="p-name">Python Projects</div>
-                        <div class="p-desc">ابزارها و پروژه‌های Python</div>
-                        <button class="p-btn">مشاهده پروژه</button>
-                    </div>
-                    <div class="project-card">
-                        <div class="p-icon">🎮</div>
-                        <div class="p-name">Games</div>
-                        <div class="p-desc">بازی‌های تعاملی</div>
-                        <button class="p-btn">مشاهده پروژه</button>
-                    </div>
-                    <div class="project-card">
-                        <div class="p-icon">🛠️</div>
-                        <div class="p-name">Tools</div>
-                        <div class="p-desc">ابزارهای کاربردی</div>
-                        <button class="p-btn">مشاهده پروژه</button>
-                    </div>
-                    <div class="project-card">
-                        <div class="p-icon">⚡</div>
-                        <div class="p-name">UI/UX</div>
-                        <div class="p-desc">طراحی رابط‌های حرفه‌ای</div>
-                        <button class="p-btn">مشاهده پروژه</button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== TIMELINE ===== -->
-            <div style="margin-top:20px;">
-                <div class="section-title"><span>از ایده تا اجرا</span></div>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <div class="t-number">01</div>
-                        <div class="t-title">💡 IDEA</div>
-                        <div class="t-desc">ایده شکل می‌گیرد</div>
-                        <div class="t-dot"></div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="t-number">02</div>
-                        <div class="t-title">💻 CODE</div>
-                        <div class="t-desc">ایده تبدیل به کد می‌شود</div>
-                        <div class="t-dot"></div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="t-number">03</div>
-                        <div class="t-title">🚀 PROJECT</div>
-                        <div class="t-desc">پروژه آماده استفاده می‌شود</div>
-                        <div class="t-dot"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ===== CONTACT ===== -->
-            <div id="contactSection" style="margin-top:20px;">
-                <div class="section-title"><span>با RSN در ارتباط باش</span></div>
-                <div class="contact-box">
-                    <div class="c-title">📬 ارتباط با ما</div>
-                    <div class="c-desc">برای همکاری، پیشنهاد پروژه یا مشاهده جدیدترین فعالیت‌های RSN با ما همراه باشید.</div>
-                    <a href="https://rubika.ir/@RSN_ONE" target="_blank" class="btn-green">💚 کانال روبیکا</a>
-                </div>
-            </div>
-
-            <!-- ============================================
-            FOOTER
-            ============================================ -->
-            <div class="footer">
-                <div class="footer-text">✧ RSN STUDIO ✧</div>
-                <div class="footer-tagline">BUILD · CODE · CREATE</div>
-                <div class="footer-text" style="margin-top:4px;">ساخته شده با ⚡ توسط تیم RSN</div>
-            </div>
-
-        </div>
-
+<!-- ============================================ -->
+<!-- ===== صفحه اصلی ===== -->
+<!-- ============================================ -->
+<div class="page active" id="page-main">
+    <div class="header">
+        <h1>🎲 استاردو ولی</h1>
+        <p>ساخته شده توسط Rick از RSN</p>
     </div>
+    <div class="menu-grid">
+        <div class="menu-card" onclick="openPage('dice')">
+            <span class="icon">🎲</span>
+            <span class="title">چالش من</span>
+        </div>
+        <div class="menu-card" onclick="openPage('plan')">
+            <span class="icon">📅</span>
+            <span class="title">کیومرث پلن</span>
+        </div>
+        <div class="menu-card" onclick="openPage('goal')">
+            <span class="icon">🎯</span>
+            <span class="title">هدف من</span>
+        </div>
+        <div class="menu-card" onclick="openPage('support')">
+            <span class="icon">💪</span>
+            <span class="title">حمایت از RSN</span>
+        </div>
+        <div class="menu-card" onclick="openPage('bot')">
+            <span class="icon">🤖</span>
+            <span class="title">پخمه بات</span>
+        </div>
+        <div class="menu-card" onclick="openPage('luck')">
+            <span class="icon">🍀</span>
+            <span class="title">شانس امروز</span>
+        </div>
+    </div>
+</div>
 
-    <script>
-        // ============================================
-        // PARTICLES
-        // ============================================
-        const canvas = document.getElementById('particlesCanvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
+<!-- ============================================ -->
+<!-- ===== صفحه 1: چالش من ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-dice">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎲 چالش من</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">برای هر عدد تاس یه کار مشخص کن</p>
+    <div class="dice-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚀ 1</label><input type="text" id="dice1" placeholder="کار برای 1"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚁ 2</label><input type="text" id="dice2" placeholder="کار برای 2"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚂ 3</label><input type="text" id="dice3" placeholder="کار برای 3"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚃ 4</label><input type="text" id="dice4" placeholder="کار برای 4"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚄ 5</label><input type="text" id="dice5" placeholder="کار برای 5"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚅ 6</label><input type="text" id="dice6" placeholder="کار برای 6"></div>
+    </div>
+    <button class="btn btn-primary" onclick="rollDice()">🎲 تاس بزن</button>
+    <div class="result-box" id="diceResult">نتیجه تاس اینجا نمایش داده میشه...</div>
+</div>
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+<!-- ============================================ -->
+<!-- ===== صفحه 2: کیومرث پلن ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-plan">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">📅 کیومرث پلن</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">برای هر روز هفته یه برنامه مشخص کن</p>
+    <div class="plan-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">شنبه</label><input type="text" id="plan0" placeholder="برنامه شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">یکشنبه</label><input type="text" id="plan1" placeholder="برنامه یکشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">دوشنبه</label><input type="text" id="plan2" placeholder="برنامه دوشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">سه‌شنبه</label><input type="text" id="plan3" placeholder="برنامه سه‌شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">چهارشنبه</label><input type="text" id="plan4" placeholder="برنامه چهارشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">پنجشنبه</label><input type="text" id="plan5" placeholder="برنامه پنجشنبه"></div>
+        <div style="grid-column:span 2;"><label style="color:rgba(255,255,255,0.3);font-size:12px;">جمعه</label><input type="text" id="plan6" placeholder="برنامه جمعه"></div>
+    </div>
+    <button class="btn btn-success" onclick="saveWeeklyPlan()">💾 ذخیره پلن</button>
+    <button class="btn btn-danger" onclick="resetWeeklyPlan()">🔄 ریست پلن</button>
+    <div class="result-box" id="planResult">پلن هفتگی اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== صفحه 3: هدف من ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-goal">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎯 هدف من</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">💰 پول فعلی</label><input type="number" id="currentMoney" placeholder="۰"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">🎯 پول هدف</label><input type="number" id="targetMoney" placeholder="۰"></div>
+    </div>
+    <button class="btn btn-success" onclick="calcGoal()">📊 محاسبه</button>
+    <div class="result-box" id="goalResult">نتیجه محاسبه اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== صفحه 4: حمایت از RSN ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-support">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">💪 حمایت از RSN</div>
+    <div class="support-box">
+        <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم خوب RSN، جوین بشین:</p>
+        <a href="https://t.me/ONE_RSN" target="_blank">📱 جوین کانال RSN</a>
+        <p style="color:rgba(255,255,255,0.1);font-size:11px;margin-top:8px;">با جوین شدن، به ما انرژی میدید! ❤️</p>
+    </div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== صفحه 5: پخمه بات ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-bot">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🤖 پخمه بات</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">گفتن</label><input type="text" id="learnQuestion" placeholder="مثلاً: سلام"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">پاسخ</label><input type="text" id="learnAnswer" placeholder="مثلاً: سلام! خوبی؟"></div>
+    </div>
+    <button class="btn btn-success" onclick="learnBot()">🧠 یاد بده</button>
+    <button class="btn btn-danger" onclick="resetBot()">🔄 ریست بات</button>
+    <div class="chat-box" id="chatBox">
+        <div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div>
+    </div>
+    <div class="input-row">
+        <input type="text" id="chatInput" placeholder="با پخمه بات صحبت کن...">
+        <button onclick="chatWithBot()">➤</button>
+    </div>
+    <div class="result-box" id="botStatus">پخمه بات آماده است! بهش یاد بده.</div>
+</div>
+
+<!-- ============================================ -->
+<!-- ===== صفحه 6: شانس امروز ===== -->
+<!-- ============================================ -->
+<div class="page" id="page-luck">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🍀 شانس امروز</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">هر روز فقط یک بار میتونی شانس خودت رو امتحان کنی!</p>
+    <button class="btn btn-primary" onclick="getLuck()">🍀 شانس من</button>
+    <div class="result-box" id="luckResult">روی دکمه بزن تا شانس امروزتو ببینی...</div>
+</div>
+
+<script>
+// ============================================
+// ذرات متحرک
+// ============================================
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+class Particle {
+    constructor() {
+        this.x = Math.random() * W;
+        this.y = Math.random() * H;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 1.5;
+        this.speedY = (Math.random() - 0.5) * 1.5;
+        this.color = `hsl(${Math.random() * 60 + 220}, 80%, 60%)`;
+    }
+    update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > W) this.speedX *= -1;
+        if (this.y < 0 || this.y > H) this.speedY *= -1;
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.shadowColor = this.color;
+        ctx.shadowBlur = 8;
+        ctx.fill();
+    }
+}
+for (let i = 0; i < 60; i++) particles.push(new Particle());
+
+function animate() {
+    ctx.clearRect(0, 0, W, H);
+    particles.forEach(p => { p.update(); p.draw(); });
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ============================================
+// مدیریت صفحات
+// ============================================
+function openPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+}
+
+// ============================================
+// 1. چالش من (تاس)
+// ============================================
+function rollDice() {
+    const num = Math.floor(Math.random() * 6) + 1;
+    const challenges = [
+        document.getElementById('dice1').value || 'چیزی تعیین نشده',
+        document.getElementById('dice2').value || 'چیزی تعیین نشده',
+        document.getElementById('dice3').value || 'چیزی تعیین نشده',
+        document.getElementById('dice4').value || 'چیزی تعیین نشده',
+        document.getElementById('dice5').value || 'چیزی تعیین نشده',
+        document.getElementById('dice6').value || 'چیزی تعیین نشده'
+    ];
+    document.getElementById('diceResult').innerHTML = 
+        `🎲 عدد تاس: <b>${num}</b><br>📌 چالش: ${challenges[num-1]}`;
+}
+
+// ============================================
+// 2. کیومرث پلن
+// ============================================
+function saveWeeklyPlan() {
+    const days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+    let plan = '';
+    for(let i=0; i<7; i++) {
+        const val = document.getElementById('plan'+i).value.trim();
+        plan += `${days[i]}: ${val || 'خالی'}\n`;
+    }
+    localStorage.setItem('weeklyPlan', plan);
+    document.getElementById('planResult').innerHTML = '✅ پلن هفتگی ذخیره شد!';
+}
+
+function resetWeeklyPlan() {
+    for(let i=0; i<7; i++) {
+        document.getElementById('plan'+i).value = '';
+    }
+    localStorage.removeItem('weeklyPlan');
+    document.getElementById('planResult').innerHTML = '🔄 پلن هفتگی ریست شد!';
+}
+
+// ============================================
+// 3. هدف من
+// ============================================
+function calcGoal() {
+    const current = parseFloat(document.getElementById('currentMoney').value) || 0;
+    const target = parseFloat(document.getElementById('targetMoney').value) || 0;
+    if(target === 0) {
+        document.getElementById('goalResult').innerHTML = '⚠️ لطفاً عدد هدف رو وارد کن!';
+        return;
+    }
+    const remaining = target - current;
+    const percent = current / target * 100;
+    document.getElementById('goalResult').innerHTML = `
+        📊 پیشرفت: ${percent.toFixed(1)}%<br>
+        💰 مانده تا هدف: ${remaining.toLocaleString('fa')} تومان<br>
+        🎯 هدف: ${target.toLocaleString('fa')} تومان
+    `;
+}
+
+// ============================================
+// 4. پخمه بات
+// ============================================
+let botKnowledge = JSON.parse(localStorage.getItem('botKnowledge')) || {};
+
+function learnBot() {
+    const q = document.getElementById('learnQuestion').value.trim();
+    const a = document.getElementById('learnAnswer').value.trim();
+    if(!q || !a) { alert('هر دو فیلد رو پر کن!'); return; }
+    botKnowledge[q] = a;
+    localStorage.setItem('botKnowledge', JSON.stringify(botKnowledge));
+    document.getElementById('botStatus').innerHTML = `🧠 پخمه بات یاد گرفت: «${q}» → «${a}»`;
+    document.getElementById('learnQuestion').value = '';
+    document.getElementById('learnAnswer').value = '';
+}
+
+function chatWithBot() {
+    const input = document.getElementById('chatInput');
+    const text = input.value.trim();
+    if(!text) return;
+    input.value = '';
+    
+    const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML += `<div class="msg user">👤 ${text}</div>`;
+    
+    let response = 'نمی‌دونم چی بگم! بهم یاد بده.';
+    for(let key in botKnowledge) {
+        if(text.includes(key) || key.includes(text)) {
+            response = botKnowledge[key];
+            break;
         }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+    }
+    chatBox.innerHTML += `<div class="msg bot">🤖 ${response}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
 
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = (Math.random() - 0.5) * 0.5;
-                this.speedY = (Math.random() - 0.5) * 0.5;
-                this.opacity = Math.random() * 0.3 + 0.05;
-                this.color = ['#4facfe', '#00f2fe', '#4facfe', '#00e676', '#f5576c'][Math.floor(Math.random() * 5)];
-            }
+function resetBot() {
+    botKnowledge = {};
+    localStorage.removeItem('botKnowledge');
+    document.getElementById('chatBox').innerHTML = '<div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div>';
+    document.getElementById('botStatus').innerHTML = '🔄 پخمه بات ریست شد! دوباره بهش یاد بده.';
+}
 
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                if (this.x > canvas.width) this.x = 0;
-                if (this.x < 0) this.x = canvas.width;
-                if (this.y > canvas.height) this.y = 0;
-                if (this.y < 0) this.y = canvas.height;
-            }
+document.getElementById('chatInput').addEventListener('keydown', function(e) {
+    if(e.key === 'Enter') chatWithBot();
+});
 
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
-            }
-        }
+// ============================================
+// 5. شانس امروز
+// ============================================
+function getLuck() {
+    const today = new Date().toDateString();
+    const lastLuck = localStorage.getItem('lastLuckDate');
+    if(lastLuck === today) {
+        const oldLuck = localStorage.getItem('luckResult');
+        document.getElementById('luckResult').innerHTML = `⏳ امروز قبلاً شانس گرفتی!<br>🍀 شانس امروزت: ${oldLuck}`;
+        return;
+    }
+    const luck = [
+        '🌟 امروز روزت عالیه!', '💪 قوی و موفق باشی!', '❤️ محبت به دلت برسه!',
+        '🎉 خبر خوبی میرسه!', '💰 پول و برکت میاد!', '😊 لبخندت رو حفظ کن!',
+        '🔥 انرژی بالا داری!', '🌈 رنگین‌کمان امروز با توئه!', '⭐ ستاره‌ات میدرخشه!',
+        '🍀 شانس با توئه!', '💎 ارزش خودت رو بدان!', '🚀 امروز پرواز کن!'
+    ];
+    const result = luck[Math.floor(Math.random() * luck.length)];
+    localStorage.setItem('lastLuckDate', today);
+    localStorage.setItem('luckResult', result);
+    document.getElementById('luckResult').innerHTML = `🍀 ${result}`;
+}
 
-        function initParticles() {
-            const count = Math.min(150, Math.floor(window.innerWidth * 0.2));
-            particles = [];
-            for (let i = 0; i < count; i++) {
-                particles.push(new Particle());
-            }
-        }
-
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-
-            // Lines
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
-
-                    if (dist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        const opacity = 0.015 * (1 - dist / 120);
-                        ctx.strokeStyle = `rgba(79, 172, 254, ${opacity})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.stroke();
-                    }
-                }
-            }
-
-            requestAnimationFrame(animateParticles);
-        }
-
-        initParticles();
-        animateParticles();
-
-        // ============================================
-        // NAVIGATION
-        // ============================================
-        document.querySelectorAll('.nav-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-
-                const tab = this.dataset.tab;
-                const sections = {
-                    home: 0,
-                    about: document.getElementById('aboutSection'),
-                    team: document.getElementById('teamSection'),
-                    projects: document.getElementById('projectsSection'),
-                    contact: document.getElementById('contactSection')
-                };
-
-                if (tab === 'home') {
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else if (sections[tab]) {
-                    sections[tab].scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        // ============================================
-        // SCROLL TO SECTION
-        // ============================================
-        function scrollToSection(section) {
-            const sections = {
-                about: document.getElementById('aboutSection'),
-                team: document.getElementById('teamSection'),
-                projects: document.getElementById('projectsSection'),
-                contact: document.getElementById('contactSection')
-            };
-            if (sections[section]) {
-                sections[section].scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        }
-
-        // ============================================
-        // TOAST
-        // ============================================
-        function showToast(msg) {
-            const old = document.querySelector('.toast-msg');
-            if (old) old.remove();
-
-            const el = document.createElement('div');
-            el.className = 'toast-msg';
-            el.textContent = msg;
-            el.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                left: 50%;
-                transform: translateX(-50%);
-                background: rgba(10,10,15,0.95);
-                backdrop-filter: blur(20px);
-                color: white;
-                padding: 10px 24px;
-                border-radius: 12px;
-                font-size: 13px;
-                border: 1px solid rgba(255,255,255,0.05);
-                z-index: 9999;
-                text-align: center;
-                font-family: 'Rajdhani', sans-serif;
-                animation: toastIn 0.4s ease;
-            `;
-            document.body.appendChild(el);
-
-            setTimeout(() => {
-                el.style.transition = '0.4s';
-                el.style.opacity = '0';
-                el.style.transform = 'translateX(-50%) translateY(20px)';
-                setTimeout(() => el.remove(), 500);
-            }, 2000);
-        }
-
-        // ============================================
-        // ENTRY ANIMATION
-        // ============================================
-        document.querySelector('.glass-card').style.opacity = '0';
-        document.querySelector('.glass-card').style.transform = 'translateY(30px)';
-
-        setTimeout(() => {
-            document.querySelector('.glass-card').style.transition = 'all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)';
-            document.querySelector('.glass-card').style.opacity = '1';
-            document.querySelector('.glass-card').style.transform = 'translateY(0)';
-        }, 100);
-
-        // ============================================
-        // TOAST ANIMATION KEYFRAMES
-        // ============================================
-        const styleToast = document.createElement('style');
-        styleToast.textContent = `
-            @keyframes toastIn {
-                0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
-                100% { opacity: 1; transform: translateX(-50%) translateY(0); }
-            }
-        `;
-        document.head.appendChild(styleToast);
-
-        console.log('⚡ RSN STUDIO - نسخه حرفه‌ای');
-        console.log('🔥 ساخته شده توسط RICK');
-    </script>
+// ============================================
+// بارگذاری اولیه
+// ============================================
+const savedPlan = localStorage.getItem('weeklyPlan');
+if(savedPlan) {
+    document.getElementById('planResult').innerHTML = '📋 پلن هفتگی ذخیره شده:\n' + savedPlan;
+}
+</script>
 
 </body>
-  </html>
+                                                                                          </html>
