@@ -27,20 +27,18 @@
         .menu-card .icon{font-size:28px;margin-bottom:2px}
         .menu-card .title{font-size:13px;font-weight:700}
         
-        /* ===== لیست ویدیوها ===== */
         .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 0;flex:1;overflow-y:auto}
-        .video-card{background:rgba(255,255,255,0.03);border-radius:12px;padding:12px;border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:0.3s;text-align:center}
+        .video-card{background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:0.3s;text-align:center}
         .video-card:active{transform:scale(0.95)}
-        .video-card iframe{width:100%;height:150px;border-radius:8px;border:0}
+        .video-card iframe{width:100%;height:160px;border-radius:8px;border:0}
         .video-card .v-title{font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
         
-        /* ===== موزیک ===== */
         .music-list{display:flex;flex-direction:column;gap:6px;padding:6px 0;flex:1;overflow-y:auto}
-        .music-item{background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 14px;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center}
+        .music-item{background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 14px;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
         .music-item .name{font-size:13px;color:rgba(255,255,255,0.6)}
-        .music-item audio{width:120px;height:30px;border-radius:6px}
+        .music-item audio{width:140px;height:30px;border-radius:6px;background:#1a1a2e}
+        .music-item audio::-webkit-media-controls-panel{background:#1a1a2e}
         
-        /* ===== ماد ===== */
         .mod-step{background:rgba(255,255,255,0.02);border-radius:10px;padding:12px;margin-bottom:8px;border-right:3px solid #6c5ce7}
         .mod-step .step-num{color:#6c5ce7;font-weight:700;font-size:13px}
         .mod-step .step-text{color:rgba(255,255,255,0.5);font-size:13px;margin-top:2px}
@@ -76,10 +74,6 @@
         
         ::-webkit-scrollbar{width:3px}
         ::-webkit-scrollbar-thumb{background:rgba(108,92,231,0.3);border-radius:10px}
-        
-        .coming-soon{background:rgba(108,92,231,0.05);border:1px solid rgba(108,92,231,0.1);border-radius:12px;padding:20px;text-align:center;margin:auto;max-width:300px}
-        .coming-soon .icon{font-size:48px;display:block;margin-bottom:8px}
-        .coming-soon .text{font-size:16px;color:rgba(255,255,255,0.5)}
         
         .mod-tabs{display:flex;gap:6px;margin-bottom:10px}
         .mod-tabs button{flex:1;padding:8px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.3);cursor:pointer;font-weight:700;font-size:13px;transition:0.3s;font-family:'Vazirmatn',sans-serif}
@@ -139,7 +133,7 @@
 <!-- ============================================ -->
 <div class="page" id="page-mod">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
-    <div class="page-title">⚡ آموزش نصب ماد</div>
+    <div class="page-title">⚡ آموزش نصب ماد (SMAPI)</div>
     <div class="mod-tabs">
         <button class="active" onclick="showModTab('pc',this)">💻 پیسی</button>
         <button onclick="showModTab('android',this)">📱 اندروید</button>
@@ -207,7 +201,7 @@ function openPage(id) {
 }
 
 // ============================================
-// ویدیوهای آموزش کده
+// ویدیوهای آموزش کده (با iframe آپارات)
 // ============================================
 const videos = [
     { title: 'انواع فارم در استاردو ولی(نکات مثبت و منفی)', url: 'https://www.aparat.com/v/i86vqt7' },
@@ -246,8 +240,10 @@ function loadVideos() {
     videos.forEach(v => {
         const card = document.createElement('div');
         card.className = 'video-card';
+        // استخراج کد ویدیو از لینک آپارات
+        const videoId = v.url.split('/').pop();
         card.innerHTML = `
-            <iframe src="${v.url}?embed" allowfullscreen></iframe>
+            <iframe src="https://www.aparat.com/video/video/embed/videohash/${videoId}" allowfullscreen></iframe>
             <div class="v-title">${v.title}</div>
         `;
         grid.appendChild(card);
@@ -258,11 +254,11 @@ function loadVideos() {
 // موزیک استاردو ولی
 // ============================================
 const musicFiles = [
-    { name: 'موزیک ۱', uri: 'content://media/external/downloads/1000393162' },
-    { name: 'موزیک ۲', uri: 'content://media/external/downloads/1000399990' },
-    { name: 'موزیک ۳', uri: 'content://media/external/downloads/1000399991' },
-    { name: 'موزیک ۴', uri: 'content://media/external/downloads/1000399989' },
-    { name: 'موزیک ۵', uri: 'content://media/external/downloads/1000393179' }
+    { name: '🎵 آهنگ ۱ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
+    { name: '🎵 آهنگ ۲ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
+    { name: '🎵 آهنگ ۳ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
+    { name: '🎵 آهنگ ۴ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
+    { name: '🎵 آهنگ ۵ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' }
 ];
 
 function loadMusic() {
@@ -283,22 +279,22 @@ function loadMusic() {
 }
 
 // ============================================
-// آموزش ماد
+// آموزش ماد (SMAPI)
 // ============================================
 const modData = {
     pc: [
-        { step: '۱', text: 'لانچر SMAPI رو از گیت‌هاب دانلود کن: <a href="https://github.com/Pathoschild/SMAPI/releases" target="_blank">SMAPI Releases</a>' },
+        { step: '۱', text: 'SMAPI (اسپمی) رو از گیت‌هاب دانلود کن: <a href="https://github.com/Pathoschild/SMAPI/releases" target="_blank">SMAPI Releases</a>' },
         { step: '۲', text: 'فایل استاردو ولی رو نصب کن (نسخه رسمی از استیم یا مایکت)' },
         { step: '۳', text: 'ماد مورد نظر رو از <a href="https://www.nexusmods.com/stardewvalley" target="_blank">Nexus Mods</a> دانلود کن' },
-        { step: '۴', text: 'فایل‌های ماد رو در پوشه `Mods` کپی کن' },
-        { step: '۵', text: 'بازی رو با SMAPI اجرا کن' }
+        { step: '۴', text: 'فایل‌های ماد رو در پوشه `Mods` کپی کن (معمولاً در محل نصب بازی)' },
+        { step: '۵', text: 'بازی رو با SMAPI اجرا کن (فایل `StardewModdingAPI.exe`)' }
     ],
     android: [
-        { step: '۱', text: 'نسخه ماد شده استاردو ولی رو از مایکت یا کافه بازار دانلود کن: <a href="https://myket.ir/app/com.stardewvalley" target="_blank">استاردو ولی در مایکت</a>' },
-        { step: '۲', text: 'فایل SMAPI اندروید رو از <a href="https://github.com/Martin3112/SMAPI-Android/releases" target="_blank">SMAPI-Android</a> دانلود کن' },
-        { step: '۳', text: 'مادهای مورد نظر رو برای اندروید آماده کن (فایل‌های `.zip`)' },
+        { step: '۱', text: 'SMAPI اندروید رو از گیت‌هاب دانلود کن: <a href="https://github.com/Martin3112/SMAPI-Android/releases" target="_blank">SMAPI-Android</a>' },
+        { step: '۲', text: 'نسخه ماد شده استاردو ولی رو از مایکت یا کافه بازار دانلود کن' },
+        { step: '۳', text: 'مادهای مورد نظر رو برای اندروید آماده کن (فایل‌های `.zip` یا `.smapi`)' },
         { step: '۴', text: 'مادها رو در پوشه `Android/data/com.stardewvalley/files/Mods` قرار بده' },
-        { step: '۵', text: 'بازی رو اجرا کن و از مادها لذت ببر!' }
+        { step: '۵', text: 'بازی رو از طریق SMAPI لانچر اجرا کن تا مادها فعال بشن' }
     ]
 };
 
@@ -440,4 +436,4 @@ if(savedPlan) {
 </script>
 
 </body>
-        </html>
+    </html>
