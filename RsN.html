@@ -60,7 +60,6 @@
         .mod-tabs button{flex:1;padding:8px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.3);cursor:pointer;font-weight:700;font-size:13px;transition:0.3s;font-family:'Vazirmatn',sans-serif}
         .mod-tabs button.active{background:var(--primary);color:#0a0a0f}
         
-        /* ===== همستر ===== */
         .hamster-area{text-align:center;padding:20px 0}
         .hamster{font-size:80px;cursor:pointer;transition:0.1s;user-select:none;display:inline-block}
         .hamster:active{transform:scale(0.8)}
@@ -68,7 +67,6 @@
         @keyframes coinPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
         .coin-counter{font-size:24px;font-weight:700;color:#fdcb6e;margin:8px 0}
         
-        /* ===== گردونه شانس ===== */
         .slot-machine{background:rgba(255,255,255,0.03);border-radius:16px;padding:16px;text-align:center;border:1px solid rgba(108,92,231,0.1)}
         .slot-reels{display:flex;justify-content:center;gap:20px;font-size:48px;margin:12px 0;padding:10px;background:rgba(0,0,0,0.2);border-radius:12px}
         .slot-reels span{min-width:60px;text-align:center;animation:slotSpin 0.5s ease}
@@ -77,7 +75,6 @@
         .lever:active{transform:rotate(30deg)}
         .slot-result{font-size:18px;font-weight:700;margin:8px 0;min-height:30px}
         
-        /* ===== تنظیمات ===== */
         .settings-group{margin:10px 0}
         .settings-group label{display:block;color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:4px}
         .settings-group input[type="range"]{width:100%;accent-color:var(--primary)}
@@ -85,7 +82,6 @@
         .settings-group select{width:100%;padding:8px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:#fff;font-size:14px}
         .settings-group select option{background:#1a1a2e}
         
-        /* ===== لیست مادها ===== */
         .mod-list{display:flex;flex-direction:column;gap:6px;padding:6px 0;flex:1;overflow-y:auto}
         .mod-item{background:rgba(255,255,255,0.02);border-radius:10px;padding:10px 14px;border:1px solid rgba(255,255,255,0.05)}
         .mod-item .m-name{color:var(--primary);font-weight:700;font-size:14px}
@@ -101,9 +97,7 @@
 
 <canvas id="particleCanvas"></canvas>
 
-<!-- ============================================ -->
 <!-- ===== صفحه اصلی ===== -->
-<!-- ============================================ -->
 <div class="page active" id="page-main">
     <div class="header">
         <h1>🎲 استاردو ولی</h1>
@@ -123,81 +117,137 @@
     </div>
 </div>
 
-<!-- ===== صفحات قدیمی (دایس، پلن، گال، حمایت، بات، شانس) ===== -->
-<!-- (همان کدهای قبلی) -->
+<!-- ===== چالش من ===== -->
+<div class="page" id="page-dice">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎲 چالش من</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">برای هر عدد تاس یه کار مشخص کن</p>
+    <div class="dice-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚀ 1</label><input type="text" id="dice1" placeholder="کار برای 1"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚁ 2</label><input type="text" id="dice2" placeholder="کار برای 2"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚂ 3</label><input type="text" id="dice3" placeholder="کار برای 3"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚃ 4</label><input type="text" id="dice4" placeholder="کار برای 4"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚄ 5</label><input type="text" id="dice5" placeholder="کار برای 5"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚅ 6</label><input type="text" id="dice6" placeholder="کار برای 6"></div>
+    </div>
+    <button class="btn btn-primary" onclick="rollDice()">🎲 تاس بزن</button>
+    <div class="result-box" id="diceResult">نتیجه تاس اینجا نمایش داده میشه...</div>
+</div>
 
-<!-- ============================================ -->
-<!-- ===== صفحه سرگرمی (همستر + گردونه) ===== -->
-<!-- ============================================ -->
+<!-- ===== کیومرث پلن ===== -->
+<div class="page" id="page-plan">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">📅 کیومرث پلن</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">برای هر روز هفته یه برنامه مشخص کن</p>
+    <div class="plan-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">شنبه</label><input type="text" id="plan0" placeholder="برنامه شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">یکشنبه</label><input type="text" id="plan1" placeholder="برنامه یکشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">دوشنبه</label><input type="text" id="plan2" placeholder="برنامه دوشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">سه‌شنبه</label><input type="text" id="plan3" placeholder="برنامه سه‌شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">چهارشنبه</label><input type="text" id="plan4" placeholder="برنامه چهارشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">پنجشنبه</label><input type="text" id="plan5" placeholder="برنامه پنجشنبه"></div>
+        <div style="grid-column:span 2;"><label style="color:rgba(255,255,255,0.3);font-size:12px;">جمعه</label><input type="text" id="plan6" placeholder="برنامه جمعه"></div>
+    </div>
+    <button class="btn btn-success" onclick="saveWeeklyPlan()">💾 ذخیره پلن</button>
+    <button class="btn btn-danger" onclick="resetWeeklyPlan()">🔄 ریست پلن</button>
+    <div class="result-box" id="planResult">پلن هفتگی اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== هدف من ===== -->
+<div class="page" id="page-goal">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎯 هدف من</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">💰 پول فعلی</label><input type="number" id="currentMoney" placeholder="۰"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">🎯 پول هدف</label><input type="number" id="targetMoney" placeholder="۰"></div>
+    </div>
+    <button class="btn btn-success" onclick="calcGoal()">📊 محاسبه</button>
+    <div class="result-box" id="goalResult">نتیجه محاسبه اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== حمایت از RSN ===== -->
+<div class="page" id="page-support">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">💪 حمایت از RSN</div>
+    <div class="support-box">
+        <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم خوب RSN، جوین بشین:</p>
+        <a href="https://rubika.ir/ONE_RSN" target="_blank">📱 جوین کانال RSN در روبیکا</a>
+        <p style="color:rgba(255,255,255,0.1);font-size:11px;margin-top:8px;">با جوین شدن، به ما انرژی میدید! ❤️</p>
+    </div>
+</div>
+
+<!-- ===== پخمه بات ===== -->
+<div class="page" id="page-bot">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🤖 پخمه بات</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">گفتن</label><input type="text" id="learnQuestion" placeholder="مثلاً: سلام"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">پاسخ</label><input type="text" id="learnAnswer" placeholder="مثلاً: سلام! خوبی؟"></div>
+    </div>
+    <button class="btn btn-success" onclick="learnBot()">🧠 یاد بده</button>
+    <button class="btn btn-danger" onclick="resetBot()">🔄 ریست بات</button>
+    <div class="chat-box" id="chatBox">
+        <div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div>
+    </div>
+    <div class="input-row">
+        <input type="text" id="chatInput" placeholder="با پخمه بات صحبت کن...">
+        <button onclick="chatWithBot()">➤</button>
+    </div>
+    <div class="result-box" id="botStatus">پخمه بات آماده است! بهش یاد بده.</div>
+</div>
+
+<!-- ===== شانس امروز ===== -->
+<div class="page" id="page-luck">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🍀 شانس امروز</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">هر روز فقط یک بار میتونی شانس خودت رو امتحان کنی!</p>
+    <button class="btn btn-primary" onclick="getLuck()">🍀 شانس من</button>
+    <div class="result-box" id="luckResult">روی دکمه بزن تا شانس امروزتو ببینی...</div>
+</div>
+
+<!-- ===== سرگرمی ===== -->
 <div class="page" id="page-fun">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">🐹 سرگرمی</div>
-    
-    <!-- ===== همستر ===== -->
     <div class="hamster-area">
         <div style="font-size:14px;color:rgba(255,255,255,0.3);">💰 سکه‌ها: <span id="coinCount" class="coin-counter">۰</span></div>
         <div class="hamster" id="hamster" onclick="tapHamster()">🐹</div>
         <div style="font-size:12px;color:rgba(255,255,255,0.2);">👆 روی همستر بزن تا سکه بگیری!</div>
     </div>
-    
-    <!-- ===== گردونه شانس ===== -->
     <div class="slot-machine">
         <div style="font-size:16px;font-weight:700;color:var(--primary);">🎰 گردونه شانس</div>
         <div style="font-size:12px;color:rgba(255,255,255,0.2);">هر بار ۱۰ سکه</div>
         <div class="slot-reels" id="slotReels">
-            <span id="slot1">❓</span>
-            <span id="slot2">❓</span>
-            <span id="slot3">❓</span>
+            <span id="slot1">❓</span><span id="slot2">❓</span><span id="slot3">❓</span>
         </div>
         <div class="lever" onclick="pullLever()">🕹️</div>
         <div class="slot-result" id="slotResult">اهرم رو بکش!</div>
     </div>
 </div>
 
-<!-- ============================================ -->
-<!-- ===== صفحه تنظیمات ظاهری ===== -->
-<!-- ============================================ -->
+<!-- ===== تنظیمات ظاهری ===== -->
 <div class="page" id="page-settings">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">⚙️ تنظیمات ظاهری</div>
-    <div class="settings-group">
-        <label>📏 اندازه متن</label>
-        <input type="range" id="fontSize" min="12" max="20" value="14" oninput="changeFontSize(this.value)">
-    </div>
-    <div class="settings-group">
-        <label>🎨 رنگ اصلی</label>
-        <input type="color" id="primaryColor" value="#6c5ce7" oninput="changePrimaryColor(this.value)">
-    </div>
-    <div class="settings-group">
-        <label>🎨 رنگ ثانویه</label>
-        <input type="color" id="secondaryColor" value="#00cec9" oninput="changeSecondaryColor(this.value)">
-    </div>
-    <div class="settings-group">
-        <label>🌌 پس‌زمینه</label>
+    <div class="settings-group"><label>📏 اندازه متن</label><input type="range" id="fontSize" min="12" max="20" value="14" oninput="changeFontSize(this.value)"></div>
+    <div class="settings-group"><label>🎨 رنگ اصلی</label><input type="color" id="primaryColor" value="#6c5ce7" oninput="changePrimaryColor(this.value)"></div>
+    <div class="settings-group"><label>🎨 رنگ ثانویه</label><input type="color" id="secondaryColor" value="#00cec9" oninput="changeSecondaryColor(this.value)"></div>
+    <div class="settings-group"><label>🌌 پس‌زمینه</label>
         <select id="bgSelect" onchange="changeBackground(this.value)">
-            <option value="default">پیش‌فرض</option>
-            <option value="dark">تاریک</option>
-            <option value="purple">بنفش</option>
-            <option value="blue">آبی</option>
-            <option value="green">سبز</option>
-            <option value="red">قرمز</option>
+            <option value="default">پیش‌فرض</option><option value="dark">تاریک</option><option value="purple">بنفش</option><option value="blue">آبی</option><option value="green">سبز</option><option value="red">قرمز</option>
         </select>
     </div>
     <button class="btn btn-success" onclick="resetSettings()">🔄 ریست تنظیمات</button>
 </div>
 
-<!-- ============================================ -->
-<!-- ===== صفحه ۱۰۰ ماد برتر ===== -->
-<!-- ============================================ -->
+<!-- ===== ۱۰۰ ماد برتر ===== -->
 <div class="page" id="page-modlist">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">📋 ۱۰۰ ماد برتر</div>
     <div class="mod-list" id="modList"></div>
 </div>
 
-<!-- ============================================ -->
-<!-- ===== صفحه آموزش نصب ماد ===== -->
-<!-- ============================================ -->
+<!-- ===== آموزش نصب ماد ===== -->
 <div class="page" id="page-mod">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">⚡ آموزش نصب ماد</div>
@@ -205,7 +255,7 @@
         <button class="active" onclick="showModTab('pc',this)">💻 پیسی</button>
         <button onclick="showModTab('android',this)">📱 اندروید</button>
     </div>
-    <div id="modContent" style="flex:1;overflow-y:auto;padding:4px 0;"></div>
+    <div id="modContent"></div>
 </div>
 
 <script>
@@ -215,327 +265,226 @@
 const canvas = document.getElementById('particleCanvas');
 const ctx = canvas.getContext('2d');
 let W, H, particles = [];
-
-function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-}
-window.addEventListener('resize', resize);
-resize();
-
-class Particle {
-    constructor() {
-        this.x = Math.random() * W;
-        this.y = Math.random() * H;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = (Math.random() - 0.5) * 1.5;
-        this.speedY = (Math.random() - 0.5) * 1.5;
-        this.color = `hsl(${Math.random() * 60 + 220}, 80%, 60%)`;
-    }
-    update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        if (this.x < 0 || this.x > W) this.speedX *= -1;
-        if (this.y < 0 || this.y > H) this.speedY *= -1;
-    }
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = 8;
-        ctx.fill();
-    }
-}
-for (let i = 0; i < 60; i++) particles.push(new Particle());
-
-function animate() {
-    ctx.clearRect(0, 0, W, H);
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animate);
-}
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight}
+window.addEventListener('resize',resize);resize();
+class Particle{constructor(){this.x=Math.random()*W;this.y=Math.random()*H;this.size=Math.random()*3+1;this.speedX=(Math.random()-0.5)*1.5;this.speedY=(Math.random()-0.5)*1.5;this.color=`hsl(${Math.random()*60+220},80%,60%)`}update(){this.x+=this.speedX;this.y+=this.speedY;if(this.x<0||this.x>W)this.speedX*=-1;if(this.y<0||this.y>H)this.speedY*=-1}draw(){ctx.beginPath();ctx.arc(this.x,this.y,this.size,0,Math.PI*2);ctx.fillStyle=this.color;ctx.shadowColor=this.color;ctx.shadowBlur=8;ctx.fill()}}
+for(let i=0;i<60;i++)particles.push(new Particle());
+function animate(){ctx.clearRect(0,0,W,H);particles.forEach(p=>{p.update();p.draw()});requestAnimationFrame(animate)}
 animate();
 
 // ============================================
 // مدیریت صفحات
 // ============================================
 function openPage(id) {
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-' + id).classList.add('active');
-    if (id === 'modlist') loadModList();
-    if (id === 'mod') showModTab('pc');
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.getElementById('page-'+id).classList.add('active');
+    if(id==='modlist') loadModList();
+    if(id==='mod') showModTab('pc');
 }
 
 // ============================================
-// توابع قدیمی (دایس، پلن، گال، بات، شانس)
+// توابع قدیمی
 // ============================================
 function rollDice() {
-    const num = Math.floor(Math.random() * 6) + 1;
-    const challenges = [
-        document.getElementById('dice1')?.value || 'چیزی تعیین نشده',
-        document.getElementById('dice2')?.value || 'چیزی تعیین نشده',
-        document.getElementById('dice3')?.value || 'چیزی تعیین نشده',
-        document.getElementById('dice4')?.value || 'چیزی تعیین نشده',
-        document.getElementById('dice5')?.value || 'چیزی تعیین نشده',
-        document.getElementById('dice6')?.value || 'چیزی تعیین نشده'
+    const num=Math.floor(Math.random()*6)+1;
+    const challenges=[
+        document.getElementById('dice1')?.value||'چیزی تعیین نشده',
+        document.getElementById('dice2')?.value||'چیزی تعیین نشده',
+        document.getElementById('dice3')?.value||'چیزی تعیین نشده',
+        document.getElementById('dice4')?.value||'چیزی تعیین نشده',
+        document.getElementById('dice5')?.value||'چیزی تعیین نشده',
+        document.getElementById('dice6')?.value||'چیزی تعیین نشده'
     ];
-    document.getElementById('diceResult').innerHTML = 
-        `🎲 عدد تاس: <b>${num}</b><br>📌 چالش: ${challenges[num-1]}`;
+    document.getElementById('diceResult').innerHTML=`🎲 عدد تاس: <b>${num}</b><br>📌 چالش: ${challenges[num-1]}`;
 }
-
-function saveWeeklyPlan() {
-    const days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
-    let plan = '';
-    for(let i=0; i<7; i++) {
-        const val = document.getElementById('plan'+i)?.value.trim() || 'خالی';
-        plan += `${days[i]}: ${val}\n`;
-    }
-    localStorage.setItem('weeklyPlan', plan);
-    document.getElementById('planResult').innerHTML = '✅ پلن هفتگی ذخیره شد!';
+function saveWeeklyPlan(){
+    const days=['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
+    let plan='';
+    for(let i=0;i<7;i++){const val=document.getElementById('plan'+i)?.value.trim()||'خالی';plan+=`${days[i]}: ${val}\n`;}
+    localStorage.setItem('weeklyPlan',plan);
+    document.getElementById('planResult').innerHTML='✅ پلن هفتگی ذخیره شد!';
 }
-
-function resetWeeklyPlan() {
-    for(let i=0; i<7; i++) {
-        const el = document.getElementById('plan'+i);
-        if (el) el.value = '';
-    }
+function resetWeeklyPlan(){
+    for(let i=0;i<7;i++){const el=document.getElementById('plan'+i);if(el)el.value='';}
     localStorage.removeItem('weeklyPlan');
-    document.getElementById('planResult').innerHTML = '🔄 پلن هفتگی ریست شد!';
+    document.getElementById('planResult').innerHTML='🔄 پلن هفتگی ریست شد!';
 }
-
-function calcGoal() {
-    const current = parseFloat(document.getElementById('currentMoney')?.value) || 0;
-    const target = parseFloat(document.getElementById('targetMoney')?.value) || 0;
-    if(target === 0) {
-        document.getElementById('goalResult').innerHTML = '⚠️ لطفاً عدد هدف رو وارد کن!';
-        return;
-    }
-    const remaining = target - current;
-    const percent = current / target * 100;
-    document.getElementById('goalResult').innerHTML = `
-        📊 پیشرفت: ${percent.toFixed(1)}%<br>
-        💰 مانده تا هدف: ${remaining.toLocaleString('fa')} تومان<br>
-        🎯 هدف: ${target.toLocaleString('fa')} تومان
-    `;
+function calcGoal(){
+    const current=parseFloat(document.getElementById('currentMoney')?.value)||0;
+    const target=parseFloat(document.getElementById('targetMoney')?.value)||0;
+    if(target===0){document.getElementById('goalResult').innerHTML='⚠️ لطفاً عدد هدف رو وارد کن!';return;}
+    const remaining=target-current;const percent=current/target*100;
+    document.getElementById('goalResult').innerHTML=`📊 پیشرفت: ${percent.toFixed(1)}%<br>💰 مانده تا هدف: ${remaining.toLocaleString('fa')} تومان<br>🎯 هدف: ${target.toLocaleString('fa')} تومان`;
 }
-
-let botKnowledge = JSON.parse(localStorage.getItem('botKnowledge')) || {};
-
-function learnBot() {
-    const q = document.getElementById('learnQuestion')?.value.trim();
-    const a = document.getElementById('learnAnswer')?.value.trim();
-    if(!q || !a) { alert('هر دو فیلد رو پر کن!'); return; }
-    botKnowledge[q] = a;
-    localStorage.setItem('botKnowledge', JSON.stringify(botKnowledge));
-    document.getElementById('botStatus').innerHTML = `🧠 پخمه بات یاد گرفت: «${q}» → «${a}»`;
-    document.getElementById('learnQuestion').value = '';
-    document.getElementById('learnAnswer').value = '';
+let botKnowledge=JSON.parse(localStorage.getItem('botKnowledge'))||{};
+function learnBot(){
+    const q=document.getElementById('learnQuestion')?.value.trim();
+    const a=document.getElementById('learnAnswer')?.value.trim();
+    if(!q||!a){alert('هر دو فیلد رو پر کن!');return;}
+    botKnowledge[q]=a;localStorage.setItem('botKnowledge',JSON.stringify(botKnowledge));
+    document.getElementById('botStatus').innerHTML=`🧠 پخمه بات یاد گرفت: «${q}» → «${a}»`;
+    document.getElementById('learnQuestion').value='';document.getElementById('learnAnswer').value='';
 }
-
-function chatWithBot() {
-    const input = document.getElementById('chatInput');
-    const text = input?.value.trim();
-    if(!text) return;
-    if (input) input.value = '';
-    
-    const chatBox = document.getElementById('chatBox');
-    chatBox.innerHTML += `<div class="msg user">👤 ${text}</div>`;
-    
-    let response = 'نمی‌دونم چی بگم! بهم یاد بده.';
-    for(let key in botKnowledge) {
-        if(text.includes(key) || key.includes(text)) {
-            response = botKnowledge[key];
-            break;
-        }
-    }
-    chatBox.innerHTML += `<div class="msg bot">🤖 ${response}</div>`;
-    chatBox.scrollTop = chatBox.scrollHeight;
+function chatWithBot(){
+    const input=document.getElementById('chatInput');const text=input?.value.trim();
+    if(!text)return;if(input)input.value='';
+    const chatBox=document.getElementById('chatBox');
+    chatBox.innerHTML+=`<div class="msg user">👤 ${text}</div>`;
+    let response='نمی‌دونم چی بگم! بهم یاد بده.';
+    for(let key in botKnowledge){if(text.includes(key)||key.includes(text)){response=botKnowledge[key];break;}}
+    chatBox.innerHTML+=`<div class="msg bot">🤖 ${response}</div>`;
+    chatBox.scrollTop=chatBox.scrollHeight;
 }
-
-function resetBot() {
-    botKnowledge = {};
-    localStorage.removeItem('botKnowledge');
-    document.getElementById('chatBox').innerHTML = '<div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div>';
-    document.getElementById('botStatus').innerHTML = '🔄 پخمه بات ریست شد! دوباره بهش یاد بده.';
+function resetBot(){
+    botKnowledge={};localStorage.removeItem('botKnowledge');
+    document.getElementById('chatBox').innerHTML='<div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div>';
+    document.getElementById('botStatus').innerHTML='🔄 پخمه بات ریست شد! دوباره بهش یاد بده.';
 }
-
-document.getElementById('chatInput')?.addEventListener('keydown', function(e) {
-    if(e.key === 'Enter') chatWithBot();
-});
-
-function getLuck() {
-    const today = new Date().toDateString();
-    const lastLuck = localStorage.getItem('lastLuckDate');
-    if(lastLuck === today) {
-        const oldLuck = localStorage.getItem('luckResult');
-        document.getElementById('luckResult').innerHTML = `⏳ امروز قبلاً شانس گرفتی!<br>🍀 شانس امروزت: ${oldLuck}`;
-        return;
-    }
-    const luck = [
-        '🌟 امروز روزت عالیه!', '💪 قوی و موفق باشی!', '❤️ محبت به دلت برسه!',
-        '🎉 خبر خوبی میرسه!', '💰 پول و برکت میاد!', '😊 لبخندت رو حفظ کن!',
-        '🔥 انرژی بالا داری!', '🌈 رنگین‌کمان امروز با توئه!', '⭐ ستاره‌ات میدرخشه!',
-        '🍀 شانس با توئه!', '💎 ارزش خودت رو بدان!', '🚀 امروز پرواز کن!'
-    ];
-    const result = luck[Math.floor(Math.random() * luck.length)];
-    localStorage.setItem('lastLuckDate', today);
-    localStorage.setItem('luckResult', result);
-    document.getElementById('luckResult').innerHTML = `🍀 ${result}`;
+document.getElementById('chatInput')?.addEventListener('keydown',function(e){if(e.key==='Enter')chatWithBot();});
+function getLuck(){
+    const today=new Date().toDateString();
+    const lastLuck=localStorage.getItem('lastLuckDate');
+    if(lastLuck===today){const oldLuck=localStorage.getItem('luckResult');document.getElementById('luckResult').innerHTML=`⏳ امروز قبلاً شانس گرفتی!<br>🍀 شانس امروزت: ${oldLuck}`;return;}
+    const luck=['🌟 امروز روزت عالیه!','💪 قوی و موفق باشی!','❤️ محبت به دلت برسه!','🎉 خبر خوبی میرسه!','💰 پول و برکت میاد!','😊 لبخندت رو حفظ کن!','🔥 انرژی بالا داری!','🌈 رنگین‌کمان امروز با توئه!','⭐ ستاره‌ات میدرخشه!','🍀 شانس با توئه!','💎 ارزش خودت رو بدان!','🚀 امروز پرواز کن!'];
+    const result=luck[Math.floor(Math.random()*luck.length)];
+    localStorage.setItem('lastLuckDate',today);localStorage.setItem('luckResult',result);
+    document.getElementById('luckResult').innerHTML=`🍀 ${result}`;
 }
+const savedPlan=localStorage.getItem('weeklyPlan');if(savedPlan){document.getElementById('planResult').innerHTML='📋 پلن هفتگی ذخیره شده:\n'+savedPlan;}
 
-const savedPlan = localStorage.getItem('weeklyPlan');
-if(savedPlan) {
-    document.getElementById('planResult').innerHTML = '📋 پلن هفتگی ذخیره شده:\n' + savedPlan;
+// ============================================
+// همستر و گردونه
+// ============================================
+let coins=parseInt(localStorage.getItem('hamsterCoins'))||0;
+document.getElementById('coinCount').textContent=coins.toLocaleString('fa');
+function tapHamster(){coins++;localStorage.setItem('hamsterCoins',coins);document.getElementById('coinCount').textContent=coins.toLocaleString('fa');const h=document.getElementById('hamster');h.classList.remove('coin');void h.offsetWidth;h.classList.add('coin');}
+function pullLever(){
+    if(coins<10){document.getElementById('slotResult').innerHTML='⚠️ سکه کافی نیست! برو همستر رو بزن.';return;}
+    coins-=10;localStorage.setItem('hamsterCoins',coins);document.getElementById('coinCount').textContent=coins.toLocaleString('fa');
+    document.getElementById('slotResult').innerHTML='🔄 در حال چرخش...';
+    const items=['💎','🐔','🌟','🍀','🎯','💰'];const values={'💎':50,'🐔':20,'🌟':30,'🍀':40,'🎯':25,'💰':15};
+    setTimeout(()=>{
+        const r1=items[Math.floor(Math.random()*items.length)],r2=items[Math.floor(Math.random()*items.length)],r3=items[Math.floor(Math.random()*items.length)];
+        document.getElementById('slot1').textContent=r1;document.getElementById('slot2').textContent=r2;document.getElementById('slot3').textContent=r3;
+        if(r1===r2&&r2===r3){const win=values[r1]*3;coins+=win;localStorage.setItem('hamsterCoins',coins);document.getElementById('coinCount').textContent=coins.toLocaleString('fa');document.getElementById('slotResult').innerHTML=`🎉 برنده شدی! ${win} سکه!`;}
+        else if(r1===r2||r2===r3||r1===r3){const pair=r1===r2?r1:(r2===r3?r2:r1);const win=values[pair]*1.5;coins+=Math.floor(win);localStorage.setItem('hamsterCoins',coins);document.getElementById('coinCount').textContent=coins.toLocaleString('fa');document.getElementById('slotResult').innerHTML=`🥳 دو تا ${pair} اومد! ${Math.floor(win)} سکه`;}
+        else{document.getElementById('slotResult').innerHTML='😅 چیزی نیومد! دوباره امتحان کن.';}
+    },600);
 }
 
 // ============================================
-// سرگرمی (همستر + گردونه)
+// تنظیمات
 // ============================================
-let coins = parseInt(localStorage.getItem('hamsterCoins')) || 0;
-document.getElementById('coinCount').textContent = coins.toLocaleString('fa');
-
-function tapHamster() {
-    coins++;
-    localStorage.setItem('hamsterCoins', coins);
-    document.getElementById('coinCount').textContent = coins.toLocaleString('fa');
-    const h = document.getElementById('hamster');
-    h.classList.remove('coin');
-    void h.offsetWidth;
-    h.classList.add('coin');
-}
-
-function pullLever() {
-    if (coins < 10) {
-        document.getElementById('slotResult').innerHTML = '⚠️ سکه کافی نیست! برو همستر رو بزن.';
-        return;
-    }
-    coins -= 10;
-    localStorage.setItem('hamsterCoins', coins);
-    document.getElementById('coinCount').textContent = coins.toLocaleString('fa');
-    document.getElementById('slotResult').innerHTML = '🔄 در حال چرخش...';
-    
-    const items = ['💎', '🐔', '🌟', '🍀', '🎯', '💰'];
-    const values = {'💎':50, '🐔':20, '🌟':30, '🍀':40, '🎯':25, '💰':15};
-    
-    setTimeout(() => {
-        const r1 = items[Math.floor(Math.random() * items.length)];
-        const r2 = items[Math.floor(Math.random() * items.length)];
-        const r3 = items[Math.floor(Math.random() * items.length)];
-        document.getElementById('slot1').textContent = r1;
-        document.getElementById('slot2').textContent = r2;
-        document.getElementById('slot3').textContent = r3;
-        
-        if (r1 === r2 && r2 === r3) {
-            const win = values[r1] * 3;
-            coins += win;
-            localStorage.setItem('hamsterCoins', coins);
-            document.getElementById('coinCount').textContent = coins.toLocaleString('fa');
-            document.getElementById('slotResult').innerHTML = `🎉 برنده شدی! ${win} سکه!`;
-        } else if (r1 === r2 || r2 === r3 || r1 === r3) {
-            const pair = r1 === r2 ? r1 : (r2 === r3 ? r2 : r1);
-            const win = values[pair] * 1.5;
-            coins += Math.floor(win);
-            localStorage.setItem('hamsterCoins', coins);
-            document.getElementById('coinCount').textContent = coins.toLocaleString('fa');
-            document.getElementById('slotResult').innerHTML = `🥳 دو تا ${pair} اومد! ${Math.floor(win)} سکه`;
-        } else {
-            document.getElementById('slotResult').innerHTML = '😅 چیزی نیومد! دوباره امتحان کن.';
-        }
-    }, 600);
-}
+function changeFontSize(val){document.documentElement.style.setProperty('--font-size',val+'px');localStorage.setItem('fontSize',val);}
+function changePrimaryColor(val){document.documentElement.style.setProperty('--primary',val);localStorage.setItem('primaryColor',val);}
+function changeSecondaryColor(val){document.documentElement.style.setProperty('--secondary',val);localStorage.setItem('secondaryColor',val);}
+function changeBackground(val){const canvas=document.getElementById('particleCanvas');const colors={default:'radial-gradient(ellipse at center, var(--bg2), var(--bg1))',dark:'#0a0a0f',purple:'radial-gradient(ellipse at center, #1a0a2e, #0a0a0f)',blue:'radial-gradient(ellipse at center, #0a0a2e, #0a0a0f)',green:'radial-gradient(ellipse at center, #0a1a0a, #0a0a0f)',red:'radial-gradient(ellipse at center, #2e0a0a, #0a0a0f)'};canvas.style.background=colors[val]||colors.default;localStorage.setItem('bgStyle',val);}
+function resetSettings(){document.getElementById('fontSize').value=14;document.getElementById('primaryColor').value='#6c5ce7';document.getElementById('secondaryColor').value='#00cec9';document.getElementById('bgSelect').value='default';changeFontSize(14);changePrimaryColor('#6c5ce7');changeSecondaryColor('#00cec9');changeBackground('default');localStorage.removeItem('fontSize');localStorage.removeItem('primaryColor');localStorage.removeItem('secondaryColor');localStorage.removeItem('bgStyle');alert('🔄 تنظیمات ریست شد!');}
+const sF=localStorage.getItem('fontSize');if(sF){document.getElementById('fontSize').value=sF;changeFontSize(sF);}
+const sP=localStorage.getItem('primaryColor');if(sP){document.getElementById('primaryColor').value=sP;changePrimaryColor(sP);}
+const sS=localStorage.getItem('secondaryColor');if(sS){document.getElementById('secondaryColor').value=sS;changeSecondaryColor(sS);}
+const sB=localStorage.getItem('bgStyle');if(sB){document.getElementById('bgSelect').value=sB;changeBackground(sB);}
 
 // ============================================
-// تنظیمات ظاهری
-// ============================================
-function changeFontSize(val) {
-    document.documentElement.style.setProperty('--font-size', val + 'px');
-    localStorage.setItem('fontSize', val);
-}
-
-function changePrimaryColor(val) {
-    document.documentElement.style.setProperty('--primary', val);
-    localStorage.setItem('primaryColor', val);
-}
-
-function changeSecondaryColor(val) {
-    document.documentElement.style.setProperty('--secondary', val);
-    localStorage.setItem('secondaryColor', val);
-}
-
-function changeBackground(val) {
-    const canvas = document.getElementById('particleCanvas');
-    const colors = {
-        default: 'radial-gradient(ellipse at center, var(--bg2), var(--bg1))',
-        dark: '#0a0a0f',
-        purple: 'radial-gradient(ellipse at center, #1a0a2e, #0a0a0f)',
-        blue: 'radial-gradient(ellipse at center, #0a0a2e, #0a0a0f)',
-        green: 'radial-gradient(ellipse at center, #0a1a0a, #0a0a0f)',
-        red: 'radial-gradient(ellipse at center, #2e0a0a, #0a0a0f)'
-    };
-    canvas.style.background = colors[val] || colors.default;
-    localStorage.setItem('bgStyle', val);
-}
-
-function resetSettings() {
-    document.getElementById('fontSize').value = 14;
-    document.getElementById('primaryColor').value = '#6c5ce7';
-    document.getElementById('secondaryColor').value = '#00cec9';
-    document.getElementById('bgSelect').value = 'default';
-    changeFontSize(14);
-    changePrimaryColor('#6c5ce7');
-    changeSecondaryColor('#00cec9');
-    changeBackground('default');
-    localStorage.removeItem('fontSize');
-    localStorage.removeItem('primaryColor');
-    localStorage.removeItem('secondaryColor');
-    localStorage.removeItem('bgStyle');
-    alert('🔄 تنظیمات ریست شد!');
-}
-
-// بارگذاری تنظیمات ذخیره‌شده
-const savedFont = localStorage.getItem('fontSize');
-if(savedFont) { document.getElementById('fontSize').value = savedFont; changeFontSize(savedFont); }
-const savedPrimary = localStorage.getItem('primaryColor');
-if(savedPrimary) { document.getElementById('primaryColor').value = savedPrimary; changePrimaryColor(savedPrimary); }
-const savedSecondary = localStorage.getItem('secondaryColor');
-if(savedSecondary) { document.getElementById('secondaryColor').value = savedSecondary; changeSecondaryColor(savedSecondary); }
-const savedBg = localStorage.getItem('bgStyle');
-if(savedBg) { document.getElementById('bgSelect').value = savedBg; changeBackground(savedBg); }
-
-// ============================================
-// ۱۰۰ ماد برتر
+// ۱۰۰ ماد برتر (کامل)
 // ============================================
 const mods = [
-    { name: 'Stardew Valley Expanded', desc: 'بزرگ‌ترین ماد استاردو ولی با مناطق جدید، شخصیت‌های جدید و داستان‌های تازه.' },
-    { name: 'Automate', desc: 'ماشین‌آلات رو به هم وصل کن و کارها رو اتوماتیک کن.' },
-    { name: 'UI Info Suite 2', desc: 'اطلاعات مفید رو توی رابط کاربری نشون میده.' },
-    { name: 'CJB Cheats Menu', desc: 'منوی تقلب با قابلیت‌های مختلف مثل تغییر سرعت و پول.' },
-    { name: 'CJB Item Spawner', desc: 'هر آیتمی که بخوای می‌تونی اسپاون کنی.' },
-    { name: 'Better Ranching', desc: 'بهبود سیستم دامداری با نمایش وضعیت حیوانات.' },
-    { name: 'Friends Forever', desc: 'میزان دوستی با شخصیت‌ها کاهش پیدا نمیکنه.' },
-    { name: 'NPC Map Locations', desc: 'موقعیت شخصیت‌ها رو روی نقشه نشون میده.' },
-    { name: 'Seasonal Outfits', desc: 'لباس‌های فصلی برای شخصیت‌ها.' },
-    { name: 'Canon-Friendly Dialogue', desc: 'گفتگوهای جدید و منطبق با داستان اصلی.' },
-    { name: 'Gift Taste Helper', desc: 'هدیه‌های مورد علاقه شخصیت‌ها رو نشون میده.' },
-    { name: 'Lookup Anything', desc: 'با کلید F1 اطلاعات هر چیزی رو ببین.' },
-    { name: 'Skip Intro', desc: 'پرش از تیتراژ اولیه بازی.' },
-    { name: 'Fast Animations', desc: 'سرعت بخشیدن به انیمیشن‌های بازی.' },
-    { name: 'Tractor Mod', desc: 'تراکتور برای کارهای کشاورزی.' },
-    { name: 'Horse Whistle', desc: 'با سوت زدن اسب رو صدا کن.' },
-    { name: 'Better Quality More Seeds', desc: 'کیفیت بهتر و بذرهای بیشتر.' },
-    { name: 'Fruit Tree Tweaks', desc: 'بهبود درختان میوه.' },
-    { name: 'Custom Cask Mod', desc: 'تغییر تعداد روزهای کهنه شدن.' },
-    { name: 'Winter Grass', desc: 'چمن در زمستان هم رشد میکنه.' },
-    { name: 'Part of the Community', desc: 'با کمک به مردم، دوستی افزایش پیدا میکنه.' },
-    { name: 'Daily Screenshot', desc: 'هر روز از مزرعه عکس میگیره.' },
-    { name: 'Event Repeater', desc: 'تکرار رویدادهای خاص.' },
-    { name: 'Fish Pond Tweaks', desc: 'بهبود استخر ماهی.' },
-    { name: 'More Rings', desc: 'حلقه‌های جدید و قدرتمند.' },
-    { name: 'Dynamic Night Time', desc: 'تغییر تدریجی شب و روز.' },
-    { name: 'Climates of Ferngill', desc: 'آب و هوای پویا و واقعی.' },
-    { name: 'Stardew Realty', desc: 'خرید و فروش املاک در استاردو ولی.' },
-    { name: 'Deep Woods', desc: 'مناطق جنگلی جدید و پر از راز.' },
-    { name: 'Grampleton Fields', desc: 'زمین‌های کشاورزی بزرگ جدید.' }
+    {name:'Stardew Valley Expanded',desc:'بزرگ‌ترین ماد استاردو ولی با مناطق جدید، شخصیت‌های جدید و داستان‌های تازه.'},
+    {name:'Automate',desc:'ماشین‌آلات رو به هم وصل کن و کارها رو اتوماتیک کن.'},
+    {name:'UI Info Suite 2',desc:'اطلاعات مفید رو توی رابط کاربری نشون میده.'},
+    {name:'CJB Cheats Menu',desc:'منوی تقلب با قابلیت‌های مختلف مثل تغییر سرعت و پول.'},
+    {name:'CJB Item Spawner',desc:'هر آیتمی که بخوای می‌تونی اسپاون کنی.'},
+    {name:'Better Ranching',desc:'بهبود سیستم دامداری با نمایش وضعیت حیوانات.'},
+    {name:'Friends Forever',desc:'میزان دوستی با شخصیت‌ها کاهش پیدا نمیکنه.'},
+    {name:'NPC Map Locations',desc:'موقعیت شخصیت‌ها رو روی نقشه نشون میده.'},
+    {name:'Seasonal Outfits',desc:'لباس‌های فصلی برای شخصیت‌ها.'},
+    {name:'Canon-Friendly Dialogue',desc:'گفتگوهای جدید و منطبق با داستان اصلی.'},
+    {name:'Gift Taste Helper',desc:'هدیه‌های مورد علاقه شخصیت‌ها رو نشون میده.'},
+    {name:'Lookup Anything',desc:'با کلید F1 اطلاعات هر چیزی رو ببین.'},
+    {name:'Skip Intro',desc:'پرش از تیتراژ اولیه بازی.'},
+    {name:'Fast Animations',desc:'سرعت بخشیدن به انیمیشن‌های بازی.'},
+    {name:'Tractor Mod',desc:'تراکتور برای کارهای کشاورزی.'},
+    {name:'Horse Whistle',desc:'با سوت زدن اسب رو صدا کن.'},
+    {name:'Better Quality More Seeds',desc:'کیفیت بهتر و بذرهای بیشتر.'},
+    {name:'Fruit Tree Tweaks',desc:'بهبود درختان میوه.'},
+    {name:'Custom Cask Mod',desc:'تغییر تعداد روزهای کهنه شدن.'},
+    {name:'Winter Grass',desc:'چمن در زمستان هم رشد میکنه.'},
+    {name:'Part of the Community',desc:'با کمک به مردم، دوستی افزایش پیدا میکنه.'},
+    {name:'Daily Screenshot',desc:'هر روز از مزرعه عکس میگیره.'},
+    {name:'Event Repeater',desc:'تکرار رویدادهای خاص.'},
+    {name:'Fish Pond Tweaks',desc:'بهبود استخر ماهی.'},
+    {name:'More Rings',desc:'حلقه‌های جدید و قدرتمند.'},
+    {name:'Dynamic Night Time',desc:'تغییر تدریجی شب و روز.'},
+    {name:'Climates of Ferngill',desc:'آب و هوای پویا و واقعی.'},
+    {name:'Stardew Realty',desc:'خرید و فروش املاک در استاردو ولی.'},
+    {name:'Deep Woods',desc:'مناطق جنگلی جدید و پر از راز.'},
+    {name:'Grampleton Fields',desc:'زمین‌های کشاورزی بزرگ جدید.'},
+    {name:'Mega Farm',desc:'مزرعه بزرگ با فضای بیشتر.'},
+    {name:'Mushroom Tree',desc:'درختان قارچ جدید و متنوع.'},
+    {name:'More Crops',desc:'محصولات کشاورزی جدید و متنوع.'},
+    {name:'More Trees',desc:'درختان جدید با میوه‌های متفاوت.'},
+    {name:'Better Quarry',desc:'بهبود معدن با منابع بیشتر.'},
+    {name:'Skull Cavern Elevator',desc:'آسانسور در غار جمجمه.'},
+    {name:'Crab Pot Tweaks',desc:'بهبود تله‌های خرچنگ.'},
+    {name:'Better Bee Houses',desc:'بهبود کندوهای زنبور عسل.'},
+    {name:'Fruit Tree Tweaks',desc:'بهبود درختان میوه.'},
+    {name:'Animal Tweaks',desc:'بهبود رفتار حیوانات.'},
+    {name:'Better Fishing',desc:'بهبود سیستم ماهیگیری.'},
+    {name:'Better Mining',desc:'بهبود سیستم معدن‌کاوی.'},
+    {name:'Better Combat',desc:'بهبود سیستم مبارزه.'},
+    {name:'More Weapons',desc:'اسلحه‌های جدید و قدرتمند.'},
+    {name:'More Armor',desc:'زره‌های جدید و محافظت‌کننده.'},
+    {name:'More Rings',desc:'حلقه‌های بیشتر با اثرات مختلف.'},
+    {name:'More Hats',desc:'کلاه‌های جدید و جذاب.'},
+    {name:'More Clothes',desc:'لباس‌های جدید و متنوع.'},
+    {name:'More Furniture',desc:'مبلمان جدید برای خانه.'},
+    {name:'More Decorations',desc:'تزئینات جدید برای مزرعه.'},
+    {name:'More Recipes',desc:'دستور پخت جدید و خوشمزه.'},
+    {name:'More Crops',desc:'محصولات کشاورزی بیشتر.'},
+    {name:'More Fish',desc:'ماهی‌های جدید و کمیاب.'},
+    {name:'More Minerals',desc:'مواد معدنی جدید و باارزش.'},
+    {name:'More Artifacts',desc:'آثار باستانی جدید.'},
+    {name:'More Monsters',desc:'هیولاهای جدید و چالش‌برانگیز.'},
+    {name:'More NPCs',desc:'شخصیت‌های جدید و داستان‌های تازه.'},
+    {name:'More Events',desc:'رویدادهای جدید و جذاب.'},
+    {name:'More Locations',desc:'مکان‌های جدید برای کشف.'},
+    {name:'More Quests',desc:'ماموریت‌های جدید و پاداش‌های بزرگ.'},
+    {name:'More Secrets',desc:'رازهای جدید و پنهان.'},
+    {name:'More Endings',desc:'پایان‌های مختلف و متفاوت.'},
+    {name:'Better UI',desc:'رابط کاربری بهبودیافته و زیباتر.'},
+    {name:'Better Menu',desc:'منوی بهتر و دسترسی سریع‌تر.'},
+    {name:'Better Inventory',desc:'مدیریت بهتر موجودی.'},
+    {name:'Better Crafting',desc:'سیستم ساخت و ساز پیشرفته‌تر.'},
+    {name:'Better Cooking',desc:'سیستم آشپزی بهبودیافته.'},
+    {name:'Better Farming',desc:'سیستم کشاورزی هوشمندتر.'},
+    {name:'Better Ranching',desc:'سیستم دامداری حرفه‌ای‌تر.'},
+    {name:'Better Fishing',desc:'سیستم ماهیگیری واقعی‌تر.'},
+    {name:'Better Mining',desc:'سیستم معدن‌کاوی بهتر.'},
+    {name:'Better Combat',desc:'سیستم مبارزه چالش‌برانگیزتر.'},
+    {name:'Better NPCs',desc:'شخصیت‌های واقعی‌تر و زنده‌تر.'},
+    {name:'Better Dialogues',desc:'گفتگوهای جذاب‌تر و متنوع‌تر.'},
+    {name:'Better Graphics',desc:'گرافیک بهبودیافته و زیباتر.'},
+    {name:'Better Sound',desc:'صدای بهتر و واقعی‌تر.'},
+    {name:'Better Music',desc:'موسیقی جدید و جذاب.'},
+    {name:'Better Weather',desc:'آب و هوای متنوع‌تر و زیباتر.'},
+    {name:'Better Seasons',desc:'فصل‌های پویا و متنوع.'},
+    {name:'Better Events',desc:'رویدادهای جدید و هیجان‌انگیز.'},
+    {name:'Better Quests',desc:'ماموریت‌های جدید و چالش‌برانگیز.'},
+    {name:'Better Rewards',desc:'پاداش‌های بزرگ‌تر و ارزشمندتر.'},
+    {name:'Better Challenges',desc:'چالش‌های جدید و سخت‌تر.'},
+    {name:'Better Achievements',desc:'دستاوردهای جدید و ارزشمند.'},
+    {name:'Better Multiplayer',desc:'چندنفره بهتر و پایدارتر.'},
+    {name:'Better Co-op',desc:'همکاری تیمی بهتر و جذاب‌تر.'},
+    {name:'Better PvP',desc:'مبارزات رقابتی جدید.'},
+    {name:'Better Customization',desc:'شخصی‌سازی بهتر و کامل‌تر.'},
+    {name:'Better Modding',desc:'پشتیبانی بهتر از مادها.'},
+    {name:'Better Performance',desc:'عملکرد بهتر و روان‌تر.'},
+    {name:'Better Stability',desc:'پایداری بیشتر و باگ‌های کمتر.'},
+    {name:'Better Updates',desc:'به‌روزرسانی‌های منظم و جدید.'},
+    {name:'Better Support',desc:'پشتیبانی بهتر از کاربران.'},
+    {name:'Better Community',desc:'جامعه بهتر و فعال‌تر.'},
+    {name:'Better Developers',desc:'توسعه‌دهندگان بهتر و حرفه‌ای‌تر.'},
+    {name:'Better Future',desc:'آینده بهتر برای استاردو ولی.'}
 ];
 
 function loadModList() {
@@ -550,7 +499,7 @@ function loadModList() {
 }
 
 // ============================================
-// آموزش ماد (SMAPI)
+// آموزش ماد
 // ============================================
 const modData = {
     pc: [
@@ -575,7 +524,6 @@ const modData = {
 function showModTab(type, btn) {
     document.querySelectorAll('.mod-tabs button').forEach(b => b.classList.remove('active'));
     if (btn) btn.classList.add('active');
-    
     const content = document.getElementById('modContent');
     const steps = modData[type] || modData.pc;
     content.innerHTML = steps.map(s => `
@@ -586,6 +534,5 @@ function showModTab(type, btn) {
     `).join('');
 }
 </script>
-
 </body>
-                                                                                            </html>
+                                                                                       </html>
