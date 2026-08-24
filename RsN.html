@@ -9,64 +9,50 @@
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
         :root{--primary:#6c5ce7;--secondary:#00cec9;--bg1:#0a0a0f;--bg2:#12121f;--text:#fff;--text-color:#fff;--card-bg:rgba(255,255,255,0.03);--font-size:14px}
         body{font-family:'Vazirmatn',sans-serif;background:var(--bg1);color:var(--text-color);height:100vh;overflow:hidden;font-size:var(--font-size)}
-        
         #particleCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;background:radial-gradient(ellipse at center,var(--bg2),var(--bg1))}
-        
         .page{display:none;flex-direction:column;height:100vh;padding:16px;position:relative;z-index:1;overflow-y:auto}
         .page.active{display:flex}
-        
         .header{text-align:center;padding:12px 0 6px}
         .header h1{font-size:28px;font-weight:900;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
         .header p{font-size:12px;color:rgba(255,255,255,0.2)}
-        
         .back-btn{background:0;border:0;color:rgba(255,255,255,0.3);font-size:16px;cursor:pointer;align-self:flex-start;margin-bottom:6px}
         .page-title{font-size:20px;font-weight:700;text-align:center;margin-bottom:10px}
-        
         .menu-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;flex:1;align-content:center}
         .menu-card{background:var(--card-bg);backdrop-filter:blur(20px);border-radius:18px;border:1px solid rgba(108,92,231,0.08);padding:20px 12px;text-align:center;cursor:pointer;transition:0.3s;min-height:85px;display:flex;flex-direction:column;align-items:center;justify-content:center}
         .menu-card:active{transform:scale(0.95)}
         .menu-card .icon{font-size:28px;margin-bottom:2px}
         .menu-card .title{font-size:13px;font-weight:700}
-        
         .btn{width:100%;padding:10px;border:0;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;transition:0.3s;margin-top:4px}
         .btn-primary{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#0a0a0f}
         .btn-success{background:linear-gradient(135deg,#00b894,#00cec9);color:#0a0a0f}
         .btn-danger{background:linear-gradient(135deg,#d63031,#f5576c);color:#fff}
         .btn:active{transform:scale(0.95)}
-        
         .result-box{background:rgba(255,255,255,0.02);padding:10px;border-radius:8px;margin:8px 0;min-height:30px;border:1px solid rgba(255,255,255,0.05);font-size:13px}
-        
         .chat-box{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:4px;padding:6px 0}
         .msg{max-width:85%;padding:6px 12px;border-radius:12px;font-size:13px;line-height:1.5;word-wrap:break-word}
         .msg.user{align-self:flex-end;background:#2a2a3e;border-bottom-right-radius:4px}
         .msg.bot{align-self:flex-start;background:#1a1a2e;border-bottom-left-radius:4px;color:var(--primary)}
-        
         .input-row{display:flex;gap:6px;margin-top:4px}
         .input-row input{flex:1;padding:8px 12px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:#fff;font-size:13px;border:1px solid rgba(255,255,255,0.05)}
         .input-row input:focus{outline:1px solid var(--primary)}
         .input-row button{padding:8px 14px;border:0;border-radius:8px;background:linear-gradient(135deg,var(--primary),var(--secondary));color:#0a0a0f;font-weight:700;cursor:pointer}
-        
         .row{display:flex;gap:8px;flex-wrap:wrap}
         .row .col{flex:1;min-width:120px}
         .dice-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
         .dice-grid input{width:100%}
         .plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
         .plan-grid input{width:100%}
-        
         ::-webkit-scrollbar{width:3px}
         ::-webkit-scrollbar-thumb{background:rgba(108,92,231,0.3);border-radius:10px}
-        
         .mod-tabs{display:flex;gap:6px;margin-bottom:10px}
         .mod-tabs button{flex:1;padding:8px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:rgba(255,255,255,0.3);cursor:pointer;font-weight:700;font-size:13px;transition:0.3s;font-family:'Vazirmatn',sans-serif}
         .mod-tabs button.active{background:var(--primary);color:#0a0a0f}
-        
         .hamster-area{text-align:center;padding:20px 0}
         .hamster{font-size:80px;cursor:pointer;transition:0.1s;user-select:none;display:inline-block}
         .hamster:active{transform:scale(0.8)}
         .hamster.coin{animation:coinPop 0.3s ease}
         @keyframes coinPop{0%{transform:scale(1)}50%{transform:scale(1.3)}100%{transform:scale(1)}}
         .coin-counter{font-size:24px;font-weight:700;color:#fdcb6e;margin:8px 0}
-        
         .slot-machine{background:rgba(255,255,255,0.03);border-radius:16px;padding:16px;text-align:center;border:1px solid rgba(108,92,231,0.1)}
         .slot-reels{display:flex;justify-content:center;gap:20px;font-size:48px;margin:12px 0;padding:10px;background:rgba(0,0,0,0.2);border-radius:12px}
         .slot-reels span{min-width:60px;text-align:center;animation:slotSpin 0.5s ease}
@@ -74,27 +60,22 @@
         .lever{font-size:40px;cursor:pointer;transition:0.2s;display:inline-block;margin:8px 0}
         .lever:active{transform:rotate(30deg)}
         .slot-result{font-size:18px;font-weight:700;margin:8px 0;min-height:30px}
-        
         .settings-group{margin:10px 0}
         .settings-group label{display:block;color:rgba(255,255,255,0.3);font-size:12px;margin-bottom:4px}
         .settings-group input[type="range"]{width:100%;accent-color:var(--primary)}
         .settings-group input[type="color"]{width:100%;height:40px;border:0;border-radius:8px;background:transparent;cursor:pointer}
         .settings-group select{width:100%;padding:8px;border:0;border-radius:8px;background:rgba(255,255,255,0.03);color:#fff;font-size:14px}
         .settings-group select option{background:#1a1a2e}
-        
         .mod-list{display:flex;flex-direction:column;gap:6px;padding:6px 0;flex:1;overflow-y:auto}
         .mod-item{background:rgba(255,255,255,0.02);border-radius:10px;padding:10px 14px;border:1px solid rgba(255,255,255,0.05)}
         .mod-item .m-name{color:var(--primary);font-weight:700;font-size:14px}
         .mod-item .m-desc{color:rgba(255,255,255,0.3);font-size:12px;margin-top:2px}
-        
         .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 0;flex:1;overflow-y:auto}
         .video-card{background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,0.05);text-align:center}
         .video-card iframe{width:100%;height:160px;border-radius:8px;border:0}
         .video-card .v-title{font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-        
         .support-box{background:linear-gradient(135deg,#1a0a2e,#0a0a0f);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--primary)}
         .support-box a{display:inline-block;background:var(--primary);color:#0a0a0f;padding:8px 20px;border-radius:8px;font-weight:700;text-decoration:none;margin:6px 0}
-        
         @media(max-width:480px){.menu-grid{gap:8px}.menu-card{min-height:70px;padding:12px}.slot-reels{font-size:36px;gap:12px}.video-grid{grid-template-columns:1fr}}
     </style>
 </head>
@@ -123,22 +104,143 @@
     </div>
 </div>
 
-<!-- ===== صفحات قدیمی (دایس، پلن، گال، حمایت، بات، شانس) ===== -->
-<!-- (همون کدهای قبلی) -->
+<!-- ===== چالش من ===== -->
+<div class="page" id="page-dice">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎲 چالش من</div>
+    <div class="dice-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚀ 1</label><input type="text" id="dice1" placeholder="کار برای 1"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚁ 2</label><input type="text" id="dice2" placeholder="کار برای 2"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚂ 3</label><input type="text" id="dice3" placeholder="کار برای 3"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚃ 4</label><input type="text" id="dice4" placeholder="کار برای 4"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚄ 5</label><input type="text" id="dice5" placeholder="کار برای 5"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚅ 6</label><input type="text" id="dice6" placeholder="کار برای 6"></div>
+    </div>
+    <button class="btn btn-primary" onclick="rollDice()">🎲 تاس بزن</button>
+    <div class="result-box" id="diceResult">نتیجه تاس اینجا نمایش داده میشه...</div>
+</div>
 
-<!-- ============================================ -->
-<!-- ===== آموزش کده (با ویدیوها) ===== -->
-<!-- ============================================ -->
+<!-- ===== کیومرث پلن ===== -->
+<div class="page" id="page-plan">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">📅 کیومرث پلن</div>
+    <div class="plan-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">شنبه</label><input type="text" id="plan0" placeholder="برنامه شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">یکشنبه</label><input type="text" id="plan1" placeholder="برنامه یکشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">دوشنبه</label><input type="text" id="plan2" placeholder="برنامه دوشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">سه‌شنبه</label><input type="text" id="plan3" placeholder="برنامه سه‌شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">چهارشنبه</label><input type="text" id="plan4" placeholder="برنامه چهارشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">پنجشنبه</label><input type="text" id="plan5" placeholder="برنامه پنجشنبه"></div>
+        <div style="grid-column:span 2;"><label style="color:rgba(255,255,255,0.3);font-size:12px;">جمعه</label><input type="text" id="plan6" placeholder="برنامه جمعه"></div>
+    </div>
+    <button class="btn btn-success" onclick="saveWeeklyPlan()">💾 ذخیره پلن</button>
+    <button class="btn btn-danger" onclick="resetWeeklyPlan()">🔄 ریست پلن</button>
+    <div class="result-box" id="planResult">پلن هفتگی اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== هدف من ===== -->
+<div class="page" id="page-goal">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎯 هدف من</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">💰 پول فعلی</label><input type="number" id="currentMoney" placeholder="۰"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">🎯 پول هدف</label><input type="number" id="targetMoney" placeholder="۰"></div>
+    </div>
+    <button class="btn btn-success" onclick="calcGoal()">📊 محاسبه</button>
+    <div class="result-box" id="goalResult">نتیجه محاسبه اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== حمایت از RSN ===== -->
+<div class="page" id="page-support">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">💪 حمایت از RSN</div>
+    <div class="support-box">
+        <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم خوب RSN، جوین بشین:</p>
+        <a href="https://rubika.ir/ONE_RSN" target="_blank">📱 جوین کانال RSN در روبیکا</a>
+        <p style="color:rgba(255,255,255,0.1);font-size:11px;margin-top:8px;">با جوین شدن، به ما انرژی میدید! ❤️</p>
+    </div>
+</div>
+
+<!-- ===== پخمه بات ===== -->
+<div class="page" id="page-bot">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🤖 پخمه بات</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">گفتن</label><input type="text" id="learnQuestion" placeholder="مثلاً: سلام"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">پاسخ</label><input type="text" id="learnAnswer" placeholder="مثلاً: سلام! خوبی؟"></div>
+    </div>
+    <button class="btn btn-success" onclick="learnBot()">🧠 یاد بده</button>
+    <button class="btn btn-danger" onclick="resetBot()">🔄 ریست بات</button>
+    <div class="chat-box" id="chatBox"><div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div></div>
+    <div class="input-row">
+        <input type="text" id="chatInput" placeholder="با پخمه بات صحبت کن...">
+        <button onclick="chatWithBot()">➤</button>
+    </div>
+    <div class="result-box" id="botStatus">پخمه بات آماده است! بهش یاد بده.</div>
+</div>
+
+<!-- ===== شانس امروز ===== -->
+<div class="page" id="page-luck">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🍀 شانس امروز</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">هر روز فقط یک بار میتونی شانس خودت رو امتحان کنی!</p>
+    <button class="btn btn-primary" onclick="getLuck()">🍀 شانس من</button>
+    <div class="result-box" id="luckResult">روی دکمه بزن تا شانس امروزتو ببینی...</div>
+</div>
+
+<!-- ===== سرگرمی ===== -->
+<div class="page" id="page-fun">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🐹 سرگرمی</div>
+    <div class="hamster-area">
+        <div style="font-size:14px;color:rgba(255,255,255,0.3);">💰 سکه‌ها: <span id="coinCount" class="coin-counter">۰</span></div>
+        <div class="hamster" id="hamster" onclick="tapHamster()">🐹</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.2);">👆 روی همستر بزن تا سکه بگیری!</div>
+    </div>
+    <div class="slot-machine">
+        <div style="font-size:16px;font-weight:700;color:var(--primary);">🎰 گردونه شانس</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.2);">هر بار ۱۰ سکه</div>
+        <div class="slot-reels" id="slotReels"><span id="slot1">❓</span><span id="slot2">❓</span><span id="slot3">❓</span></div>
+        <div class="lever" onclick="pullLever()">🕹️</div>
+        <div class="slot-result" id="slotResult">اهرم رو بکش!</div>
+    </div>
+</div>
+
+<!-- ===== تنظیمات ظاهری ===== -->
+<div class="page" id="page-settings">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">⚙️ تنظیمات ظاهری</div>
+    <div class="settings-group"><label>📏 اندازه متن</label><input type="range" id="fontSize" min="12" max="20" value="14" oninput="changeFontSize(this.value)"></div>
+    <div class="settings-group"><label>🎨 رنگ اصلی</label><input type="color" id="primaryColor" value="#6c5ce7" oninput="changePrimaryColor(this.value)"></div>
+    <div class="settings-group"><label>🎨 رنگ ثانویه</label><input type="color" id="secondaryColor" value="#00cec9" oninput="changeSecondaryColor(this.value)"></div>
+    <div class="settings-group"><label>🌌 پس‌زمینه</label><select id="bgSelect" onchange="changeBackground(this.value)"><option value="default">پیش‌فرض</option><option value="dark">تاریک</option><option value="purple">بنفش</option><option value="blue">آبی</option><option value="green">سبز</option><option value="red">قرمز</option></select></div>
+    <button class="btn btn-success" onclick="resetSettings()">🔄 ریست تنظیمات</button>
+</div>
+
+<!-- ===== ۱۰۰ ماد برتر ===== -->
+<div class="page" id="page-modlist">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">📋 ۱۰۰ ماد برتر</div>
+    <div class="mod-list" id="modList"></div>
+</div>
+
+<!-- ===== آموزش کده ===== -->
 <div class="page" id="page-code">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
     <div class="page-title">📚 آموزش کده</div>
     <div class="video-grid" id="videoGrid"></div>
 </div>
 
-<!-- ============================================ -->
-<!-- ===== صفحات جدید (سرگرمی، تنظیمات، ۱۰۰ ماد برتر، آموزش ماد) ===== -->
-<!-- ============================================ -->
-<!-- (همون کدهای قبلی) -->
+<!-- ===== آموزش نصب ماد ===== -->
+<div class="page" id="page-mod">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">⚡ آموزش نصب ماد</div>
+    <div class="mod-tabs">
+        <button class="active" onclick="showModTab('pc',this)">💻 پیسی</button>
+        <button onclick="showModTab('android',this)">📱 اندروید</button>
+    </div>
+    <div id="modContent" style="flex:1;overflow-y:auto;padding:4px 0;"></div>
+</div>
 
 <script>
 // ============================================
@@ -166,55 +268,7 @@ function openPage(id) {
 }
 
 // ============================================
-// ویدیوهای آموزش کده
-// ============================================
-const videos = [
-    { title: 'انواع فارم در استاردو ولی(نکات مثبت و منفی)', hash: 'i86vqt7' },
-    { title: 'استاردو ولی اکسپندد با نیما - قسمت 2', hash: 'b652b6k' },
-    { title: 'استاردو ولی اکسپندد با نیما - قسمت 1', hash: '8FuGU' },
-    { title: 'مکان همه استاردراپ ها در استاردو ولی - Stardrop Locations', hash: 'f2107pa' },
-    { title: 'نصب بهترین ماد استاردو ولی - Stardew Valley Expanded', hash: 'j13kvco' },
-    { title: 'نکاتی که بعد از صد ساعت استاردو میفهمی! Stardew Valley Tips 2', hash: 'a777n06' },
-    { title: 'نکاتی که باید درباره استاردو ولی بدونی! - Stardew Valley Tips', hash: 'c40el3y' },
-    { title: 'بهترین ماد های گرافیکی استاردو ولی - Best Stardew Valley Visual Mods', hash: 'e508n80' },
-    { title: 'آموزش تغییر ظاهر و اسم در استاردو ولی | Stardew valley', hash: 'yri4v5m' },
-    { title: 'آموزش رفتن و همه چیز راجب جشن صحرا استاردو ولی | Desert Festival Stardew valley', hash: 'bshz031' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 11', hash: 'pgaw88r' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 12', hash: 'dva0hhs' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 13', hash: 'lodfft0' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 14', hash: 'uuxd95n' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 15', hash: 'voc0y2o' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 16', hash: 'mxlvj66' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 17', hash: 'gtd4n8c' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 18', hash: 'bct96h3' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 19', hash: 'ykxpg26' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 20', hash: 'edcn896' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 21', hash: 'qvx000i' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 22', hash: 'rvp47k4' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 23', hash: 'zxf4145' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 24', hash: 'edejup3' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 25', hash: 'pjsyd6q' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 26', hash: 'vwab48e' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 27', hash: 'cnx122z' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 28', hash: 'vukrrae' }
-];
-
-function loadVideos() {
-    const grid = document.getElementById('videoGrid');
-    grid.innerHTML = '';
-    videos.forEach(v => {
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        card.innerHTML = `
-            <iframe src="https://www.aparat.com/video/video/embed/videohash/${v.hash}" allowfullscreen></iframe>
-            <div class="v-title">${v.title}</div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-// ============================================
-// توابع قدیمی (دایس، پلن، گال، بات، شانس)
+// توابع صفحات
 // ============================================
 function rollDice() {
     const num=Math.floor(Math.random()*6)+1;
@@ -317,6 +371,50 @@ const sS=localStorage.getItem('secondaryColor');if(sS){document.getElementById('
 const sB=localStorage.getItem('bgStyle');if(sB){document.getElementById('bgSelect').value=sB;changeBackground(sB);}
 
 // ============================================
+// ویدیوهای آموزش کده
+// ============================================
+const videos = [
+    { title: 'انواع فارم در استاردو ولی(نکات مثبت و منفی)', hash: 'i86vqt7' },
+    { title: 'استاردو ولی اکسپندد با نیما - قسمت 2', hash: 'b652b6k' },
+    { title: 'استاردو ولی اکسپندد با نیما - قسمت 1', hash: '8FuGU' },
+    { title: 'مکان همه استاردراپ ها در استاردو ولی - Stardrop Locations', hash: 'f2107pa' },
+    { title: 'نصب بهترین ماد استاردو ولی - Stardew Valley Expanded', hash: 'j13kvco' },
+    { title: 'نکاتی که بعد از صد ساعت استاردو میفهمی! Stardew Valley Tips 2', hash: 'a777n06' },
+    { title: 'نکاتی که باید درباره استاردو ولی بدونی! - Stardew Valley Tips', hash: 'c40el3y' },
+    { title: 'بهترین ماد های گرافیکی استاردو ولی - Best Stardew Valley Visual Mods', hash: 'e508n80' },
+    { title: 'آموزش تغییر ظاهر و اسم در استاردو ولی | Stardew valley', hash: 'yri4v5m' },
+    { title: 'آموزش رفتن و همه چیز راجب جشن صحرا استاردو ولی | Desert Festival Stardew valley', hash: 'bshz031' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 11', hash: 'pgaw88r' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 12', hash: 'dva0hhs' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 13', hash: 'lodfft0' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 14', hash: 'uuxd95n' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 15', hash: 'voc0y2o' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 16', hash: 'mxlvj66' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 17', hash: 'gtd4n8c' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 18', hash: 'bct96h3' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 19', hash: 'ykxpg26' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 20', hash: 'edcn896' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 21', hash: 'qvx000i' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 22', hash: 'rvp47k4' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 23', hash: 'zxf4145' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 24', hash: 'edejup3' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 25', hash: 'pjsyd6q' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 26', hash: 'vwab48e' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 27', hash: 'cnx122z' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 28', hash: 'vukrrae' }
+];
+function loadVideos(){
+    const grid=document.getElementById('videoGrid');
+    grid.innerHTML='';
+    videos.forEach(v=>{
+        const card=document.createElement('div');
+        card.className='video-card';
+        card.innerHTML=`<iframe src="https://www.aparat.com/video/video/embed/videohash/${v.hash}" allowfullscreen></iframe><div class="v-title">${v.title}</div>`;
+        grid.appendChild(card);
+    });
+}
+
+// ============================================
 // ۱۰۰ ماد برتر
 // ============================================
 const mods = [
@@ -417,14 +515,13 @@ const mods = [
     {name:'Better Developers',desc:'توسعه‌دهندگان بهتر و حرفه‌ای‌تر.'},
     {name:'Better Future',desc:'آینده بهتر برای استاردو ولی.'}
 ];
-
-function loadModList() {
-    const list = document.getElementById('modList');
-    list.innerHTML = '';
-    mods.forEach(m => {
-        const div = document.createElement('div');
-        div.className = 'mod-item';
-        div.innerHTML = `<div class="m-name">${m.name}</div><div class="m-desc">${m.desc}</div>`;
+function loadModList(){
+    const list=document.getElementById('modList');
+    list.innerHTML='';
+    mods.forEach(m=>{
+        const div=document.createElement('div');
+        div.className='mod-item';
+        div.innerHTML=`<div class="m-name">${m.name}</div><div class="m-desc">${m.desc}</div>`;
         list.appendChild(div);
     });
 }
@@ -451,13 +548,12 @@ const modData = {
         { step: '⚠️ نکات مهم', text: '• <span style="color:#fdcb6e;">حتماً از پوشه Mods و فایل Save خودت بکاپ بگیر.</span><br>• لانچر 1.1.4 با SMAPI 4.2 و 4.3.2.5 کار میکنه.<br>• <span style="color:#fdcb6e;">با دستگاه‌های 32 بیتی سازگار نیست.</span><br>• فقط با نسخه رسمی بازی از پلی استور کار میکنه.' }
     ]
 };
-
-function showModTab(type, btn) {
-    document.querySelectorAll('.mod-tabs button').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    const content = document.getElementById('modContent');
-    const steps = modData[type] || modData.pc;
-    content.innerHTML = steps.map(s => `
+function showModTab(type, btn){
+    document.querySelectorAll('.mod-tabs button').forEach(b=>b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    const content=document.getElementById('modContent');
+    const steps=modData[type]||modData.pc;
+    content.innerHTML=steps.map(s=>`
         <div style="background:rgba(255,255,255,0.02);border-radius:10px;padding:12px;margin-bottom:8px;border-right:3px solid #6c5ce7;">
             <div style="color:#6c5ce7;font-weight:700;font-size:13px;">مرحله ${s.step}</div>
             <div style="color:rgba(255,255,255,0.5);font-size:13px;margin-top:2px;">${s.text}</div>
