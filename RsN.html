@@ -28,21 +28,16 @@
         .menu-card .title{font-size:13px;font-weight:700}
         
         .video-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:6px 0;flex:1;overflow-y:auto}
-        .video-card{background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,0.05);cursor:pointer;transition:0.3s;text-align:center}
-        .video-card:active{transform:scale(0.95)}
+        .video-card{background:rgba(255,255,255,0.03);border-radius:12px;padding:10px;border:1px solid rgba(255,255,255,0.05);text-align:center}
         .video-card iframe{width:100%;height:160px;border-radius:8px;border:0}
         .video-card .v-title{font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-        
-        .music-list{display:flex;flex-direction:column;gap:6px;padding:6px 0;flex:1;overflow-y:auto}
-        .music-item{background:rgba(255,255,255,0.03);border-radius:10px;padding:10px 14px;border:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
-        .music-item .name{font-size:13px;color:rgba(255,255,255,0.6)}
-        .music-item audio{width:140px;height:30px;border-radius:6px;background:#1a1a2e}
-        .music-item audio::-webkit-media-controls-panel{background:#1a1a2e}
         
         .mod-step{background:rgba(255,255,255,0.02);border-radius:10px;padding:12px;margin-bottom:8px;border-right:3px solid #6c5ce7}
         .mod-step .step-num{color:#6c5ce7;font-weight:700;font-size:13px}
         .mod-step .step-text{color:rgba(255,255,255,0.5);font-size:13px;margin-top:2px}
         .mod-step a{color:#00cec9;text-decoration:none}
+        .mod-step .highlight{background:rgba(108,92,231,0.1);padding:2px 6px;border-radius:4px;color:#6c5ce7}
+        .mod-step .warning{color:#fdcb6e}
         
         .support-box{background:linear-gradient(135deg,#1a0a2e,#0a0a0f);border-radius:12px;padding:16px;text-align:center;border:1px solid #6c5ce7}
         .support-box a{display:inline-block;background:#6c5ce7;color:#0a0a0f;padding:8px 20px;border-radius:8px;font-weight:700;text-decoration:none;margin:6px 0}
@@ -86,9 +81,7 @@
 
 <canvas id="particleCanvas"></canvas>
 
-<!-- ============================================ -->
 <!-- ===== صفحه اصلی ===== -->
-<!-- ============================================ -->
 <div class="page active" id="page-main">
     <div class="header">
         <h1>🎲 استاردو ولی</h1>
@@ -102,13 +95,97 @@
         <div class="menu-card" onclick="openPage('bot')"><span class="icon">🤖</span><span class="title">پخمه بات</span></div>
         <div class="menu-card" onclick="openPage('luck')"><span class="icon">🍀</span><span class="title">شانس امروز</span></div>
         <div class="menu-card" onclick="openPage('code')"><span class="icon">📚</span><span class="title">آموزش کده</span></div>
-        <div class="menu-card" onclick="openPage('music')"><span class="icon">🎵</span><span class="title">موزیک استاردو ولی</span></div>
         <div class="menu-card" onclick="openPage('mod')"><span class="icon">⚡</span><span class="title">ماد</span></div>
     </div>
 </div>
 
-<!-- ===== صفحات قدیمی (دایس، پلن، گال، حمایت، بات، شانس) ===== -->
-<!-- (همان کدهای قبلی بدون تغییر) -->
+<!-- ===== صفحه چالش من ===== -->
+<div class="page" id="page-dice">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎲 چالش من</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">برای هر عدد تاس یه کار مشخص کن</p>
+    <div class="dice-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚀ 1</label><input type="text" id="dice1" placeholder="کار برای 1"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚁ 2</label><input type="text" id="dice2" placeholder="کار برای 2"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚂ 3</label><input type="text" id="dice3" placeholder="کار برای 3"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚃ 4</label><input type="text" id="dice4" placeholder="کار برای 4"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚄ 5</label><input type="text" id="dice5" placeholder="کار برای 5"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">⚅ 6</label><input type="text" id="dice6" placeholder="کار برای 6"></div>
+    </div>
+    <button class="btn btn-primary" onclick="rollDice()">🎲 تاس بزن</button>
+    <div class="result-box" id="diceResult">نتیجه تاس اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== صفحه کیومرث پلن ===== -->
+<div class="page" id="page-plan">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">📅 کیومرث پلن</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">برای هر روز هفته یه برنامه مشخص کن</p>
+    <div class="plan-grid">
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">شنبه</label><input type="text" id="plan0" placeholder="برنامه شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">یکشنبه</label><input type="text" id="plan1" placeholder="برنامه یکشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">دوشنبه</label><input type="text" id="plan2" placeholder="برنامه دوشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">سه‌شنبه</label><input type="text" id="plan3" placeholder="برنامه سه‌شنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">چهارشنبه</label><input type="text" id="plan4" placeholder="برنامه چهارشنبه"></div>
+        <div><label style="color:rgba(255,255,255,0.3);font-size:12px;">پنجشنبه</label><input type="text" id="plan5" placeholder="برنامه پنجشنبه"></div>
+        <div style="grid-column:span 2;"><label style="color:rgba(255,255,255,0.3);font-size:12px;">جمعه</label><input type="text" id="plan6" placeholder="برنامه جمعه"></div>
+    </div>
+    <button class="btn btn-success" onclick="saveWeeklyPlan()">💾 ذخیره پلن</button>
+    <button class="btn btn-danger" onclick="resetWeeklyPlan()">🔄 ریست پلن</button>
+    <div class="result-box" id="planResult">پلن هفتگی اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== صفحه هدف من ===== -->
+<div class="page" id="page-goal">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🎯 هدف من</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">💰 پول فعلی</label><input type="number" id="currentMoney" placeholder="۰"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">🎯 پول هدف</label><input type="number" id="targetMoney" placeholder="۰"></div>
+    </div>
+    <button class="btn btn-success" onclick="calcGoal()">📊 محاسبه</button>
+    <div class="result-box" id="goalResult">نتیجه محاسبه اینجا نمایش داده میشه...</div>
+</div>
+
+<!-- ===== صفحه حمایت از RSN ===== -->
+<div class="page" id="page-support">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">💪 حمایت از RSN</div>
+    <div class="support-box">
+        <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم خوب RSN، جوین بشین:</p>
+        <a href="https://rubika.ir/ONE_RSN" target="_blank">📱 جوین کانال RSN در روبیکا</a>
+        <p style="color:rgba(255,255,255,0.1);font-size:11px;margin-top:8px;">با جوین شدن، به ما انرژی میدید! ❤️</p>
+    </div>
+</div>
+
+<!-- ===== صفحه پخمه بات ===== -->
+<div class="page" id="page-bot">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🤖 پخمه بات</div>
+    <div class="row">
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">گفتن</label><input type="text" id="learnQuestion" placeholder="مثلاً: سلام"></div>
+        <div class="col"><label style="color:rgba(255,255,255,0.3);font-size:12px;">پاسخ</label><input type="text" id="learnAnswer" placeholder="مثلاً: سلام! خوبی؟"></div>
+    </div>
+    <button class="btn btn-success" onclick="learnBot()">🧠 یاد بده</button>
+    <button class="btn btn-danger" onclick="resetBot()">🔄 ریست بات</button>
+    <div class="chat-box" id="chatBox">
+        <div class="msg bot">🤖 سلام! من پخمه بات هستم. بهم یاد بده چطور جواب بدم.</div>
+    </div>
+    <div class="input-row">
+        <input type="text" id="chatInput" placeholder="با پخمه بات صحبت کن...">
+        <button onclick="chatWithBot()">➤</button>
+    </div>
+    <div class="result-box" id="botStatus">پخمه بات آماده است! بهش یاد بده.</div>
+</div>
+
+<!-- ===== صفحه شانس امروز ===== -->
+<div class="page" id="page-luck">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🍀 شانس امروز</div>
+    <p style="color:rgba(255,255,255,0.2);font-size:13px;text-align:center;">هر روز فقط یک بار میتونی شانس خودت رو امتحان کنی!</p>
+    <button class="btn btn-primary" onclick="getLuck()">🍀 شانس من</button>
+    <div class="result-box" id="luckResult">روی دکمه بزن تا شانس امروزتو ببینی...</div>
+</div>
 
 <!-- ============================================ -->
 <!-- ===== صفحه آموزش کده ===== -->
@@ -120,16 +197,7 @@
 </div>
 
 <!-- ============================================ -->
-<!-- ===== صفحه موزیک استاردو ولی ===== -->
-<!-- ============================================ -->
-<div class="page" id="page-music">
-    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
-    <div class="page-title">🎵 موزیک استاردو ولی</div>
-    <div class="music-list" id="musicList"></div>
-</div>
-
-<!-- ============================================ -->
-<!-- ===== صفحه ماد ===== -->
+<!-- ===== صفحه ماد (SMAPI Launcher) ===== -->
 <!-- ============================================ -->
 <div class="page" id="page-mod">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
@@ -196,124 +264,11 @@ function openPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + id).classList.add('active');
     if (id === 'code') loadVideos();
-    if (id === 'music') loadMusic();
     if (id === 'mod') showModTab('pc');
 }
 
 // ============================================
-// ویدیوهای آموزش کده (با iframe آپارات)
-// ============================================
-const videos = [
-    { title: 'انواع فارم در استاردو ولی(نکات مثبت و منفی)', url: 'https://www.aparat.com/v/i86vqt7' },
-    { title: 'استاردو ولی اکسپندد با نیما - قسمت 2', url: 'https://www.aparat.com/v/b652b6k' },
-    { title: 'استاردو ولی اکسپندد با نیما - قسمت 1', url: 'https://www.aparat.com/v/8FuGU' },
-    { title: 'مکان همه استاردراپ ها در استاردو ولی - Stardrop Locations', url: 'https://www.aparat.com/v/f2107pa' },
-    { title: 'نصب بهترین ماد استاردو ولی - Stardew Valley Expanded', url: 'https://www.aparat.com/v/j13kvco' },
-    { title: 'نکاتی که بعد از صد ساعت استاردو میفهمی! Stardew Valley Tips 2', url: 'https://www.aparat.com/v/a777n06' },
-    { title: 'نکاتی که باید درباره استاردو ولی بدونی! - Stardew Valley Tips', url: 'https://www.aparat.com/v/c40el3y' },
-    { title: 'بهترین ماد های گرافیکی استاردو ولی - Best Stardew Valley Visual Mods', url: 'https://www.aparat.com/v/e508n80' },
-    { title: 'آموزش تغییر ظاهر و اسم در استاردو ولی | Stardew valley', url: 'https://www.aparat.com/v/yri4v5m' },
-    { title: 'آموزش رفتن و همه چیز راجب جشن صحرا استاردو ولی | Desert Festival Stardew valley', url: 'https://www.aparat.com/v/bshz031' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 11', url: 'https://www.aparat.com/v/pgaw88r' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 12', url: 'https://www.aparat.com/v/dva0hhs' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 13', url: 'https://www.aparat.com/v/lodfft0' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 14', url: 'https://www.aparat.com/v/uuxd95n' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 15', url: 'https://www.aparat.com/v/voc0y2o' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 16', url: 'https://www.aparat.com/v/mxlvj66' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 17', url: 'https://www.aparat.com/v/gtd4n8c' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 18', url: 'https://www.aparat.com/v/bct96h3' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 19', url: 'https://www.aparat.com/v/ykxpg26' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 20', url: 'https://www.aparat.com/v/edcn896' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 21', url: 'https://www.aparat.com/v/qvx000i' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 22', url: 'https://www.aparat.com/v/rvp47k4' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 23', url: 'https://www.aparat.com/v/zxf4145' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 24', url: 'https://www.aparat.com/v/edejup3' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 25', url: 'https://www.aparat.com/v/pjsyd6q' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 26', url: 'https://www.aparat.com/v/vwab48e' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 27', url: 'https://www.aparat.com/v/cnx122z' },
-    { title: 'آموزش و نکات استاردو ولی - قسمت 28', url: 'https://www.aparat.com/v/vukrrae' }
-];
-
-function loadVideos() {
-    const grid = document.getElementById('videoGrid');
-    grid.innerHTML = '';
-    videos.forEach(v => {
-        const card = document.createElement('div');
-        card.className = 'video-card';
-        // استخراج کد ویدیو از لینک آپارات
-        const videoId = v.url.split('/').pop();
-        card.innerHTML = `
-            <iframe src="https://www.aparat.com/video/video/embed/videohash/${videoId}" allowfullscreen></iframe>
-            <div class="v-title">${v.title}</div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-// ============================================
-// موزیک استاردو ولی
-// ============================================
-const musicFiles = [
-    { name: '🎵 آهنگ ۱ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3' },
-    { name: '🎵 آهنگ ۲ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3' },
-    { name: '🎵 آهنگ ۳ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3' },
-    { name: '🎵 آهنگ ۴ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3' },
-    { name: '🎵 آهنگ ۵ - استاردو ولی', uri: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3' }
-];
-
-function loadMusic() {
-    const list = document.getElementById('musicList');
-    list.innerHTML = '';
-    musicFiles.forEach(m => {
-        const item = document.createElement('div');
-        item.className = 'music-item';
-        item.innerHTML = `
-            <span class="name">${m.name}</span>
-            <audio controls>
-                <source src="${m.uri}" type="audio/mpeg">
-                مرورگر شما پشتیبانی نمی‌کند.
-            </audio>
-        `;
-        list.appendChild(item);
-    });
-}
-
-// ============================================
-// آموزش ماد (SMAPI)
-// ============================================
-const modData = {
-    pc: [
-        { step: '۱', text: 'SMAPI (اسپمی) رو از گیت‌هاب دانلود کن: <a href="https://github.com/Pathoschild/SMAPI/releases" target="_blank">SMAPI Releases</a>' },
-        { step: '۲', text: 'فایل استاردو ولی رو نصب کن (نسخه رسمی از استیم یا مایکت)' },
-        { step: '۳', text: 'ماد مورد نظر رو از <a href="https://www.nexusmods.com/stardewvalley" target="_blank">Nexus Mods</a> دانلود کن' },
-        { step: '۴', text: 'فایل‌های ماد رو در پوشه `Mods` کپی کن (معمولاً در محل نصب بازی)' },
-        { step: '۵', text: 'بازی رو با SMAPI اجرا کن (فایل `StardewModdingAPI.exe`)' }
-    ],
-    android: [
-        { step: '۱', text: 'SMAPI اندروید رو از گیت‌هاب دانلود کن: <a href="https://github.com/Martin3112/SMAPI-Android/releases" target="_blank">SMAPI-Android</a>' },
-        { step: '۲', text: 'نسخه ماد شده استاردو ولی رو از مایکت یا کافه بازار دانلود کن' },
-        { step: '۳', text: 'مادهای مورد نظر رو برای اندروید آماده کن (فایل‌های `.zip` یا `.smapi`)' },
-        { step: '۴', text: 'مادها رو در پوشه `Android/data/com.stardewvalley/files/Mods` قرار بده' },
-        { step: '۵', text: 'بازی رو از طریق SMAPI لانچر اجرا کن تا مادها فعال بشن' }
-    ]
-};
-
-function showModTab(type, btn) {
-    document.querySelectorAll('.mod-tabs button').forEach(b => b.classList.remove('active'));
-    if (btn) btn.classList.add('active');
-    
-    const content = document.getElementById('modContent');
-    const steps = modData[type] || modData.pc;
-    content.innerHTML = steps.map(s => `
-        <div class="mod-step">
-            <div class="step-num">مرحله ${s.step}</div>
-            <div class="step-text">${s.text}</div>
-        </div>
-    `).join('');
-}
-
-// ============================================
-// توابع قدیمی (دایس، پلن، گال، بات، شانس)
+// 1. چالش من (تاس)
 // ============================================
 function rollDice() {
     const num = Math.floor(Math.random() * 6) + 1;
@@ -329,6 +284,9 @@ function rollDice() {
         `🎲 عدد تاس: <b>${num}</b><br>📌 چالش: ${challenges[num-1]}`;
 }
 
+// ============================================
+// 2. کیومرث پلن
+// ============================================
 function saveWeeklyPlan() {
     const days = ['شنبه','یکشنبه','دوشنبه','سه‌شنبه','چهارشنبه','پنجشنبه','جمعه'];
     let plan = '';
@@ -349,6 +307,9 @@ function resetWeeklyPlan() {
     document.getElementById('planResult').innerHTML = '🔄 پلن هفتگی ریست شد!';
 }
 
+// ============================================
+// 3. هدف من
+// ============================================
 function calcGoal() {
     const current = parseFloat(document.getElementById('currentMoney')?.value) || 0;
     const target = parseFloat(document.getElementById('targetMoney')?.value) || 0;
@@ -365,6 +326,9 @@ function calcGoal() {
     `;
 }
 
+// ============================================
+// 4. پخمه بات
+// ============================================
 let botKnowledge = JSON.parse(localStorage.getItem('botKnowledge')) || {};
 
 function learnBot() {
@@ -409,6 +373,9 @@ document.getElementById('chatInput')?.addEventListener('keydown', function(e) {
     if(e.key === 'Enter') chatWithBot();
 });
 
+// ============================================
+// 5. شانس امروز
+// ============================================
 function getLuck() {
     const today = new Date().toDateString();
     const lastLuck = localStorage.getItem('lastLuckDate');
@@ -427,6 +394,91 @@ function getLuck() {
     localStorage.setItem('lastLuckDate', today);
     localStorage.setItem('luckResult', result);
     document.getElementById('luckResult').innerHTML = `🍀 ${result}`;
+}
+
+// ============================================
+// 6. ویدیوهای آموزش کده
+// ============================================
+const videos = [
+    { title: 'انواع فارم در استاردو ولی(نکات مثبت و منفی)', hash: 'i86vqt7' },
+    { title: 'استاردو ولی اکسپندد با نیما - قسمت 2', hash: 'b652b6k' },
+    { title: 'استاردو ولی اکسپندد با نیما - قسمت 1', hash: '8FuGU' },
+    { title: 'مکان همه استاردراپ ها در استاردو ولی - Stardrop Locations', hash: 'f2107pa' },
+    { title: 'نصب بهترین ماد استاردو ولی - Stardew Valley Expanded', hash: 'j13kvco' },
+    { title: 'نکاتی که بعد از صد ساعت استاردو میفهمی! Stardew Valley Tips 2', hash: 'a777n06' },
+    { title: 'نکاتی که باید درباره استاردو ولی بدونی! - Stardew Valley Tips', hash: 'c40el3y' },
+    { title: 'بهترین ماد های گرافیکی استاردو ولی - Best Stardew Valley Visual Mods', hash: 'e508n80' },
+    { title: 'آموزش تغییر ظاهر و اسم در استاردو ولی | Stardew valley', hash: 'yri4v5m' },
+    { title: 'آموزش رفتن و همه چیز راجب جشن صحرا استاردو ولی | Desert Festival Stardew valley', hash: 'bshz031' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 11', hash: 'pgaw88r' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 12', hash: 'dva0hhs' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 13', hash: 'lodfft0' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 14', hash: 'uuxd95n' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 15', hash: 'voc0y2o' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 16', hash: 'mxlvj66' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 17', hash: 'gtd4n8c' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 18', hash: 'bct96h3' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 19', hash: 'ykxpg26' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 20', hash: 'edcn896' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 21', hash: 'qvx000i' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 22', hash: 'rvp47k4' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 23', hash: 'zxf4145' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 24', hash: 'edejup3' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 25', hash: 'pjsyd6q' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 26', hash: 'vwab48e' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 27', hash: 'cnx122z' },
+    { title: 'آموزش و نکات استاردو ولی - قسمت 28', hash: 'vukrrae' }
+];
+
+function loadVideos() {
+    const grid = document.getElementById('videoGrid');
+    grid.innerHTML = '';
+    videos.forEach(v => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        card.innerHTML = `
+            <iframe src="https://www.aparat.com/video/video/embed/videohash/${v.hash}" allowfullscreen></iframe>
+            <div class="v-title">${v.title}</div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// ============================================
+// 7. آموزش ماد (SMAPI)
+// ============================================
+const modData = {
+    pc: [
+        { step: '۱', text: 'SMAPI (اسپمی) رو از گیت‌هاب دانلود کن: <a href="https://github.com/Pathoschild/SMAPI/releases" target="_blank">SMAPI Releases</a>' },
+        { step: '۲', text: 'فایل استاردو ولی رو نصب کن (نسخه رسمی از استیم یا مایکت)' },
+        { step: '۳', text: 'ماد مورد نظر رو از <a href="https://www.nexusmods.com/stardewvalley" target="_blank">Nexus Mods</a> دانلود کن' },
+        { step: '۴', text: 'فایل‌های ماد رو در پوشه `Mods` کپی کن (معمولاً در محل نصب بازی)' },
+        { step: '۵', text: 'بازی رو با SMAPI اجرا کن (فایل `StardewModdingAPI.exe`)' }
+    ],
+    android: [
+        { step: '۱', text: 'SMAPI Launcher اندروید رو از گیت‌هاب دانلود کن: <a href="https://github.com/NRTnarathip/SMAPILoader/releases" target="_blank">SMAPI Launcher Releases</a><br><span class="highlight">نسخه پیشنهادی: v1.1.4 یا بالاتر</span>' },
+        { step: '۲', text: 'نسخه رسمی استاردو ولی رو از <span class="highlight">پلی استور</span> نصب کن (نه نسخه کرک شده)' },
+        { step: '۳', text: 'SMAPI رو برای اندروید دانلود کن. <span class="warning">⚠️ فقط از لینک رسمی گیت‌هاب دانلود کن و از منابع غیررسمی استفاده نکن.</span>' },
+        { step: '۴', text: 'فایل SMAPI رو در لانچر بارگذاری کن. لانچر به‌طور خودکار SMAPI رو نصب میکنه.' },
+        { step: '۵', text: 'مادهای مورد نظر رو از <a href="https://www.nexusmods.com/stardewvalley" target="_blank">Nexus Mods</a> دانلود کن (فایل‌های `.zip` یا `.smapi`)' },
+        { step: '۶', text: 'مادها رو در پوشه `Mods` (که لانچر می‌سازه) قرار بده.' },
+        { step: '۷', text: 'بازی رو از طریق <span class="highlight">SMAPI Launcher</span> اجرا کن تا مادها فعال بشن.' },
+        { step: '⚠️ نکات مهم', text: '• <span class="warning">حتماً از پوشه Mods و فایل Save خودت بکاپ بگیر.</span><br>• لانچر 1.1.4 با SMAPI 4.2 و 4.3.2.5 کار میکنه.<br>• <span class="warning">با دستگاه‌های 32 بیتی سازگار نیست.</span><br>• فقط با نسخه رسمی بازی از پلی استور کار میکنه.' }
+    ]
+};
+
+function showModTab(type, btn) {
+    document.querySelectorAll('.mod-tabs button').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    
+    const content = document.getElementById('modContent');
+    const steps = modData[type] || modData.pc;
+    content.innerHTML = steps.map(s => `
+        <div class="mod-step">
+            <div class="step-num">مرحله ${s.step}</div>
+            <div class="step-text">${s.text}</div>
+        </div>
+    `).join('');
 }
 
 const savedPlan = localStorage.getItem('weeklyPlan');
