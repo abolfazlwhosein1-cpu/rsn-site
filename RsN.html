@@ -76,6 +76,7 @@
         .video-card .v-title{font-size:12px;color:rgba(255,255,255,0.6);margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
         .support-box{background:linear-gradient(135deg,#1a0a2e,#0a0a0f);border-radius:12px;padding:16px;text-align:center;border:1px solid var(--primary)}
         .support-box a{display:inline-block;background:var(--primary);color:#0a0a0f;padding:8px 20px;border-radius:8px;font-weight:700;text-decoration:none;margin:6px 0}
+        .bot-link{display:inline-block;background:var(--primary);color:#0a0a0f;padding:8px 20px;border-radius:8px;font-weight:700;text-decoration:none;margin:6px 0;cursor:pointer}
         @media(max-width:480px){.menu-grid{gap:8px}.menu-card{min-height:70px;padding:12px}.slot-reels{font-size:36px;gap:12px}.video-grid{grid-template-columns:1fr}}
     </style>
 </head>
@@ -93,7 +94,7 @@
         <div class="menu-card" onclick="openPage('dice')"><span class="icon">🎲</span><span class="title">چالش من</span></div>
         <div class="menu-card" onclick="openPage('plan')"><span class="icon">📅</span><span class="title">کیومرث پلن</span></div>
         <div class="menu-card" onclick="openPage('goal')"><span class="icon">🎯</span><span class="title">هدف من</span></div>
-        <div class="menu-card" onclick="openPage('support')"><span class="icon">💪</span><span class="title">حمایت از RSN</span></div>
+        <div class="menu-card" onclick="openPage('support')"><span class="icon">📢</span><span class="title">کانال استاردو ولی RSN</span></div>
         <div class="menu-card" onclick="openPage('bot')"><span class="icon">🤖</span><span class="title">پخمه بات</span></div>
         <div class="menu-card" onclick="openPage('luck')"><span class="icon">🍀</span><span class="title">شانس امروز</span></div>
         <div class="menu-card" onclick="openPage('fun')"><span class="icon">🐹</span><span class="title">سرگرمی</span></div>
@@ -101,6 +102,7 @@
         <div class="menu-card" onclick="openPage('modlist')"><span class="icon">📋</span><span class="title">۱۰۰ ماد برتر</span></div>
         <div class="menu-card" onclick="openPage('code')"><span class="icon">📚</span><span class="title">آموزش کده</span></div>
         <div class="menu-card" onclick="openPage('mod')"><span class="icon">⚡</span><span class="title">آموزش نصب ماد</span></div>
+        <div class="menu-card" onclick="openPage('robot')"><span class="icon">🤖</span><span class="title">ربات استاردو ولی</span></div>
     </div>
 </div>
 
@@ -150,13 +152,13 @@
     <div class="result-box" id="goalResult">نتیجه محاسبه اینجا نمایش داده میشه...</div>
 </div>
 
-<!-- ===== حمایت از RSN ===== -->
+<!-- ===== کانال استاردو ولی RSN ===== -->
 <div class="page" id="page-support">
     <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
-    <div class="page-title">💪 حمایت از RSN</div>
+    <div class="page-title">📢 کانال استاردو ولی RSN</div>
     <div class="support-box">
-        <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم خوب RSN، جوین بشین:</p>
-        <a href="https://rubika.ir/ONE_RSN" target="_blank">📱 جوین کانال RSN در روبیکا</a>
+        <p style="color:rgba(255,255,255,0.3);font-size:14px;">جهت حمایت از تیم و استفاده از امکانات تیم ما داشتن اپلیکیشن این برنامه + برنامه ها و سایت های مربوط به استاردو ولی در آینده روی این لینک کلیک کنید</p>
+        <a href="https://rubika.ir/ONE_RSN" target="_blank">📱 کانال RSN</a>
         <p style="color:rgba(255,255,255,0.1);font-size:11px;margin-top:8px;">با جوین شدن، به ما انرژی میدید! ❤️</p>
     </div>
 </div>
@@ -240,6 +242,22 @@
         <button onclick="showModTab('android',this)">📱 اندروید</button>
     </div>
     <div id="modContent" style="flex:1;overflow-y:auto;padding:4px 0;"></div>
+</div>
+
+<!-- ===== ربات استاردو ولی ===== -->
+<div class="page" id="page-robot">
+    <button class="back-btn" onclick="openPage('main')">← بازگشت</button>
+    <div class="page-title">🤖 ربات استاردو ولی</div>
+    <div class="support-box" style="max-width:350px;margin:auto;">
+        <p style="color:rgba(255,255,255,0.5);font-size:14px;">یک ربات خفن با کلی امکانات و آموزنده بودن و سرگرم کنندگیش + بروزرسانی مداوم که تیم ما داره بدون قطعی جهت استفاده روی دکمه کلیک کنید</p>
+        <a href="https://rubika.ir/STARDEW_VALLEY_bot" target="_blank" class="bot-link">🤖 ربات استاردو ولی</a>
+        <div style="margin-top:12px;padding:12px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.05);">
+            <p style="color:rgba(255,255,255,0.2);font-size:11px;">⚠️ نکته: این سایت با کمک از تیم گاتهام ساخته شده. تمامی تبلیغات درون ربات از طرف ما نیست!</p>
+        </div>
+        <div style="margin-top:12px;">
+            <a href="https://rubika.ir/RICKWOCOL" target="_blank" class="bot-link" style="background:var(--secondary);">📢 کانال دستورات</a>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -562,4 +580,4 @@ function showModTab(type, btn){
 }
 </script>
 </body>
-    </html>
+                                                                                       </html>
