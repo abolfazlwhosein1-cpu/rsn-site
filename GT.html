@@ -2,14 +2,13 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>چیت‌های استاردو ولی | RSN</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Stardew Valley Cheat Codes & Item IDs</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
         }
 
         @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
@@ -22,16 +21,17 @@
             --card: #12121f;
             --text: #e0e0e0;
             --border: rgba(255, 255, 255, 0.06);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
 
         body {
+            font-family: 'Vazirmatn', sans-serif;
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            padding: 20px 10px;
+            padding: 16px;
         }
 
-        /* ===== ذرات پس‌زمینه ===== */
         #particleCanvas {
             position: fixed;
             top: 0;
@@ -43,52 +43,74 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 1200px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
         }
 
-        /* ===== هدر ===== */
+        /* ===== Header ===== */
         .header {
             text-align: center;
-            padding: 20px 0 30px;
-            border-bottom: 1px solid var(--border);
+            padding: 30px 20px 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 24px;
+            border: 1px solid var(--border);
             margin-bottom: 30px;
+            backdrop-filter: blur(10px);
         }
 
         .header h1 {
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            background: linear-gradient(135deg, var(--gold), var(--primary), var(--secondary));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: 1px;
         }
 
-        .header p {
-            font-size: 14px;
-            color: rgba(255, 255, 255, 0.2);
+        .header .subtitle {
+            font-size: 18px;
+            color: rgba(255, 255, 255, 0.3);
             margin-top: 6px;
+            font-weight: 300;
         }
 
-        .header .badge {
-            display: inline-block;
-            background: var(--gold);
-            color: #0a0a0f;
-            padding: 4px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
+        .header .desc {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.15);
             margin-top: 8px;
         }
 
-        /* ===== جستجو ===== */
+        .header .count-badge {
+            display: inline-block;
+            background: rgba(253, 203, 110, 0.08);
+            border: 1px solid rgba(253, 203, 110, 0.1);
+            padding: 8px 24px;
+            border-radius: 30px;
+            margin-top: 16px;
+            font-size: 14px;
+            color: var(--gold);
+        }
+
+        .header .count-badge span {
+            font-weight: 900;
+            font-size: 18px;
+        }
+
+        /* ===== Search & Filter ===== */
+        .controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 28px;
+            flex-wrap: wrap;
+        }
+
         .search-box {
-            margin-bottom: 24px;
-            position: sticky;
-            top: 10px;
-            z-index: 10;
+            flex: 1;
+            min-width: 200px;
+            position: relative;
         }
 
         .search-box input {
@@ -98,9 +120,10 @@
             border: 1px solid var(--border);
             background: rgba(255, 255, 255, 0.04);
             color: #fff;
-            font-size: 16px;
+            font-size: 15px;
             backdrop-filter: blur(10px);
             transition: 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
         }
 
         .search-box input::placeholder {
@@ -113,195 +136,310 @@
             box-shadow: 0 0 30px rgba(108, 92, 231, 0.1);
         }
 
-        /* ===== آمار ===== */
-        .stats {
+        .filter-box {
             display: flex;
-            gap: 10px;
-            margin-bottom: 24px;
+            gap: 8px;
             flex-wrap: wrap;
+            align-items: center;
         }
 
-        .stats .stat-item {
-            flex: 1;
-            min-width: 80px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
+        .filter-btn {
+            padding: 10px 18px;
             border-radius: 12px;
-            padding: 12px 8px;
-            text-align: center;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.03);
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'Vazirmatn', sans-serif;
+            white-space: nowrap;
         }
 
-        .stats .stat-item .num {
-            font-size: 22px;
-            font-weight: 700;
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: rgba(108, 92, 231, 0.15);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .filter-btn.all-btn {
+            background: rgba(253, 203, 110, 0.08);
+            border-color: rgba(253, 203, 110, 0.15);
             color: var(--gold);
         }
 
-        .stats .stat-item .label {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.2);
+        .filter-btn.all-btn.active {
+            background: rgba(253, 203, 110, 0.15);
+            border-color: var(--gold);
         }
 
-        /* ===== کارت چیت ===== */
+        /* ===== Grid ===== */
         .cheat-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
         }
 
+        /* ===== Card ===== */
         .cheat-card {
             background: rgba(255, 255, 255, 0.02);
             border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 14px 18px;
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            transition: 0.3s;
+            border-radius: 16px;
+            padding: 18px 20px 16px;
+            transition: 0.3s ease;
             cursor: default;
+            position: relative;
+            overflow: hidden;
         }
 
         .cheat-card:hover {
             background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(108, 92, 231, 0.3);
+            border-color: rgba(108, 92, 231, 0.25);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
-        .cheat-card .index {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--gold);
-            min-width: 48px;
-            background: rgba(253, 203, 110, 0.08);
-            padding: 4px 10px;
-            border-radius: 8px;
+        .cheat-card .top-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .cheat-card .emoji {
+            font-size: 28px;
+            line-height: 1;
+            min-width: 40px;
             text-align: center;
-            font-family: 'Courier New', monospace;
         }
 
-        .cheat-card .code {
+        .cheat-card .name {
+            font-size: 17px;
+            font-weight: 700;
+            color: #fff;
             flex: 1;
+        }
+
+        .cheat-card .category-tag {
+            font-size: 10px;
+            padding: 2px 12px;
+            border-radius: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--border);
+        }
+
+        .cheat-card .desc {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.4);
+            margin-bottom: 12px;
+            line-height: 1.6;
+            padding-right: 4px;
+        }
+
+        .cheat-card .code-box {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 8px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .cheat-card .code-box .code {
             font-family: 'Courier New', monospace;
-            font-size: 15px;
-            color: #a8a8ff;
+            font-size: 16px;
+            color: var(--gold);
+            font-weight: 700;
             direction: ltr;
             text-align: left;
-            word-break: break-all;
+            flex: 1;
+            letter-spacing: 0.5px;
         }
 
-        .cheat-card .reward {
-            font-size: 13px;
-            color: var(--gold);
-            background: rgba(253, 203, 110, 0.06);
-            padding: 4px 12px;
-            border-radius: 20px;
-            white-space: nowrap;
-            border: 1px solid rgba(253, 203, 110, 0.1);
-        }
-
-        .cheat-card .copy-btn {
+        .cheat-card .code-box .copy-btn {
             background: var(--primary);
             border: none;
             color: #fff;
-            padding: 6px 14px;
+            padding: 5px 14px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 12px;
             font-weight: 700;
             transition: 0.3s;
             font-family: 'Vazirmatn', sans-serif;
-            min-width: 56px;
+            min-width: 60px;
         }
 
-        .cheat-card .copy-btn:hover {
+        .cheat-card .code-box .copy-btn:hover {
             transform: scale(1.05);
             background: #7c6df0;
         }
 
-        .cheat-card .copy-btn:active {
+        .cheat-card .code-box .copy-btn:active {
             transform: scale(0.95);
         }
 
-        .cheat-card .copy-btn.copied {
+        .cheat-card .code-box .copy-btn.copied {
             background: #00b894;
         }
 
-        /* ===== فوتر ===== */
-        .footer {
-            text-align: center;
-            padding: 40px 0 20px;
-            color: rgba(255, 255, 255, 0.05);
-            font-size: 12px;
-            border-top: 1px solid var(--border);
-            margin-top: 30px;
+        .cheat-card .method {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.15);
+            margin-top: 8px;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.02);
         }
 
-        .footer span {
-            color: var(--primary);
+        /* ===== Tutorial ===== */
+        .tutorial {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px 32px;
+            margin: 40px 0 30px;
+        }
+
+        .tutorial h2 {
+            font-size: 22px;
             font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 16px;
+        }
+
+        .tutorial p {
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 1.8;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .tutorial ol {
+            padding-right: 24px;
+            color: rgba(255, 255, 255, 0.4);
+            line-height: 2;
+            font-size: 14px;
+        }
+
+        .tutorial ol li {
+            margin-bottom: 4px;
+        }
+
+        .tutorial .note {
+            margin-top: 16px;
+            padding: 12px 18px;
+            background: rgba(253, 203, 110, 0.04);
+            border-radius: 12px;
+            border: 1px solid rgba(253, 203, 110, 0.06);
+            color: rgba(253, 203, 110, 0.5);
+            font-size: 13px;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 30px 0 16px;
+            color: rgba(255, 255, 255, 0.05);
+            font-size: 13px;
+            border-top: 1px solid var(--border);
+            margin-top: 10px;
         }
 
         .footer .heart {
             color: #f5576c;
         }
 
-        /* ===== پاسخ‌دهی ===== */
-        @media (max-width: 600px) {
-            .cheat-card {
-                flex-wrap: wrap;
-                gap: 8px;
-                padding: 12px 14px;
-            }
+        .footer .made {
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 11px;
+            margin-top: 4px;
+        }
 
-            .cheat-card .code {
-                font-size: 13px;
-                width: 100%;
-                order: 3;
-                text-align: center;
-            }
-
-            .cheat-card .index {
-                font-size: 12px;
-                min-width: 40px;
-            }
-
-            .cheat-card .reward {
-                font-size: 12px;
-                padding: 2px 10px;
-            }
-
-            .cheat-card .copy-btn {
-                padding: 4px 12px;
-                font-size: 11px;
-                min-width: 48px;
+        /* ===== Responsive ===== */
+        @media (max-width: 768px) {
+            .cheat-grid {
+                grid-template-columns: 1fr;
             }
 
             .header h1 {
-                font-size: 24px;
+                font-size: 26px;
             }
 
-            .stats .stat-item .num {
+            .header .subtitle {
+                font-size: 15px;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .filter-box {
+                justify-content: center;
+            }
+
+            .filter-btn {
+                font-size: 11px;
+                padding: 6px 12px;
+            }
+
+            .cheat-card {
+                padding: 14px 16px 12px;
+            }
+
+            .cheat-card .name {
+                font-size: 15px;
+            }
+
+            .cheat-card .emoji {
+                font-size: 22px;
+                min-width: 32px;
+            }
+
+            .cheat-card .code-box .code {
+                font-size: 14px;
+            }
+
+            .tutorial {
+                padding: 20px 16px;
+            }
+
+            .tutorial h2 {
                 font-size: 18px;
             }
         }
 
         @media (max-width: 400px) {
-            .cheat-card .index {
-                min-width: 34px;
-                font-size: 10px;
-                padding: 2px 6px;
+            .header h1 {
+                font-size: 20px;
             }
 
-            .cheat-card .code {
-                font-size: 11px;
+            .cheat-card .code-box {
+                flex-wrap: wrap;
+                gap: 6px;
             }
 
-            .cheat-card .reward {
-                font-size: 10px;
-                padding: 2px 8px;
+            .cheat-card .code-box .code {
+                width: 100%;
+                text-align: center;
+            }
+
+            .cheat-card .code-box .copy-btn {
+                width: 100%;
+                padding: 8px;
             }
         }
 
-        /* ===== اسکرول ===== */
         ::-webkit-scrollbar {
             width: 4px;
         }
@@ -320,41 +458,58 @@
 
     <div class="container">
 
-        <!-- ===== هدر ===== -->
+        <!-- ===== Header ===== -->
         <div class="header">
-            <h1>🎮 چیت‌های استاردو ولی</h1>
-            <p>۷۰۰ چیت رسمی • قابل کپی • به‌روزرسانی شده</p>
-            <div class="badge">✨ مجموع ۷۰۰ کد</div>
-        </div>
-
-        <!-- ===== جستجو ===== -->
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="🔍 جستجوی چیت ... (مثلا: 78 یا نام آیتم)" oninput="filterCheats()">
-        </div>
-
-        <!-- ===== آمار ===== -->
-        <div class="stats">
-            <div class="stat-item">
-                <div class="num" id="totalCount">۷۰۰</div>
-                <div class="label">تعداد چیت‌ها</div>
-            </div>
-            <div class="stat-item">
-                <div class="num" id="visibleCount">۷۰۰</div>
-                <div class="label">نمایش داده شده</div>
-            </div>
-            <div class="stat-item">
-                <div class="num" id="copyCount">۰</div>
-                <div class="label">کپی شده</div>
+            <h1>🌟 Stardew Valley</h1>
+            <div class="subtitle">🎮 Cheat Codes &amp; Item IDs</div>
+            <div class="desc">لیست کدها و شناسه‌های واقعی آیتم‌های Stardew Valley</div>
+            <div class="count-badge">
+                📦 تعداد کدها: <span id="totalCount">0</span>
             </div>
         </div>
 
-        <!-- ===== لیست چیت‌ها ===== -->
+        <!-- ===== Controls ===== -->
+        <div class="controls">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="🔍 جستجو بر اساس نام، کد یا دسته‌بندی..." oninput="filterItems()">
+            </div>
+            <div class="filter-box" id="filterBox">
+                <button class="filter-btn all-btn active" data-filter="all" onclick="setFilter('all')">📋 همه</button>
+                <!-- فیلترها توسط JS اضافه میشن -->
+            </div>
+        </div>
+
+        <!-- ===== Grid ===== -->
         <div class="cheat-grid" id="cheatGrid"></div>
 
-        <!-- ===== فوتر ===== -->
+        <!-- ===== Tutorial ===== -->
+        <div class="tutorial">
+            <h2>📖 آموزش استفاده از کدها</h2>
+            <p><strong>روش استاندارد (نام بازیکن):</strong></p>
+            <ol>
+                <li>هنگام ساخت کاراکتر جدید، در بخش <strong>نام</strong> کد مورد نظر را با فرمت <code>[کد]</code> وارد کنید.</li>
+                <li>مثلاً برای دریافت الماس، نام خود را <code>[72]</code> بگذارید.</li>
+                <li>بازی را شروع کنید و با هر NPC صحبت کنید تا آیتم دریافت کنید.</li>
+                <li>برای دریافت چند آیتم، از <code>[کد1][کد2]</code> استفاده کنید.</li>
+            </ol>
+            <p><strong>روش جایگزین (تغییر نام در حال بازی):</strong></p>
+            <ol>
+                <li>به خانه‌ی <strong>جادوگر</strong> در جنگل بروید.</li>
+                <li>در اتاقک سمت راست، یک <strong>محفظه‌ی تغییر نام</strong> پیدا می‌کنید.</li>
+                <li>هزینه‌ی هر تغییر نام <strong>۵۰۰ طلا</strong> است.</li>
+                <li>نام خود را به فرمت <code>[کد]</code> تغییر دهید.</li>
+                <li>با یک NPC صحبت کنید تا آیتم را دریافت کنید.</li>
+            </ol>
+            <div class="note">
+                ⚠️ <strong>توجه:</strong> این روش در نسخه‌های جدیدتر Stardew Valley (v1.5 به بالا) همچنان کار می‌کند.
+                همچنین می‌توانید از این کدها برای نام‌گذاری <strong>حیوانات</strong> نیز استفاده کنید.
+            </div>
+        </div>
+
+        <!-- ===== Footer ===== -->
         <div class="footer">
-            ✧ ساخته شده توسط <span>ریک</span> از <span>RSN</span> ✧<br>
-            تمامی چیت‌های استاردو ولی <span class="heart">❤</span>
+            Stardew Valley Cheat Codes<br>
+            <span class="made">Made with <span class="heart">❤</span> by RSN</span>
         </div>
 
     </div>
@@ -410,223 +565,819 @@
         animateParticles();
 
         // ================================================
-        // تولید ۷۰۰ چیت استاردو ولی
+        // داده‌های واقعی Stardew Valley
         // ================================================
-        function generateCheats() {
-            const items = [
-                // آیتم‌های پایه
-                { name: 'سنگ', id: 1, reward: 'سنگ × ۵' },
-                { name: 'چوب', id: 2, reward: 'چوب × ۵' },
-                { name: 'علف', id: 3, reward: 'علف × ۳' },
-                { name: 'خاک', id: 4, reward: 'خاک × ۳' },
-                { name: 'سیب‌زمینی', id: 5, reward: 'سیب‌زمینی × ۲' },
-                { name: 'گل', id: 6, reward: 'گل × ۲' },
-                { name: 'توت‌فرنگی', id: 7, reward: 'توت‌فرنگی × ۳' },
-                { name: 'گندم', id: 8, reward: 'گندم × ۳' },
-                { name: 'ذرت', id: 9, reward: 'ذرت × ۲' },
-                { name: 'کدو تنبل', id: 10, reward: 'کدو تنبل × ۱' },
-                { name: 'انگور', id: 11, reward: 'انگور × ۳' },
-                { name: 'هویج', id: 12, reward: 'هویج × ۲' },
-                { name: 'پیاز', id: 13, reward: 'پیاز × ۲' },
-                { name: 'سیر', id: 14, reward: 'سیر × ۲' },
-                { name: 'کلم', id: 15, reward: 'کلم × ۲' },
-                { name: 'گوجه', id: 16, reward: 'گوجه × ۳' },
-                { name: 'فلفل', id: 17, reward: 'فلفل × ۲' },
-                { name: 'بادمجان', id: 18, reward: 'بادمجان × ۲' },
-                { name: 'خیار', id: 19, reward: 'خیار × ۲' },
-                { name: 'کاهو', id: 20, reward: 'کاهو × ۲' },
-                { name: 'شلغم', id: 21, reward: 'شلغم × ۲' },
-                { name: 'تربچه', id: 22, reward: 'تربچه × ۲' },
-                { name: 'چغندر', id: 23, reward: 'چغندر × ۲' },
-                { name: 'نخود', id: 24, reward: 'نخود × ۳' },
-                { name: 'لوبیا', id: 25, reward: 'لوبیا × ۳' },
-                { name: 'عدس', id: 26, reward: 'عدس × ۳' },
-                { name: 'برنج', id: 27, reward: 'برنج × ۳' },
-                { name: 'جو', id: 28, reward: 'جو × ۳' },
-                { name: 'چاودار', id: 29, reward: 'چاودار × ۳' },
-                { name: 'ارزن', id: 30, reward: 'ارزن × ۳' },
-                { name: 'آرد', id: 31, reward: 'آرد × ۲' },
-                { name: 'نان', id: 32, reward: 'نان × ۱' },
-                { name: 'کیک', id: 33, reward: 'کیک × ۱' },
-                { name: 'شیرینی', id: 34, reward: 'شیرینی × ۱' },
-                { name: 'شکلات', id: 35, reward: 'شکلات × ۲' },
-                { name: 'عسل', id: 36, reward: 'عسل × ۱' },
-                { name: 'شیر', id: 37, reward: 'شیر × ۱' },
-                { name: 'پنیر', id: 38, reward: 'پنیر × ۱' },
-                { name: 'کره', id: 39, reward: 'کره × ۱' },
-                { name: 'تخم‌مرغ', id: 40, reward: 'تخم‌مرغ × ۲' },
-                { name: 'مرغ', id: 41, reward: 'مرغ × ۱' },
-                { name: 'گاو', id: 42, reward: 'گاو × ۱' },
-                { name: 'خوک', id: 43, reward: 'خوک × ۱' },
-                { name: 'گوسفند', id: 44, reward: 'گوسفند × ۱' },
-                { name: 'بز', id: 45, reward: 'بز × ۱' },
-                { name: 'اسب', id: 46, reward: 'اسب × ۱' },
-                { name: 'الاغ', id: 47, reward: 'الاغ × ۱' },
-                { name: 'شتر', id: 48, reward: 'شتر × ۱' },
-                { name: 'لاما', id: 49, reward: 'لاما × ۱' },
-                { name: 'آلپاکا', id: 50, reward: 'آلپاکا × ۱' },
-                { name: 'پشم', id: 51, reward: 'پشم × ۲' },
-                { name: 'پوست', id: 52, reward: 'پوست × ۲' },
-                { name: 'چرم', id: 53, reward: 'چرم × ۱' },
-                { name: 'پارچه', id: 54, reward: 'پارچه × ۱' },
-                { name: 'ابریشم', id: 55, reward: 'ابریشم × ۱' },
-                { name: 'پنبه', id: 56, reward: 'پنبه × ۲' },
-                { name: 'کتان', id: 57, reward: 'کتان × ۲' },
-                { name: 'کنف', id: 58, reward: 'کنف × ۲' },
-                { name: 'الیاف', id: 59, reward: 'الیاف × ۳' },
-                { name: 'ریسمان', id: 60, reward: 'ریسمان × ۲' },
-                { name: 'طناب', id: 61, reward: 'طناب × ۱' },
-                { name: 'کیسه', id: 62, reward: 'کیسه × ۱' },
-                { name: 'جعبه', id: 63, reward: 'جعبه × ۱' },
-                { name: 'بشکه', id: 64, reward: 'بشکه × ۱' },
-                { name: 'سطل', id: 65, reward: 'سطل × ۱' },
-                { name: 'ابزار', id: 66, reward: 'ابزار × ۱' },
-                { name: 'چکش', id: 67, reward: 'چکش × ۱' },
-                { name: 'تبر', id: 68, reward: 'تبر × ۱' },
-                { name: 'بیل', id: 69, reward: 'بیل × ۱' },
-                { name: 'کلنگ', id: 70, reward: 'کلنگ × ۱' },
-                { name: 'داس', id: 71, reward: 'داس × ۱' },
-                { name: 'چنگک', id: 72, reward: 'چنگک × ۱' },
-                { name: 'سمپاش', id: 73, reward: 'سمپاش × ۱' },
-                { name: 'کود', id: 74, reward: 'کود × ۳' },
-                { name: 'سم', id: 75, reward: 'سم × ۱' },
-                { name: 'بذر', id: 76, reward: 'بذر × ۳' },
-                { name: 'نهال', id: 77, reward: 'نهال × ۲' },
-                { name: 'گل‌آفتاب‌گردان', id: 78, reward: 'گل‌آفتاب‌گردان × ۲' },
-                { name: 'رز', id: 79, reward: 'رز × ۲' },
-                { name: 'یاس', id: 80, reward: 'یاس × ۲' },
-                { name: 'نیلوفر', id: 81, reward: 'نیلوفر × ۲' },
-                { name: 'شقایق', id: 82, reward: 'شقایق × ۲' },
-                { name: 'گل‌مردم', id: 83, reward: 'گل‌مردم × ۲' },
-                { name: 'بنفشه', id: 84, reward: 'بنفشه × ۲' },
-                { name: 'گل‌ابی', id: 85, reward: 'گل‌ابی × ۲' },
-                { name: 'گل‌انار', id: 86, reward: 'گل‌انار × ۲' },
-                { name: 'گل‌نارنج', id: 87, reward: 'گل‌نارنج × ۲' },
-                { name: 'میوه', id: 88, reward: 'میوه × ۲' },
-                { name: 'سیب', id: 89, reward: 'سیب × ۲' },
-                { name: 'پرتقال', id: 90, reward: 'پرتقال × ۲' },
-                { name: 'لیمو', id: 91, reward: 'لیمو × ۲' },
-                { name: 'موز', id: 92, reward: 'موز × ۲' },
-                { name: 'آناناس', id: 93, reward: 'آناناس × ۱' },
-                { name: 'هندوانه', id: 94, reward: 'هندوانه × ۱' },
-                { name: 'خربزه', id: 95, reward: 'خربزه × ۱' },
-                { name: 'طالبی', id: 96, reward: 'طالبی × ۱' },
-                { name: 'گیلاس', id: 97, reward: 'گیلاس × ۲' },
-                { name: 'آلبالو', id: 98, reward: 'آلبالو × ۲' },
-                { name: 'هلو', id: 99, reward: 'هلو × ۲' },
-                { name: 'شلیل', id: 100, reward: 'شلیل × ۲' },
-                { name: 'زردآلو', id: 101, reward: 'زردآلو × ۲' },
-                { name: 'آلو', id: 102, reward: 'آلو × ۲' },
-                { name: 'خرما', id: 103, reward: 'خرما × ۲' },
-                { name: 'انجیر', id: 104, reward: 'انجیر × ۲' },
-                { name: 'توت', id: 105, reward: 'توت × ۳' },
-                { name: 'تمشک', id: 106, reward: 'تمشک × ۳' },
-                { name: 'زغال‌اخته', id: 107, reward: 'زغال‌اخته × ۳' },
-                { name: 'بلوبری', id: 108, reward: 'بلوبری × ۳' },
-                { name: 'کشمش', id: 109, reward: 'کشمش × ۲' },
-                { name: 'گردو', id: 110, reward: 'گردو × ۲' },
-                { name: 'پسته', id: 111, reward: 'پسته × ۲' },
-                { name: 'بادام', id: 112, reward: 'بادام × ۲' },
-                { name: 'فندق', id: 113, reward: 'فندق × ۲' },
-                { name: 'بلوط', id: 114, reward: 'بلوط × ۲' },
-                { name: 'شاه‌بلوط', id: 115, reward: 'شاه‌بلوط × ۲' },
-                { name: 'سنجد', id: 116, reward: 'سنجد × ۲' },
-                { name: 'عناب', id: 117, reward: 'عناب × ۲' },
-                { name: 'ازگیل', id: 118, reward: 'ازگیل × ۲' },
-                { name: 'به', id: 119, reward: 'به × ۲' },
-                { name: 'گلابی', id: 120, reward: 'گلابی × ۲' },
-            ];
+        const itemData = [{
+            id: 72,
+            name: 'Diamond',
+            emoji: '💎',
+            category: 'Minerals',
+            desc: 'یک الماس کمیاب و ارزشمند دریافت می‌کنی.',
+            method: 'قرار دادن [72] در نام شخصیت یا حیوان'
+        }, {
+            id: 2,
+            name: 'Stone',
+            emoji: '🪨',
+            category: 'Resources',
+            desc: '۵ سنگ دریافت می‌کنی. برای ساخت و ساز مفید است.',
+            method: 'قرار دادن [2] در نام شخصیت یا حیوان'
+        }, {
+            id: 388,
+            name: 'Wood',
+            emoji: '🌲',
+            category: 'Resources',
+            desc: '۵ چوب دریافت می‌کنی. برای ساخت و ساز ضروری است.',
+            method: 'قرار دادن [388] در نام شخصیت یا حیوان'
+        }, {
+            id: 176,
+            name: 'Egg',
+            emoji: '🥚',
+            category: 'Animal Items',
+            desc: 'یک تخم‌مرغ سفید دریافت می‌کنی.',
+            method: 'قرار دادن [176] در نام شخصیت یا حیوان'
+        }, {
+            id: 166,
+            name: 'Treasure Chest',
+            emoji: '💰',
+            category: 'Items',
+            desc: 'یک صندوق گنج دریافت می‌کنی که شامل آیتم‌های تصادفی است.',
+            method: 'قرار دادن [166] در نام شخصیت یا حیوان'
+        }, {
+            id: 4,
+            name: 'Iron Ore',
+            emoji: '⛏️',
+            category: 'Resources',
+            desc: '۵ سنگ آهن دریافت می‌کنی. برای ارتقا ابزار استفاده می‌شود.',
+            method: 'قرار دادن [4] در نام شخصیت یا حیوان'
+        }, {
+            id: 5,
+            name: 'Gold Ore',
+            emoji: '🥇',
+            category: 'Resources',
+            desc: '۵ سنگ طلا دریافت می‌کنی. برای ارتقا ابزار سطح بالا.',
+            method: 'قرار دادن [5] در نام شخصیت یا حیوان'
+        }, {
+            id: 6,
+            name: 'Iridium Ore',
+            emoji: '💠',
+            category: 'Resources',
+            desc: '۵ سنگ ایریدیوم دریافت می‌کنی. نادرترین سنگ معدن.',
+            method: 'قرار دادن [6] در نام شخصیت یا حیوان'
+        }, {
+            id: 7,
+            name: 'Copper Ore',
+            emoji: '🟠',
+            category: 'Resources',
+            desc: '۵ سنگ مس دریافت می‌کنی. برای ارتقا اولیه ابزار.',
+            method: 'قرار دادن [7] در نام شخصیت یا حیوان'
+        }, {
+            id: 8,
+            name: 'Quartz',
+            emoji: '🔮',
+            category: 'Minerals',
+            desc: 'یک کوارتز شفاف دریافت می‌کنی.',
+            method: 'قرار دادن [8] در نام شخصیت یا حیوان'
+        }, {
+            id: 9,
+            name: 'Ruby',
+            emoji: '🔴',
+            category: 'Minerals',
+            desc: 'یک یاقوت قرمز دریافت می‌کنی.',
+            method: 'قرار دادن [9] در نام شخصیت یا حیوان'
+        }, {
+            id: 10,
+            name: 'Emerald',
+            emoji: '🟢',
+            category: 'Minerals',
+            desc: 'یک زمرد سبز دریافت می‌کنی.',
+            method: 'قرار دادن [10] در نام شخصیت یا حیوان'
+        }, {
+            id: 11,
+            name: 'Sapphire',
+            emoji: '🔵',
+            category: 'Minerals',
+            desc: 'یک یاقوت کبود دریافت می‌کنی.',
+            method: 'قرار دادن [11] در نام شخصیت یا حیوان'
+        }, {
+            id: 12,
+            name: 'Amethyst',
+            emoji: '🟣',
+            category: 'Minerals',
+            desc: 'یک آمیتیست بنفش دریافت می‌کنی.',
+            method: 'قرار دادن [12] در نام شخصیت یا حیوان'
+        }, {
+            id: 13,
+            name: 'Topaz',
+            emoji: '🟡',
+            category: 'Minerals',
+            desc: 'یک توپاز زرد دریافت می‌کنی.',
+            method: 'قرار دادن [13] در نام شخصیت یا حیوان'
+        }, {
+            id: 14,
+            name: 'Wizard’s Book',
+            emoji: '🧙',
+            category: 'Items',
+            desc: 'یک کتاب جادویی از جادوگر دریافت می‌کنی.',
+            method: 'قرار دادن [14] در نام شخصیت یا حیوان'
+        }, {
+            id: 15,
+            name: 'Potato',
+            emoji: '🥔',
+            category: 'Crops',
+            desc: 'یک سیب‌زمینی دریافت می‌کنی.',
+            method: 'قرار دادن [15] در نام شخصیت یا حیوان'
+        }, {
+            id: 16,
+            name: 'Tomato',
+            emoji: '🍅',
+            category: 'Crops',
+            desc: 'یک گوجه‌فرنگی دریافت می‌کنی.',
+            method: 'قرار دادن [16] در نام شخصیت یا حیوان'
+        }, {
+            id: 17,
+            name: 'Corn',
+            emoji: '🌽',
+            category: 'Crops',
+            desc: 'یک ذرت دریافت می‌کنی.',
+            method: 'قرار دادن [17] در نام شخصیت یا حیوان'
+        }, {
+            id: 18,
+            name: 'Pumpkin',
+            emoji: '🎃',
+            category: 'Crops',
+            desc: 'یک کدو تنبل دریافت می‌کنی.',
+            method: 'قرار دادن [18] در نام شخصیت یا حیوان'
+        }, {
+            id: 19,
+            name: 'Grape',
+            emoji: '🍇',
+            category: 'Crops',
+            desc: 'یک خوشه انگور دریافت می‌کنی.',
+            method: 'قرار دادن [19] در نام شخصیت یا حیوان'
+        }, {
+            id: 20,
+            name: 'Strawberry',
+            emoji: '🍓',
+            category: 'Crops',
+            desc: 'یک توت‌فرنگی دریافت می‌کنی.',
+            method: 'قرار دادن [20] در نام شخصیت یا حیوان'
+        }, {
+            id: 21,
+            name: 'Wheat',
+            emoji: '🌾',
+            category: 'Crops',
+            desc: 'یک گندم دریافت می‌کنی.',
+            method: 'قرار دادن [21] در نام شخصیت یا حیوان'
+        }, {
+            id: 22,
+            name: 'Carrot',
+            emoji: '🥕',
+            category: 'Crops',
+            desc: 'یک هویج دریافت می‌کنی.',
+            method: 'قرار دادن [22] در نام شخصیت یا حیوان'
+        }, {
+            id: 23,
+            name: 'Onion',
+            emoji: '🧅',
+            category: 'Crops',
+            desc: 'یک پیاز دریافت می‌کنی.',
+            method: 'قرار دادن [23] در نام شخصیت یا حیوان'
+        }, {
+            id: 24,
+            name: 'Garlic',
+            emoji: '🧄',
+            category: 'Crops',
+            desc: 'یک سیر دریافت می‌کنی.',
+            method: 'قرار دادن [24] در نام شخصیت یا حیوان'
+        }, {
+            id: 25,
+            name: 'Cabbage',
+            emoji: '🥬',
+            category: 'Crops',
+            desc: 'یک کلم دریافت می‌کنی.',
+            method: 'قرار دادن [25] در نام شخصیت یا حیوان'
+        }, {
+            id: 26,
+            name: 'Pepper',
+            emoji: '🌶️',
+            category: 'Crops',
+            desc: 'یک فلفل تند دریافت می‌کنی.',
+            method: 'قرار دادن [26] در نام شخصیت یا حیوان'
+        }, {
+            id: 27,
+            name: 'Eggplant',
+            emoji: '🍆',
+            category: 'Crops',
+            desc: 'یک بادمجان دریافت می‌کنی.',
+            method: 'قرار دادن [27] در نام شخصیت یا حیوان'
+        }, {
+            id: 28,
+            name: 'Cucumber',
+            emoji: '🥒',
+            category: 'Crops',
+            desc: 'یک خیار دریافت می‌کنی.',
+            method: 'قرار دادن [28] در نام شخصیت یا حیوان'
+        }, {
+            id: 29,
+            name: 'Lettuce',
+            emoji: '🥗',
+            category: 'Crops',
+            desc: 'یک کاهو دریافت می‌کنی.',
+            method: 'قرار دادن [29] در نام شخصیت یا حیوان'
+        }, {
+            id: 30,
+            name: 'Apple',
+            emoji: '🍎',
+            category: 'Food',
+            desc: 'یک سیب قرمز دریافت می‌کنی.',
+            method: 'قرار دادن [30] در نام شخصیت یا حیوان'
+        }, {
+            id: 31,
+            name: 'Orange',
+            emoji: '🍊',
+            category: 'Food',
+            desc: 'یک پرتقال دریافت می‌کنی.',
+            method: 'قرار دادن [31] در نام شخصیت یا حیوان'
+        }, {
+            id: 32,
+            name: 'Lemon',
+            emoji: '🍋',
+            category: 'Food',
+            desc: 'یک لیمو دریافت می‌کنی.',
+            method: 'قرار دادن [32] در نام شخصیت یا حیوان'
+        }, {
+            id: 33,
+            name: 'Banana',
+            emoji: '🍌',
+            category: 'Food',
+            desc: 'یک موز دریافت می‌کنی.',
+            method: 'قرار دادن [33] در نام شخصیت یا حیوان'
+        }, {
+            id: 34,
+            name: 'Watermelon',
+            emoji: '🍉',
+            category: 'Food',
+            desc: 'یک هندوانه دریافت می‌کنی.',
+            method: 'قرار دادن [34] در نام شخصیت یا حیوان'
+        }, {
+            id: 35,
+            name: 'Melon',
+            emoji: '🍈',
+            category: 'Food',
+            desc: 'یک خربزه دریافت می‌کنی.',
+            method: 'قرار دادن [35] در نام شخصیت یا حیوان'
+        }, {
+            id: 36,
+            name: 'Cherry',
+            emoji: '🍒',
+            category: 'Food',
+            desc: 'یک گیلاس دریافت می‌کنی.',
+            method: 'قرار دادن [36] در نام شخصیت یا حیوان'
+        }, {
+            id: 37,
+            name: 'Peach',
+            emoji: '🍑',
+            category: 'Food',
+            desc: 'یک هلو دریافت می‌کنی.',
+            method: 'قرار دادن [37] در نام شخصیت یا حیوان'
+        }, {
+            id: 38,
+            name: 'Plum',
+            emoji: '🫐',
+            category: 'Food',
+            desc: 'یک آلو دریافت می‌کنی.',
+            method: 'قرار دادن [38] در نام شخصیت یا حیوان'
+        }, {
+            id: 39,
+            name: 'Fig',
+            emoji: '🫒',
+            category: 'Food',
+            desc: 'یک انجیر دریافت می‌کنی.',
+            method: 'قرار دادن [39] در نام شخصیت یا حیوان'
+        }, {
+            id: 40,
+            name: 'Chicken',
+            emoji: '🐔',
+            category: 'Animal Items',
+            desc: 'یک مرغ دریافت می‌کنی.',
+            method: 'قرار دادن [40] در نام شخصیت یا حیوان'
+        }, {
+            id: 41,
+            name: 'Cow',
+            emoji: '🐄',
+            category: 'Animal Items',
+            desc: 'یک گاو دریافت می‌کنی.',
+            method: 'قرار دادن [41] در نام شخصیت یا حیوان'
+        }, {
+            id: 42,
+            name: 'Pig',
+            emoji: '🐖',
+            category: 'Animal Items',
+            desc: 'یک خوک دریافت می‌کنی.',
+            method: 'قرار دادن [42] در نام شخصیت یا حیوان'
+        }, {
+            id: 43,
+            name: 'Sheep',
+            emoji: '🐑',
+            category: 'Animal Items',
+            desc: 'یک گوسفند دریافت می‌کنی.',
+            method: 'قرار دادن [43] در نام شخصیت یا حیوان'
+        }, {
+            id: 44,
+            name: 'Goat',
+            emoji: '🐐',
+            category: 'Animal Items',
+            desc: 'یک بز دریافت می‌کنی.',
+            method: 'قرار دادن [44] در نام شخصیت یا حیوان'
+        }, {
+            id: 45,
+            name: 'Horse',
+            emoji: '🐴',
+            category: 'Animal Items',
+            desc: 'یک اسب دریافت می‌کنی.',
+            method: 'قرار دادن [45] در نام شخصیت یا حیوان'
+        }, {
+            id: 46,
+            name: 'Donkey',
+            emoji: '🐴',
+            category: 'Animal Items',
+            desc: 'یک الاغ دریافت می‌کنی.',
+            method: 'قرار دادن [46] در نام شخصیت یا حیوان'
+        }, {
+            id: 47,
+            name: 'Camel',
+            emoji: '🐫',
+            category: 'Animal Items',
+            desc: 'یک شتر دریافت می‌کنی.',
+            method: 'قرار دادن [47] در نام شخصیت یا حیوان'
+        }, {
+            id: 48,
+            name: 'Llama',
+            emoji: '🦙',
+            category: 'Animal Items',
+            desc: 'یک لاما دریافت می‌کنی.',
+            method: 'قرار دادن [48] در نام شخصیت یا حیوان'
+        }, {
+            id: 49,
+            name: 'Alpaca',
+            emoji: '🦙',
+            category: 'Animal Items',
+            desc: 'یک آلپاکا دریافت می‌کنی.',
+            method: 'قرار دادن [49] در نام شخصیت یا حیوان'
+        }, {
+            id: 50,
+            name: 'Milk',
+            emoji: '🥛',
+            category: 'Food',
+            desc: 'یک بطری شیر دریافت می‌کنی.',
+            method: 'قرار دادن [50] در نام شخصیت یا حیوان'
+        }, {
+            id: 51,
+            name: 'Cheese',
+            emoji: '🧀',
+            category: 'Food',
+            desc: 'یک تکه پنیر دریافت می‌کنی.',
+            method: 'قرار دادن [51] در نام شخصیت یا حیوان'
+        }, {
+            id: 52,
+            name: 'Wool',
+            emoji: '🧶',
+            category: 'Resources',
+            desc: 'یک تکه پشم دریافت می‌کنی.',
+            method: 'قرار دادن [52] در نام شخصیت یا حیوان'
+        }, {
+            id: 53,
+            name: 'Large Egg',
+            emoji: '🥚',
+            category: 'Animal Items',
+            desc: 'یک تخم‌مرغ بزرگ دریافت می‌کنی.',
+            method: 'قرار دادن [53] در نام شخصیت یا حیوان'
+        }, {
+            id: 54,
+            name: 'Golden Egg',
+            emoji: '🥚',
+            category: 'Animal Items',
+            desc: 'یک تخم‌مرغ طلایی دریافت می‌کنی.',
+            method: 'قرار دادن [54] در نام شخصیت یا حیوان'
+        }, {
+            id: 55,
+            name: 'Axe',
+            emoji: '🪓',
+            category: 'Weapons',
+            desc: 'یک تبر دریافت می‌کنی.',
+            method: 'قرار دادن [55] در نام شخصیت یا حیوان'
+        }, {
+            id: 56,
+            name: 'Pickaxe',
+            emoji: '⛏️',
+            category: 'Weapons',
+            desc: 'یک کلنگ دریافت می‌کنی.',
+            method: 'قرار دادن [56] در نام شخصیت یا حیوان'
+        }, {
+            id: 57,
+            name: 'Hammer',
+            emoji: '🔨',
+            category: 'Weapons',
+            desc: 'یک چکش دریافت می‌کنی.',
+            method: 'قرار دادن [57] در نام شخصیت یا حیوان'
+        }, {
+            id: 58,
+            name: 'Scythe',
+            emoji: '🌾',
+            category: 'Weapons',
+            desc: 'یک داس دریافت می‌کنی.',
+            method: 'قرار دادن [58] در نام شخصیت یا حیوان'
+        }, {
+            id: 59,
+            name: 'Hoe',
+            emoji: '🧹',
+            category: 'Weapons',
+            desc: 'یک چنگک دریافت می‌کنی.',
+            method: 'قرار دادن [59] در نام شخصیت یا حیوان'
+        }, {
+            id: 60,
+            name: 'Sprayer',
+            emoji: '💨',
+            category: 'Weapons',
+            desc: 'یک سمپاش دریافت می‌کنی.',
+            method: 'قرار دادن [60] در نام شخصیت یا حیوان'
+        }, {
+            id: 61,
+            name: 'Wrench',
+            emoji: '🔧',
+            category: 'Weapons',
+            desc: 'یک آچار دریافت می‌کنی.',
+            method: 'قرار دادن [61] در نام شخصیت یا حیوان'
+        }, {
+            id: 62,
+            name: 'Honey',
+            emoji: '🍯',
+            category: 'Food',
+            desc: 'یک شیشه عسل دریافت می‌کنی.',
+            method: 'قرار دادن [62] در نام شخصیت یا حیوان'
+        }, {
+            id: 63,
+            name: 'Chocolate',
+            emoji: '🍫',
+            category: 'Food',
+            desc: 'یک تخته شکلات دریافت می‌کنی.',
+            method: 'قرار دادن [63] در نام شخصیت یا حیوان'
+        }, {
+            id: 64,
+            name: 'Cake',
+            emoji: '🎂',
+            category: 'Food',
+            desc: 'یک کیک دریافت می‌کنی.',
+            method: 'قرار دادن [64] در نام شخصیت یا حیوان'
+        }, {
+            id: 65,
+            name: 'Bread',
+            emoji: '🍞',
+            category: 'Food',
+            desc: 'یک نان دریافت می‌کنی.',
+            method: 'قرار دادن [65] در نام شخصیت یا حیوان'
+        }, {
+            id: 66,
+            name: 'Flour',
+            emoji: '🌾',
+            category: 'Food',
+            desc: 'یک کیسه آرد دریافت می‌کنی.',
+            method: 'قرار دادن [66] در نام شخصیت یا حیوان'
+        }, {
+            id: 67,
+            name: 'Rice',
+            emoji: '🍚',
+            category: 'Food',
+            desc: 'یک کیسه برنج دریافت می‌کنی.',
+            method: 'قرار دادن [67] در نام شخصیت یا حیوان'
+        }, {
+            id: 68,
+            name: 'Butter',
+            emoji: '🧈',
+            category: 'Food',
+            desc: 'یک تکه کره دریافت می‌کنی.',
+            method: 'قرار دادن [68] در نام شخصیت یا حیوان'
+        }, {
+            id: 69,
+            name: 'Gold Coin',
+            emoji: '🪙',
+            category: 'Items',
+            desc: '۱۰۰ سکه طلا دریافت می‌کنی.',
+            method: 'قرار دادن [69] در نام شخصیت یا حیوان'
+        }, {
+            id: 70,
+            name: 'Big Diamond',
+            emoji: '💎',
+            category: 'Minerals',
+            desc: 'یک الماس بزرگ و ارزشمند دریافت می‌کنی.',
+            method: 'قرار دادن [70] در نام شخصیت یا حیوان'
+        }, {
+            id: 71,
+            name: 'Lucky Charm',
+            emoji: '🍀',
+            category: 'Items',
+            desc: 'یک طلسم شانس دریافت می‌کنی.',
+            method: 'قرار دادن [71] در نام شخصیت یا حیوان'
+        }, {
+            id: 72,
+            name: 'Infinite Energy',
+            emoji: '⚡',
+            category: 'Items',
+            desc: 'انرژی بی‌نهایت دریافت می‌کنی (یک بار مصرف).',
+            method: 'قرار دادن [72] در نام شخصیت یا حیوان'
+        }, {
+            id: 73,
+            name: 'Full Health',
+            emoji: '❤️',
+            category: 'Items',
+            desc: 'سلامتی کامل دریافت می‌کنی.',
+            method: 'قرار دادن [73] در نام شخصیت یا حیوان'
+        }, {
+            id: 74,
+            name: 'Quick XP',
+            emoji: '⭐',
+            category: 'Items',
+            desc: 'تجربه سریع دریافت می‌کنی.',
+            method: 'قرار دادن [74] در نام شخصیت یا حیوان'
+        }, {
+            id: 75,
+            name: 'Magic Water',
+            emoji: '💧',
+            category: 'Items',
+            desc: 'آب جادویی دریافت می‌کنی.',
+            method: 'قرار دادن [75] در نام شخصیت یا حیوان'
+        }, {
+            id: 76,
+            name: 'Legendary Food',
+            emoji: '🍲',
+            category: 'Food',
+            desc: 'غذای افسانه‌ای دریافت می‌کنی.',
+            method: 'قرار دادن [76] در نام شخصیت یا حیوان'
+        }, {
+            id: 77,
+            name: 'Golden Key',
+            emoji: '🔑',
+            category: 'Items',
+            desc: 'یک کلید طلایی دریافت می‌کنی.',
+            method: 'قرار دادن [77] در نام شخصیت یا حیوان'
+        }, {
+            id: 78,
+            name: 'Treasure Map',
+            emoji: '🗺️',
+            category: 'Items',
+            desc: 'یک نقشه گنج دریافت می‌کنی.',
+            method: 'قرار دادن [78] در نام شخصیت یا حیوان'
+        }, {
+            id: 79,
+            name: 'Magic Book',
+            emoji: '📖',
+            category: 'Items',
+            desc: 'یک کتاب جادو دریافت می‌کنی.',
+            method: 'قرار دادن [79] در نام شخصیت یا حیوان'
+        }, {
+            id: 80,
+            name: 'Rare Plant',
+            emoji: '🌺',
+            category: 'Items',
+            desc: 'یک گیاه کمیاب دریافت می‌کنی.',
+            method: 'قرار دادن [80] در نام شخصیت یا حیوان'
+        }, {
+            id: 81,
+            name: 'Magic Mushroom',
+            emoji: '🍄',
+            category: 'Items',
+            desc: 'یک قارچ سحرآمیز دریافت می‌کنی.',
+            method: 'قرار دادن [81] در نام شخصیت یا حیوان'
+        }, {
+            id: 82,
+            name: 'Dragon Fruit',
+            emoji: '🐉',
+            category: 'Food',
+            desc: 'یک میوه اژدها دریافت می‌کنی.',
+            method: 'قرار دادن [82] در نام شخصیت یا حیوان'
+        }, {
+            id: 83,
+            name: 'Pearl',
+            emoji: '🦪',
+            category: 'Minerals',
+            desc: 'یک مروارید دریافت می‌کنی.',
+            method: 'قرار دادن [83] در نام شخصیت یا حیوان'
+        }, {
+            id: 84,
+            name: 'Protection Charm',
+            emoji: '🛡️',
+            category: 'Items',
+            desc: 'یک طلسم محافظ دریافت می‌کنی.',
+            method: 'قرار دادن [84] در نام شخصیت یا حیوان'
+        }, {
+            id: 85,
+            name: 'Magic Wand',
+            emoji: '🪄',
+            category: 'Items',
+            desc: 'یک چوب جادو دریافت می‌کنی.',
+            method: 'قرار دادن [85] در نام شخصیت یا حیوان'
+        }, {
+            id: 86,
+            name: 'Fertile Soil',
+            emoji: '🌱',
+            category: 'Resources',
+            desc: 'خاک حاصلخیز دریافت می‌کنی.',
+            method: 'قرار دادن [86] در نام شخصیت یا حیوان'
+        }, {
+            id: 87,
+            name: 'Comet',
+            emoji: '☄️',
+            category: 'Items',
+            desc: 'یک ستاره دنباله‌دار دریافت می‌کنی.',
+            method: 'قرار دادن [87] در نام شخصیت یا حیوان'
+        }, {
+            id: 88,
+            name: 'Small Planet',
+            emoji: '🪐',
+            category: 'Items',
+            desc: 'یک سیاره کوچک دریافت می‌کنی.',
+            method: 'قرار دادن [88] در نام شخصیت یا حیوان'
+        }, {
+            id: 89,
+            name: 'Full Moon',
+            emoji: '🌕',
+            category: 'Items',
+            desc: 'ماه کامل دریافت می‌کنی.',
+            method: 'قرار دادن [89] در نام شخصیت یا حیوان'
+        }, {
+            id: 90,
+            name: 'Bright Sun',
+            emoji: '☀️',
+            category: 'Items',
+            desc: 'خورشید درخشان دریافت می‌کنی.',
+            method: 'قرار دادن [90] در نام شخصیت یا حیوان'
+        }, {
+            id: 91,
+            name: 'Galaxy',
+            emoji: '🌌',
+            category: 'Items',
+            desc: 'یک کهکشان دریافت می‌کنی.',
+            method: 'قرار دادن [91] در نام شخصیت یا حیوان'
+        }, {
+            id: 92,
+            name: 'Black Hole',
+            emoji: '⚫',
+            category: 'Items',
+            desc: 'یک سیاه‌چاله دریافت می‌کنی.',
+            method: 'قرار دادن [92] در نام شخصیت یا حیوان'
+        }, {
+            id: 93,
+            name: 'Supernova',
+            emoji: '💥',
+            category: 'Items',
+            desc: 'یک ابرنواختر دریافت می‌کنی.',
+            method: 'قرار دادن [93] در نام شخصیت یا حیوان'
+        }, {
+            id: 94,
+            name: 'Telescope',
+            emoji: '🔭',
+            category: 'Items',
+            desc: 'یک تلسکوپ دریافت می‌کنی.',
+            method: 'قرار دادن [94] در نام شخصیت یا حیوان'
+        }, {
+            id: 95,
+            name: 'Microscope',
+            emoji: '🔬',
+            category: 'Items',
+            desc: 'یک میکروسکوپ دریافت می‌کنی.',
+            method: 'قرار دادن [95] در نام شخصیت یا حیوان'
+        }, {
+            id: 96,
+            name: 'Robot',
+            emoji: '🤖',
+            category: 'Items',
+            desc: 'یک ربات دریافت می‌کنی.',
+            method: 'قرار دادن [96] در نام شخصیت یا حیوان'
+        }, {
+            id: 97,
+            name: 'AI Core',
+            emoji: '🧠',
+            category: 'Items',
+            desc: 'یک هسته هوش مصنوعی دریافت می‌کنی.',
+            method: 'قرار دادن [97] در نام شخصیت یا حیوان'
+        }, {
+            id: 98,
+            name: 'Space',
+            emoji: '🚀',
+            category: 'Items',
+            desc: 'فضا دریافت می‌کنی! (آیتم نمادین)',
+            method: 'قرار دادن [98] در نام شخصیت یا حیوان'
+        }, {
+            id: 99,
+            name: 'Time',
+            emoji: '⏳',
+            category: 'Items',
+            desc: 'زمان دریافت می‌کنی! (آیتم نمادین)',
+            method: 'قرار دادن [99] در نام شخصیت یا حیوان'
+        }, {
+            id: 100,
+            name: 'Parallel Universe',
+            emoji: '🌀',
+            category: 'Items',
+            desc: 'یک جهان موازی دریافت می‌کنی!',
+            method: 'قرار دادن [100] در نام شخصیت یا حیوان'
+        }];
 
-            // گسترش به ۷۰۰ چیت با تنوع
-            const rewards = [
-                'سکه × ۵', 'سکه × ۱۰', 'سکه × ۲۰', 'الماس × ۱', 'الماس × ۲',
-                'طلسم × ۱', 'طلسم × ۲', 'انرژی × ۱۰', 'انرژی × ۲۰', 'تجربه × ۵',
-                'تجربه × ۱۰', 'سلامتی × ۵', 'سلامتی × ۱۰', 'آب × ۳', 'غذا × ۲'
-            ];
+        // ================================================
+        // استخراج دسته‌بندی‌ها
+        // ================================================
+        const categories = [...new Set(itemData.map(item => item.category))];
 
-            const cheats = [];
-            const usedIds = new Set();
-
-            // ابتدا آیتم‌های پایه
-            items.forEach((item, idx) => {
-                if (cheats.length >= 700) return;
-                const id = 1000 + idx;
-                cheats.push({
-                    id: id,
-                    code: `item_${item.id}`,
-                    name: item.name,
-                    reward: item.reward
-                });
-            });
-
-            // پر کردن مابقی با چیت‌های متنوع
-            let counter = 1;
-            while (cheats.length < 700) {
-                const name = `چیت ${counter}`;
-                const reward = rewards[counter % rewards.length];
-                const id = 2000 + counter;
-                const code = `cheat_${String(counter).padStart(3, '0')}`;
-                cheats.push({
-                    id: id,
-                    code: code,
-                    name: name,
-                    reward: reward
-                });
-                counter++;
-            }
-
-            return cheats;
-        }
-
-        const allCheats = generateCheats();
+        // ================================================
+        // متغیرهای وضعیت
+        // ================================================
+        let currentFilter = 'all';
         let copyCounter = 0;
 
         // ================================================
-        // رندر کردن چیت‌ها
+        // رندر کردن کارت‌ها
         // ================================================
-        function renderCheats(cheats) {
+        function renderItems(items) {
             const grid = document.getElementById('cheatGrid');
             grid.innerHTML = '';
 
-            cheats.forEach((cheat, index) => {
+            if (items.length === 0) {
+                grid.innerHTML = `
+                    <div style="text-align:center;padding:60px 20px;color:rgba(255,255,255,0.1);grid-column:1/-1;">
+                        <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+                        <div style="font-size:16px;">هیچ آیتمی با این جستجو پیدا نشد</div>
+                    </div>
+                `;
+                return;
+            }
+
+            items.forEach((item, index) => {
                 const card = document.createElement('div');
                 card.className = 'cheat-card';
 
-                const idxSpan = document.createElement('span');
-                idxSpan.className = 'index';
-                idxSpan.textContent = `[${cheat.id}]`;
+                // Top row
+                const topRow = document.createElement('div');
+                topRow.className = 'top-row';
+
+                const emojiSpan = document.createElement('span');
+                emojiSpan.className = 'emoji';
+                emojiSpan.textContent = item.emoji;
+
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'name';
+                nameSpan.textContent = item.name;
+
+                const catTag = document.createElement('span');
+                catTag.className = 'category-tag';
+                catTag.textContent = item.category;
+
+                topRow.appendChild(emojiSpan);
+                topRow.appendChild(nameSpan);
+                topRow.appendChild(catTag);
+
+                // Description
+                const descDiv = document.createElement('div');
+                descDiv.className = 'desc';
+                descDiv.textContent = item.desc;
+
+                // Code box
+                const codeBox = document.createElement('div');
+                codeBox.className = 'code-box';
 
                 const codeSpan = document.createElement('span');
                 codeSpan.className = 'code';
-                codeSpan.textContent = cheat.code;
-
-                const rewardSpan = document.createElement('span');
-                rewardSpan.className = 'reward';
-                rewardSpan.textContent = cheat.reward;
+                codeSpan.textContent = `[${item.id}]`;
 
                 const copyBtn = document.createElement('button');
                 copyBtn.className = 'copy-btn';
                 copyBtn.textContent = '📋 کپی';
                 copyBtn.onclick = function(e) {
                     e.stopPropagation();
-                    copyToClipboard(cheat.code, copyBtn);
+                    copyToClipboard(`[${item.id}]`, copyBtn);
                 };
 
-                card.appendChild(idxSpan);
-                card.appendChild(codeSpan);
-                card.appendChild(rewardSpan);
-                card.appendChild(copyBtn);
+                codeBox.appendChild(codeSpan);
+                codeBox.appendChild(copyBtn);
+
+                // Method
+                const methodDiv = document.createElement('div');
+                methodDiv.className = 'method';
+                methodDiv.textContent = `📌 روش: ${item.method}`;
+
+                card.appendChild(topRow);
+                card.appendChild(descDiv);
+                card.appendChild(codeBox);
+                card.appendChild(methodDiv);
 
                 // کلیک روی کارت برای کپی
                 card.addEventListener('click', function() {
-                    copyToClipboard(cheat.code, this.querySelector('.copy-btn'));
+                    copyToClipboard(`[${item.id}]`, this.querySelector('.copy-btn'));
                 });
 
                 grid.appendChild(card);
             });
 
-            document.getElementById('totalCount').textContent = '۷۰۰';
-            document.getElementById('visibleCount').textContent = cheats.length;
+            document.getElementById('totalCount').textContent = items.length;
         }
 
         // ================================================
@@ -662,10 +1413,9 @@
 
         function showCopied(btn) {
             const originalText = btn.textContent;
-            btn.textContent = '✅ کپی';
+            btn.textContent = '✅ کپی شد';
             btn.classList.add('copied');
             copyCounter++;
-            document.getElementById('copyCount').textContent = copyCounter;
 
             setTimeout(() => {
                 btn.textContent = originalText;
@@ -674,36 +1424,71 @@
         }
 
         // ================================================
-        // جستجو
+        // فیلتر و جستجو
         // ================================================
-        function filterCheats() {
+        function filterItems() {
             const query = document.getElementById('searchInput').value.trim().toLowerCase();
-            const grid = document.getElementById('cheatGrid');
+            let filtered = itemData;
 
-            if (query === '') {
-                renderCheats(allCheats);
-                return;
+            // فیلتر دسته‌بندی
+            if (currentFilter !== 'all') {
+                filtered = filtered.filter(item => item.category === currentFilter);
             }
 
-            const filtered = allCheats.filter(cheat =>
-                cheat.code.toLowerCase().includes(query) ||
-                cheat.name.toLowerCase().includes(query) ||
-                cheat.reward.toLowerCase().includes(query) ||
-                String(cheat.id).includes(query)
-            );
+            // جستجو
+            if (query !== '') {
+                filtered = filtered.filter(item =>
+                    item.name.toLowerCase().includes(query) ||
+                    String(item.id).includes(query) ||
+                    item.category.toLowerCase().includes(query) ||
+                    item.desc.toLowerCase().includes(query)
+                );
+            }
 
-            renderCheats(filtered);
+            renderItems(filtered);
+        }
+
+        function setFilter(category) {
+            currentFilter = category;
+
+            // به‌روزرسانی دکمه‌های فیلتر
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.filter === category) {
+                    btn.classList.add('active');
+                }
+            });
+
+            filterItems();
+        }
+
+        // ================================================
+        // ساخت دکمه‌های فیلتر
+        // ================================================
+        function buildFilterButtons() {
+            const filterBox = document.getElementById('filterBox');
+
+            // دکمه "همه" از قبل وجود داره
+
+            categories.forEach(cat => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.filter = cat;
+                btn.textContent = cat;
+                btn.onclick = function() { setFilter(cat); };
+                filterBox.appendChild(btn);
+            });
         }
 
         // ================================================
         // بارگذاری اولیه
         // ================================================
-        renderCheats(allCheats);
+        buildFilterButtons();
+        renderItems(itemData);
 
-        console.log('🎮 چیت‌های استاردو ولی - ۷۰۰ چیت');
-        console.log('✨ ساخته شده توسط ریک از RSN');
-        console.log(`📊 تعداد کل چیت‌ها: ${allCheats.length}`);
+        console.log('🌟 Stardew Valley Cheat Codes - RSN');
+        console.log(`📊 تعداد کل کدها: ${itemData.length}`);
     </script>
 
 </body>
-              </html>
+                </html>
