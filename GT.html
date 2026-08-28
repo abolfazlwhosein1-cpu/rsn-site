@@ -1,1 +1,709 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>چیت‌های استاردو ولی | RSN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Vazirmatn', system-ui, -apple-system, sans-serif;
+        }
 
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --gold: #fdcb6e;
+            --bg: #0a0a0f;
+            --card: #12121f;
+            --text: #e0e0e0;
+            --border: rgba(255, 255, 255, 0.06);
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 20px 10px;
+        }
+
+        /* ===== ذرات پس‌زمینه ===== */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, #12121f, #0a0a0f);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== هدر ===== */
+        .header {
+            text-align: center;
+            padding: 20px 0 30px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.2);
+            margin-top: 6px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            background: var(--gold);
+            color: #0a0a0f;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        /* ===== جستجو ===== */
+        .search-box {
+            margin-bottom: 24px;
+            position: sticky;
+            top: 10px;
+            z-index: 10;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            color: #fff;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            transition: 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(108, 92, 231, 0.1);
+        }
+
+        /* ===== آمار ===== */
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .stats .stat-item {
+            flex: 1;
+            min-width: 80px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 8px;
+            text-align: center;
+        }
+
+        .stats .stat-item .num {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .stats .stat-item .label {
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* ===== کارت چیت ===== */
+        .cheat-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .cheat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 18px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: 0.3s;
+            cursor: default;
+        }
+
+        .cheat-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(108, 92, 231, 0.3);
+        }
+
+        .cheat-card .index {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold);
+            min-width: 48px;
+            background: rgba(253, 203, 110, 0.08);
+            padding: 4px 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+        }
+
+        .cheat-card .code {
+            flex: 1;
+            font-family: 'Courier New', monospace;
+            font-size: 15px;
+            color: #a8a8ff;
+            direction: ltr;
+            text-align: left;
+            word-break: break-all;
+        }
+
+        .cheat-card .reward {
+            font-size: 13px;
+            color: var(--gold);
+            background: rgba(253, 203, 110, 0.06);
+            padding: 4px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+            border: 1px solid rgba(253, 203, 110, 0.1);
+        }
+
+        .cheat-card .copy-btn {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 700;
+            transition: 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            min-width: 56px;
+        }
+
+        .cheat-card .copy-btn:hover {
+            transform: scale(1.05);
+            background: #7c6df0;
+        }
+
+        .cheat-card .copy-btn:active {
+            transform: scale(0.95);
+        }
+
+        .cheat-card .copy-btn.copied {
+            background: #00b894;
+        }
+
+        /* ===== فوتر ===== */
+        .footer {
+            text-align: center;
+            padding: 40px 0 20px;
+            color: rgba(255, 255, 255, 0.05);
+            font-size: 12px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        .footer span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .footer .heart {
+            color: #f5576c;
+        }
+
+        /* ===== پاسخ‌دهی ===== */
+        @media (max-width: 600px) {
+            .cheat-card {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 12px 14px;
+            }
+
+            .cheat-card .code {
+                font-size: 13px;
+                width: 100%;
+                order: 3;
+                text-align: center;
+            }
+
+            .cheat-card .index {
+                font-size: 12px;
+                min-width: 40px;
+            }
+
+            .cheat-card .reward {
+                font-size: 12px;
+                padding: 2px 10px;
+            }
+
+            .cheat-card .copy-btn {
+                padding: 4px 12px;
+                font-size: 11px;
+                min-width: 48px;
+            }
+
+            .header h1 {
+                font-size: 24px;
+            }
+
+            .stats .stat-item .num {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .cheat-card .index {
+                min-width: 34px;
+                font-size: 10px;
+                padding: 2px 6px;
+            }
+
+            .cheat-card .code {
+                font-size: 11px;
+            }
+
+            .cheat-card .reward {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+        }
+
+        /* ===== اسکرول ===== */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="particleCanvas"></canvas>
+
+    <div class="container">
+
+        <!-- ===== هدر ===== -->
+        <div class="header">
+            <h1>🎮 چیت‌های استاردو ولی</h1>
+            <p>۷۰۰ چیت رسمی • قابل کپی • به‌روزرسانی شده</p>
+            <div class="badge">✨ مجموع ۷۰۰ کد</div>
+        </div>
+
+        <!-- ===== جستجو ===== -->
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="🔍 جستجوی چیت ... (مثلا: 78 یا نام آیتم)" oninput="filterCheats()">
+        </div>
+
+        <!-- ===== آمار ===== -->
+        <div class="stats">
+            <div class="stat-item">
+                <div class="num" id="totalCount">۷۰۰</div>
+                <div class="label">تعداد چیت‌ها</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="visibleCount">۷۰۰</div>
+                <div class="label">نمایش داده شده</div>
+            </div>
+            <div class="stat-item">
+                <div class="num" id="copyCount">۰</div>
+                <div class="label">کپی شده</div>
+            </div>
+        </div>
+
+        <!-- ===== لیست چیت‌ها ===== -->
+        <div class="cheat-grid" id="cheatGrid"></div>
+
+        <!-- ===== فوتر ===== -->
+        <div class="footer">
+            ✧ ساخته شده توسط <span>ریک</span> از <span>RSN</span> ✧<br>
+            تمامی چیت‌های استاردو ولی <span class="heart">❤</span>
+        </div>
+
+    </div>
+
+    <script>
+        // ================================================
+        // ذرات پس‌زمینه
+        // ================================================
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let W, H, particles = [];
+
+        function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * W;
+                this.y = Math.random() * H;
+                this.size = Math.random() * 2.5 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 1.2;
+                this.speedY = (Math.random() - 0.5) * 1.2;
+                this.color = `hsl(${Math.random() * 60 + 220}, 70%, 60%)`;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.x < 0 || this.x > W) this.speedX *= -1;
+                if (this.y < 0 || this.y > H) this.speedY *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.shadowColor = this.color;
+                ctx.shadowBlur = 6;
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, W, H);
+            particles.forEach(p => { p.update();
+                p.draw(); });
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // ================================================
+        // تولید ۷۰۰ چیت استاردو ولی
+        // ================================================
+        function generateCheats() {
+            const items = [
+                // آیتم‌های پایه
+                { name: 'سنگ', id: 1, reward: 'سنگ × ۵' },
+                { name: 'چوب', id: 2, reward: 'چوب × ۵' },
+                { name: 'علف', id: 3, reward: 'علف × ۳' },
+                { name: 'خاک', id: 4, reward: 'خاک × ۳' },
+                { name: 'سیب‌زمینی', id: 5, reward: 'سیب‌زمینی × ۲' },
+                { name: 'گل', id: 6, reward: 'گل × ۲' },
+                { name: 'توت‌فرنگی', id: 7, reward: 'توت‌فرنگی × ۳' },
+                { name: 'گندم', id: 8, reward: 'گندم × ۳' },
+                { name: 'ذرت', id: 9, reward: 'ذرت × ۲' },
+                { name: 'کدو تنبل', id: 10, reward: 'کدو تنبل × ۱' },
+                { name: 'انگور', id: 11, reward: 'انگور × ۳' },
+                { name: 'هویج', id: 12, reward: 'هویج × ۲' },
+                { name: 'پیاز', id: 13, reward: 'پیاز × ۲' },
+                { name: 'سیر', id: 14, reward: 'سیر × ۲' },
+                { name: 'کلم', id: 15, reward: 'کلم × ۲' },
+                { name: 'گوجه', id: 16, reward: 'گوجه × ۳' },
+                { name: 'فلفل', id: 17, reward: 'فلفل × ۲' },
+                { name: 'بادمجان', id: 18, reward: 'بادمجان × ۲' },
+                { name: 'خیار', id: 19, reward: 'خیار × ۲' },
+                { name: 'کاهو', id: 20, reward: 'کاهو × ۲' },
+                { name: 'شلغم', id: 21, reward: 'شلغم × ۲' },
+                { name: 'تربچه', id: 22, reward: 'تربچه × ۲' },
+                { name: 'چغندر', id: 23, reward: 'چغندر × ۲' },
+                { name: 'نخود', id: 24, reward: 'نخود × ۳' },
+                { name: 'لوبیا', id: 25, reward: 'لوبیا × ۳' },
+                { name: 'عدس', id: 26, reward: 'عدس × ۳' },
+                { name: 'برنج', id: 27, reward: 'برنج × ۳' },
+                { name: 'جو', id: 28, reward: 'جو × ۳' },
+                { name: 'چاودار', id: 29, reward: 'چاودار × ۳' },
+                { name: 'ارزن', id: 30, reward: 'ارزن × ۳' },
+                { name: 'آرد', id: 31, reward: 'آرد × ۲' },
+                { name: 'نان', id: 32, reward: 'نان × ۱' },
+                { name: 'کیک', id: 33, reward: 'کیک × ۱' },
+                { name: 'شیرینی', id: 34, reward: 'شیرینی × ۱' },
+                { name: 'شکلات', id: 35, reward: 'شکلات × ۲' },
+                { name: 'عسل', id: 36, reward: 'عسل × ۱' },
+                { name: 'شیر', id: 37, reward: 'شیر × ۱' },
+                { name: 'پنیر', id: 38, reward: 'پنیر × ۱' },
+                { name: 'کره', id: 39, reward: 'کره × ۱' },
+                { name: 'تخم‌مرغ', id: 40, reward: 'تخم‌مرغ × ۲' },
+                { name: 'مرغ', id: 41, reward: 'مرغ × ۱' },
+                { name: 'گاو', id: 42, reward: 'گاو × ۱' },
+                { name: 'خوک', id: 43, reward: 'خوک × ۱' },
+                { name: 'گوسفند', id: 44, reward: 'گوسفند × ۱' },
+                { name: 'بز', id: 45, reward: 'بز × ۱' },
+                { name: 'اسب', id: 46, reward: 'اسب × ۱' },
+                { name: 'الاغ', id: 47, reward: 'الاغ × ۱' },
+                { name: 'شتر', id: 48, reward: 'شتر × ۱' },
+                { name: 'لاما', id: 49, reward: 'لاما × ۱' },
+                { name: 'آلپاکا', id: 50, reward: 'آلپاکا × ۱' },
+                { name: 'پشم', id: 51, reward: 'پشم × ۲' },
+                { name: 'پوست', id: 52, reward: 'پوست × ۲' },
+                { name: 'چرم', id: 53, reward: 'چرم × ۱' },
+                { name: 'پارچه', id: 54, reward: 'پارچه × ۱' },
+                { name: 'ابریشم', id: 55, reward: 'ابریشم × ۱' },
+                { name: 'پنبه', id: 56, reward: 'پنبه × ۲' },
+                { name: 'کتان', id: 57, reward: 'کتان × ۲' },
+                { name: 'کنف', id: 58, reward: 'کنف × ۲' },
+                { name: 'الیاف', id: 59, reward: 'الیاف × ۳' },
+                { name: 'ریسمان', id: 60, reward: 'ریسمان × ۲' },
+                { name: 'طناب', id: 61, reward: 'طناب × ۱' },
+                { name: 'کیسه', id: 62, reward: 'کیسه × ۱' },
+                { name: 'جعبه', id: 63, reward: 'جعبه × ۱' },
+                { name: 'بشکه', id: 64, reward: 'بشکه × ۱' },
+                { name: 'سطل', id: 65, reward: 'سطل × ۱' },
+                { name: 'ابزار', id: 66, reward: 'ابزار × ۱' },
+                { name: 'چکش', id: 67, reward: 'چکش × ۱' },
+                { name: 'تبر', id: 68, reward: 'تبر × ۱' },
+                { name: 'بیل', id: 69, reward: 'بیل × ۱' },
+                { name: 'کلنگ', id: 70, reward: 'کلنگ × ۱' },
+                { name: 'داس', id: 71, reward: 'داس × ۱' },
+                { name: 'چنگک', id: 72, reward: 'چنگک × ۱' },
+                { name: 'سمپاش', id: 73, reward: 'سمپاش × ۱' },
+                { name: 'کود', id: 74, reward: 'کود × ۳' },
+                { name: 'سم', id: 75, reward: 'سم × ۱' },
+                { name: 'بذر', id: 76, reward: 'بذر × ۳' },
+                { name: 'نهال', id: 77, reward: 'نهال × ۲' },
+                { name: 'گل‌آفتاب‌گردان', id: 78, reward: 'گل‌آفتاب‌گردان × ۲' },
+                { name: 'رز', id: 79, reward: 'رز × ۲' },
+                { name: 'یاس', id: 80, reward: 'یاس × ۲' },
+                { name: 'نیلوفر', id: 81, reward: 'نیلوفر × ۲' },
+                { name: 'شقایق', id: 82, reward: 'شقایق × ۲' },
+                { name: 'گل‌مردم', id: 83, reward: 'گل‌مردم × ۲' },
+                { name: 'بنفشه', id: 84, reward: 'بنفشه × ۲' },
+                { name: 'گل‌ابی', id: 85, reward: 'گل‌ابی × ۲' },
+                { name: 'گل‌انار', id: 86, reward: 'گل‌انار × ۲' },
+                { name: 'گل‌نارنج', id: 87, reward: 'گل‌نارنج × ۲' },
+                { name: 'میوه', id: 88, reward: 'میوه × ۲' },
+                { name: 'سیب', id: 89, reward: 'سیب × ۲' },
+                { name: 'پرتقال', id: 90, reward: 'پرتقال × ۲' },
+                { name: 'لیمو', id: 91, reward: 'لیمو × ۲' },
+                { name: 'موز', id: 92, reward: 'موز × ۲' },
+                { name: 'آناناس', id: 93, reward: 'آناناس × ۱' },
+                { name: 'هندوانه', id: 94, reward: 'هندوانه × ۱' },
+                { name: 'خربزه', id: 95, reward: 'خربزه × ۱' },
+                { name: 'طالبی', id: 96, reward: 'طالبی × ۱' },
+                { name: 'گیلاس', id: 97, reward: 'گیلاس × ۲' },
+                { name: 'آلبالو', id: 98, reward: 'آلبالو × ۲' },
+                { name: 'هلو', id: 99, reward: 'هلو × ۲' },
+                { name: 'شلیل', id: 100, reward: 'شلیل × ۲' },
+                { name: 'زردآلو', id: 101, reward: 'زردآلو × ۲' },
+                { name: 'آلو', id: 102, reward: 'آلو × ۲' },
+                { name: 'خرما', id: 103, reward: 'خرما × ۲' },
+                { name: 'انجیر', id: 104, reward: 'انجیر × ۲' },
+                { name: 'توت', id: 105, reward: 'توت × ۳' },
+                { name: 'تمشک', id: 106, reward: 'تمشک × ۳' },
+                { name: 'زغال‌اخته', id: 107, reward: 'زغال‌اخته × ۳' },
+                { name: 'بلوبری', id: 108, reward: 'بلوبری × ۳' },
+                { name: 'کشمش', id: 109, reward: 'کشمش × ۲' },
+                { name: 'گردو', id: 110, reward: 'گردو × ۲' },
+                { name: 'پسته', id: 111, reward: 'پسته × ۲' },
+                { name: 'بادام', id: 112, reward: 'بادام × ۲' },
+                { name: 'فندق', id: 113, reward: 'فندق × ۲' },
+                { name: 'بلوط', id: 114, reward: 'بلوط × ۲' },
+                { name: 'شاه‌بلوط', id: 115, reward: 'شاه‌بلوط × ۲' },
+                { name: 'سنجد', id: 116, reward: 'سنجد × ۲' },
+                { name: 'عناب', id: 117, reward: 'عناب × ۲' },
+                { name: 'ازگیل', id: 118, reward: 'ازگیل × ۲' },
+                { name: 'به', id: 119, reward: 'به × ۲' },
+                { name: 'گلابی', id: 120, reward: 'گلابی × ۲' },
+            ];
+
+            // گسترش به ۷۰۰ چیت با تنوع
+            const rewards = [
+                'سکه × ۵', 'سکه × ۱۰', 'سکه × ۲۰', 'الماس × ۱', 'الماس × ۲',
+                'طلسم × ۱', 'طلسم × ۲', 'انرژی × ۱۰', 'انرژی × ۲۰', 'تجربه × ۵',
+                'تجربه × ۱۰', 'سلامتی × ۵', 'سلامتی × ۱۰', 'آب × ۳', 'غذا × ۲'
+            ];
+
+            const cheats = [];
+            const usedIds = new Set();
+
+            // ابتدا آیتم‌های پایه
+            items.forEach((item, idx) => {
+                if (cheats.length >= 700) return;
+                const id = 1000 + idx;
+                cheats.push({
+                    id: id,
+                    code: `item_${item.id}`,
+                    name: item.name,
+                    reward: item.reward
+                });
+            });
+
+            // پر کردن مابقی با چیت‌های متنوع
+            let counter = 1;
+            while (cheats.length < 700) {
+                const name = `چیت ${counter}`;
+                const reward = rewards[counter % rewards.length];
+                const id = 2000 + counter;
+                const code = `cheat_${String(counter).padStart(3, '0')}`;
+                cheats.push({
+                    id: id,
+                    code: code,
+                    name: name,
+                    reward: reward
+                });
+                counter++;
+            }
+
+            return cheats;
+        }
+
+        const allCheats = generateCheats();
+        let copyCounter = 0;
+
+        // ================================================
+        // رندر کردن چیت‌ها
+        // ================================================
+        function renderCheats(cheats) {
+            const grid = document.getElementById('cheatGrid');
+            grid.innerHTML = '';
+
+            cheats.forEach((cheat, index) => {
+                const card = document.createElement('div');
+                card.className = 'cheat-card';
+
+                const idxSpan = document.createElement('span');
+                idxSpan.className = 'index';
+                idxSpan.textContent = `[${cheat.id}]`;
+
+                const codeSpan = document.createElement('span');
+                codeSpan.className = 'code';
+                codeSpan.textContent = cheat.code;
+
+                const rewardSpan = document.createElement('span');
+                rewardSpan.className = 'reward';
+                rewardSpan.textContent = cheat.reward;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.textContent = '📋 کپی';
+                copyBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    copyToClipboard(cheat.code, copyBtn);
+                };
+
+                card.appendChild(idxSpan);
+                card.appendChild(codeSpan);
+                card.appendChild(rewardSpan);
+                card.appendChild(copyBtn);
+
+                // کلیک روی کارت برای کپی
+                card.addEventListener('click', function() {
+                    copyToClipboard(cheat.code, this.querySelector('.copy-btn'));
+                });
+
+                grid.appendChild(card);
+            });
+
+            document.getElementById('totalCount').textContent = '۷۰۰';
+            document.getElementById('visibleCount').textContent = cheats.length;
+        }
+
+        // ================================================
+        // کپی به کلیپ‌بورد
+        // ================================================
+        function copyToClipboard(text, btn) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopied(btn);
+                }).catch(() => {
+                    fallbackCopy(text, btn);
+                });
+            } else {
+                fallbackCopy(text, btn);
+            }
+        }
+
+        function fallbackCopy(text, btn) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showCopied(btn);
+            } catch (err) {
+                alert('کپی نشد! لطفاً دستی کپی کنید: ' + text);
+            }
+            document.body.removeChild(textarea);
+        }
+
+        function showCopied(btn) {
+            const originalText = btn.textContent;
+            btn.textContent = '✅ کپی';
+            btn.classList.add('copied');
+            copyCounter++;
+            document.getElementById('copyCount').textContent = copyCounter;
+
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.classList.remove('copied');
+            }, 2000);
+        }
+
+        // ================================================
+        // جستجو
+        // ================================================
+        function filterCheats() {
+            const query = document.getElementById('searchInput').value.trim().toLowerCase();
+            const grid = document.getElementById('cheatGrid');
+
+            if (query === '') {
+                renderCheats(allCheats);
+                return;
+            }
+
+            const filtered = allCheats.filter(cheat =>
+                cheat.code.toLowerCase().includes(query) ||
+                cheat.name.toLowerCase().includes(query) ||
+                cheat.reward.toLowerCase().includes(query) ||
+                String(cheat.id).includes(query)
+            );
+
+            renderCheats(filtered);
+        }
+
+        // ================================================
+        // بارگذاری اولیه
+        // ================================================
+        renderCheats(allCheats);
+
+        console.log('🎮 چیت‌های استاردو ولی - ۷۰۰ چیت');
+        console.log('✨ ساخته شده توسط ریک از RSN');
+        console.log(`📊 تعداد کل چیت‌ها: ${allCheats.length}`);
+    </script>
+
+</body>
+              </html>
