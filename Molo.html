@@ -1,1 +1,1058 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>راهنمای هدایای NPCها | استاردو ولی</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --gold: #fdcb6e;
+            --bg: #0a0a0f;
+            --card: #12121f;
+            --border: rgba(255,255,255,0.06);
+            --love: #ff6b6b;
+            --like: #4ecdc4;
+            --neutral: #fdcb6e;
+            --dislike: #ff9f43;
+            --hate: #d63031;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, #12121f, #0a0a0f);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            text-align: center;
+            padding: 16px 0 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 13px;
+            color: rgba(255,255,255,0.15);
+            margin-top: 4px;
+        }
+
+        .header .count {
+            font-size: 12px;
+            color: rgba(255,255,255,0.1);
+            margin-top: 6px;
+        }
+
+        /* ===== Search ===== */
+        .search-box {
+            margin-bottom: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 14px;
+            font-family: 'Vazirmatn', sans-serif;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.1);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* ===== Filter Tags ===== */
+        .filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 6px 14px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 12px;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: rgba(108,92,231,0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== NPC Grid ===== */
+        .npc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+        }
+
+        /* ===== NPC Card ===== */
+        .npc-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+
+        .npc-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(108,92,231,0.15);
+        }
+
+        .npc-card .npc-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .npc-card .npc-header .avatar {
+            font-size: 28px;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.03);
+            border-radius: 50%;
+            border: 1px solid var(--border);
+        }
+
+        .npc-card .npc-header .info {
+            flex: 1;
+        }
+
+        .npc-card .npc-header .info .name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .npc-card .npc-header .info .birthday {
+            font-size: 11px;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .npc-card .npc-header .info .badge {
+            font-size: 10px;
+            padding: 2px 10px;
+            border-radius: 20px;
+            background: rgba(253,203,110,0.08);
+            color: var(--gold);
+            border: 1px solid rgba(253,203,110,0.05);
+        }
+
+        .npc-card .gift-section {
+            margin-top: 6px;
+        }
+
+        .npc-card .gift-section .gift-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+
+        .npc-card .gift-section .gift-label {
+            font-size: 11px;
+            font-weight: 700;
+            min-width: 52px;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .npc-card .gift-section .gift-tag {
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            color: rgba(255,255,255,0.3);
+        }
+
+        .npc-card .gift-section .gift-tag.love {
+            border-color: rgba(255,107,107,0.2);
+            color: var(--love);
+            background: rgba(255,107,107,0.05);
+        }
+
+        .npc-card .gift-section .gift-tag.like {
+            border-color: rgba(78,205,196,0.2);
+            color: var(--like);
+            background: rgba(78,205,196,0.05);
+        }
+
+        .npc-card .gift-section .gift-tag.neutral {
+            border-color: rgba(253,203,110,0.2);
+            color: var(--neutral);
+            background: rgba(253,203,110,0.05);
+        }
+
+        .npc-card .gift-section .gift-tag.dislike {
+            border-color: rgba(255,159,67,0.2);
+            color: var(--dislike);
+            background: rgba(255,159,67,0.05);
+        }
+
+        .npc-card .gift-section .gift-tag.hate {
+            border-color: rgba(214,48,49,0.2);
+            color: var(--hate);
+            background: rgba(214,48,49,0.05);
+        }
+
+        .npc-card .npc-footer {
+            margin-top: 10px;
+            font-size: 11px;
+            color: rgba(255,255,255,0.05);
+            border-top: 1px solid var(--border);
+            padding-top: 8px;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 30px 0 10px;
+            color: rgba(255,255,255,0.03);
+            font-size: 11px;
+            border-top: 1px solid var(--border);
+            margin-top: 20px;
+        }
+
+        .footer span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 500px) {
+            .npc-grid {
+                grid-template-columns: 1fr;
+            }
+            .header h1 {
+                font-size: 22px;
+            }
+            .npc-card .gift-section .gift-tag {
+                font-size: 10px;
+                padding: 2px 8px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+
+    <!-- ===== Header ===== -->
+    <div class="header">
+        <h1>🎁 راهنمای هدایای NPCها</h1>
+        <div class="subtitle">🌾 استاردو ولی • همه شخصیت‌ها + مادهای SVE</div>
+        <div class="count">📦 <span id="npcCount">۰</span> شخصیت</div>
+    </div>
+
+    <!-- ===== Search & Filters ===== -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 جستجوی شخصیت یا هدیه..." oninput="filterNPCs()">
+    </div>
+
+    <div class="filters" id="filterContainer">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">📋 همه</button>
+        <button class="filter-btn" data-filter="vanilla" onclick="setFilter('vanilla')">🎮 اصلی</button>
+        <button class="filter-btn" data-filter="sve" onclick="setFilter('sve')">🌟 SVE</button>
+        <button class="filter-btn" data-filter="marriage" onclick="setFilter('marriage')">💍 مجردها</button>
+        <button class="filter-btn" data-filter="other" onclick="setFilter('other')">👥 سایر</button>
+    </div>
+
+    <!-- ===== NPC Grid ===== -->
+    <div class="npc-grid" id="npcGrid"></div>
+
+    <!-- ===== Footer ===== -->
+    <div class="footer">
+        ✧ ساخته شده توسط <span>ریک</span> از <span>RSN</span> ✧<br>
+        تمامی اطلاعات از منابع معتبر استاردو ولی
+    </div>
+
+</div>
+
+<script>
+    // ============================================
+    // ذرات پس‌زمینه
+    // ============================================
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * W;
+            this.y = Math.random() * H;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 1.2;
+            this.speedY = (Math.random() - 0.5) * 1.2;
+            this.color = `hsl(${Math.random() * 60 + 220}, 70%, 60%)`;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > W) this.speedX *= -1;
+            if (this.y < 0 || this.y > H) this.speedY *= -1;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 6;
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ============================================
+    // داده‌های NPCها (بر اساس اطلاعات واقعی)
+    // ============================================
+    const npcData = [
+        // ===== Bachelorettes (مجردها) =====
+        {
+            id: 1,
+            name: 'Abigail',
+            emoji: '💜',
+            birthday: 'بهار ۱۳',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['آمیتیست', 'کدو تنبل', 'پافر فیش', 'پریس‌ماتیک شارد', 'پای توت‌سیاه'],
+                like: ['شیر', 'تخم‌مرغ', 'میوه‌های درختی', 'قارچ'],
+                hate: ['خاک رس']
+            }
+        },
+        {
+            id: 2,
+            name: 'Emily',
+            emoji: '💎',
+            birthday: 'بهار ۲۷',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['پارچه', 'پشم', 'یاقوت', 'زبرجد', 'فیروزه', 'برگر ماندگاری'],
+                like: ['نرگس', 'کوارتز', 'تخم‌مرغ', 'شیر'],
+                hate: ['تاکو ماهی', 'سوشی']
+            }
+        },
+        {
+            id: 3,
+            name: 'Haley',
+            emoji: '🌻',
+            birthday: 'بهار ۱۴',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['آفتاب‌گردان', 'کیک توت‌فرنگی', 'نارگیل', 'سالاد میوه'],
+                like: ['تخم‌مرغ', 'شیر', 'میوه‌ها'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 4,
+            name: 'Leah',
+            emoji: '🎨',
+            birthday: 'زمستان ۲۳',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['پنیر بز', 'ترافل', 'سالاد', 'وین', 'خورش سبزیجات'],
+                like: ['تخم‌مرغ', 'شیر', 'میوه‌ها', 'قارچ'],
+                hate: ['تخم‌مرغ سیاه', 'نان']
+            }
+        },
+        {
+            id: 5,
+            name: 'Maru',
+            emoji: '🔬',
+            birthday: 'تابستان ۱۰',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['باتری', 'گل‌کلم', 'الماس', 'شمش طلا', 'توت‌فرنگی'],
+                like: ['مس', 'آهن', 'کوارتز'],
+                hate: ['شیرین‌بیان']
+            }
+        },
+        {
+            id: 6,
+            name: 'Penny',
+            emoji: '📚',
+            birthday: 'پاییز ۲',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['الماس', 'زبرجد', 'هندوانه', 'خشخاش', 'سوپ تام خا'],
+                like: ['شیر', 'نرگس', 'قارچ'],
+                hate: ['آب جو', 'پر مرغابی', 'پشم']
+            }
+        },
+
+        // ===== Bachelors (مجردها) =====
+        {
+            id: 7,
+            name: 'Alex',
+            emoji: '🏈',
+            birthday: 'تابستان ۱۳',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['صبحانه کامل', 'شام سالمون'],
+                like: ['تخم‌مرغ', 'شیر', 'میوه‌ها', 'قارچ'],
+                hate: ['ترشک']
+            }
+        },
+        {
+            id: 8,
+            name: 'Elliott',
+            emoji: '📝',
+            birthday: 'پاییز ۵',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['پر مرغابی', 'خرچنگ', 'انار', 'جوهر ماهی مرکب', 'سوپ تام خا'],
+                like: ['میوه‌ها', 'ماهی', 'تخم‌مرغ', 'شیر'],
+                hate: ['ترشک']
+            }
+        },
+        {
+            id: 9,
+            name: 'Harvey',
+            emoji: '⚕️',
+            birthday: 'زمستان ۱۴',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['قهوه', 'خیارشور', 'وین', 'روغن ترافل'],
+                like: ['تخم‌مرغ', 'شیر بزرگ', 'پنیر'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 10,
+            name: 'Sam',
+            emoji: '🎸',
+            birthday: 'تابستان ۱۷',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['پیتزا', 'جوجه‌پلو', 'مافین بلوبری'],
+                like: ['تخم‌مرغ', 'شیر', 'میوه‌ها'],
+                hate: ['جو']
+            }
+        },
+        {
+            id: 11,
+            name: 'Sebastian',
+            emoji: '💻',
+            birthday: 'زمستان ۱۰',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['اشک یخ‌زده', 'سوپ قارچ', 'پریس‌ماتیک شارد'],
+                like: ['قارچ', 'میوه‌ها'],
+                hate: ['تخم‌مرغ', 'کلی']
+            }
+        },
+        {
+            id: 12,
+            name: 'Shane',
+            emoji: '🍺',
+            birthday: 'بهار ۲۰',
+            type: 'marriage',
+            source: 'vanilla',
+            gifts: {
+                love: ['آب جو', 'پیتزا', 'پپر پپر'],
+                like: ['شیر', 'تخم‌مرغ', 'میوه‌ها'],
+                hate: ['ماهی']
+            }
+        },
+
+        // ===== Non-marriage (غیرمجرد) =====
+        {
+            id: 13,
+            name: 'Caroline',
+            emoji: '☕',
+            birthday: 'زمستان ۷',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['چای', 'گل تابستانی'],
+                like: ['میوه‌ها', 'قارچ', 'نرگس'],
+                hate: ['ترشک']
+            }
+        },
+        {
+            id: 14,
+            name: 'Clint',
+            emoji: '🔨',
+            birthday: 'زمستان ۲۶',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['الماس', 'زبرجد', 'شمش طلا'],
+                like: ['مس', 'آهن', 'کوارتز'],
+                hate: ['میوه‌ها']
+            }
+        },
+        {
+            id: 15,
+            name: 'Demetrius',
+            emoji: '🧬',
+            birthday: 'تابستان ۱۹',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['قارچ بنفش', 'میوه‌ها'],
+                like: ['قارچ', 'میوه‌های درختی'],
+                hate: ['گل']
+            }
+        },
+        {
+            id: 16,
+            name: 'Dwarf',
+            emoji: '⛏️',
+            birthday: 'تابستان ۲۲',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['الماس', 'زبرجد', 'پریس‌ماتیک شارد'],
+                like: ['سنگ‌های قیمتی', 'کوارتز'],
+                hate: ['شیر']
+            }
+        },
+        {
+            id: 17,
+            name: 'Evelyn',
+            emoji: '🌷',
+            birthday: 'زمستان ۲۰',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['گل‌های بهاری', 'نرگس', 'چای'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 18,
+            name: 'George',
+            emoji: '🦯',
+            birthday: 'پاییز ۲۴',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['تره'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['گل']
+            }
+        },
+        {
+            id: 19,
+            name: 'Gus',
+            emoji: '🍲',
+            birthday: 'تابستان ۸',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['ترافل', 'وین'],
+                like: ['قارچ', 'میوه‌ها'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 20,
+            name: 'Jas',
+            emoji: '🧸',
+            birthday: 'تابستان ۴',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['شیرینی', 'کیک توت‌فرنگی'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 21,
+            name: 'Jodi',
+            emoji: '🏠',
+            birthday: 'پاییز ۱۱',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['پنکیک', 'ماهی سرخ‌شده'],
+                like: ['میوه‌ها', 'تخم‌مرغ'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 22,
+            name: 'Kent',
+            emoji: '🪖',
+            birthday: 'بهار ۴',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['سوپ قارچ', 'کیک شکلاتی'],
+                like: ['میوه‌ها', 'تخم‌مرغ'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 23,
+            name: 'Krobus',
+            emoji: '👾',
+            birthday: 'زمستان ۱',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['الماس', 'پریس‌ماتیک شارد', 'سوپ قارچ'],
+                like: ['قارچ', 'کوارتز'],
+                hate: ['شیر']
+            }
+        },
+        {
+            id: 24,
+            name: 'Leo',
+            emoji: '🐦',
+            birthday: 'تابستان ۲۶',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['پر', 'نارگیل', 'جوجه‌پلو'],
+                like: ['میوه‌ها', 'قارچ'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 25,
+            name: 'Lewis',
+            emoji: '🏛️',
+            birthday: 'بهار ۷',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['ترافل', 'وین', 'سوپ سبزیجات'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 26,
+            name: 'Linus',
+            emoji: '🏕️',
+            birthday: 'زمستان ۳',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['ماهی قزل‌آلا', 'ترشک'],
+                like: ['قارچ', 'میوه‌های وحشی'],
+                hate: ['الماس']
+            }
+        },
+        {
+            id: 27,
+            name: 'Marnie',
+            emoji: '🐄',
+            birthday: 'پاییز ۱۸',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['پنیر بز', 'الماس'],
+                like: ['شیر', 'تخم‌مرغ', 'میوه‌ها'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 28,
+            name: 'Pam',
+            emoji: '🚌',
+            birthday: 'بهار ۱۸',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['آب جو', 'جو دوسر', 'نوشابه'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['سبزیجات']
+            }
+        },
+        {
+            id: 29,
+            name: 'Pierre',
+            emoji: '🏪',
+            birthday: 'بهار ۲۶',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['کالاماری سرخ‌شده'],
+                like: ['میوه‌ها', 'شیر', 'تخم‌مرغ'],
+                hate: ['سیر', 'ترشک']
+            }
+        },
+        {
+            id: 30,
+            name: 'Robin',
+            emoji: '🪚',
+            birthday: 'پاییز ۲۱',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['پنیر بز', 'هلو', 'اسپاگتی'],
+                like: ['چوب سخت', 'کوارتز'],
+                hate: ['ترشک']
+            }
+        },
+        {
+            id: 31,
+            name: 'Sandy',
+            emoji: '🏜️',
+            birthday: 'پاییز ۱۵',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['نارگیل', 'گل صحرایی', 'پریس‌ماتیک شارد'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['ماهی']
+            }
+        },
+        {
+            id: 32,
+            name: 'Vincent',
+            emoji: '🧸',
+            birthday: 'بهار ۱۰',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['شیرینی', 'جوجه‌پلو', 'آب نبات'],
+                like: ['میوه‌ها', 'شیر'],
+                hate: ['سبزیجات']
+            }
+        },
+        {
+            id: 33,
+            name: 'Willy',
+            emoji: '🎣',
+            birthday: 'تابستان ۲۴',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['ماهی', 'میگو', 'چوب ماهی‌گیری'],
+                like: ['صدف', 'مرجان'],
+                hate: ['گل']
+            }
+        },
+        {
+            id: 34,
+            name: 'Wizard',
+            emoji: '🧙',
+            birthday: 'زمستان ۱۷',
+            type: 'other',
+            source: 'vanilla',
+            gifts: {
+                love: ['پریس‌ماتیک شارد', 'الماس', 'قارچ بنفش'],
+                like: ['قارچ', 'کوارتز'],
+                hate: ['شیر']
+            }
+        },
+
+        // ===== Stardew Valley Expanded (SVE) =====
+        {
+            id: 35,
+            name: 'Sophia (SVE)',
+            emoji: '🍇',
+            birthday: 'پاییز ۱۴',
+            type: 'marriage',
+            source: 'sve',
+            gifts: {
+                love: ['سنگ پریا', 'رز پریا', 'مرغ پرتقالی گرامپلتون', 'پافی فیش'],
+                like: ['وین', 'قهوه', 'میوه‌ها', 'قارچ', 'گل‌های وحشی'],
+                neutral: ['الماس', 'وین آبی', 'شربت افرا'],
+                dislike: ['فلفل دلمه‌ای', 'سوپ ریشه'],
+                hate: ['ماهی', 'آب جو', 'تخم‌مرغ سیاه', 'مید', 'ستاره دریایی']
+            }
+        },
+        {
+            id: 36,
+            name: 'Claire (SVE)',
+            emoji: '✈️',
+            birthday: 'پاییز ۸',
+            type: 'marriage',
+            source: 'sve',
+            gifts: {
+                love: ['زردآلو', 'سنگ اقیانوس', 'چای سبز', 'آفتاب‌گردان', 'بروشتا'],
+                like: ['سیب', 'پرتقال', 'هلو', 'قهوه', 'فندق بو داده'],
+                hate: ['مرغ پرتقالی گرامپلتون']
+            }
+        },
+        {
+            id: 37,
+            name: 'Elian (SVE)',
+            emoji: '🌺',
+            birthday: 'تابستان ۴',
+            type: 'other',
+            source: 'sve',
+            gifts: {
+                love: ['همه گل‌ها', 'نرگس', 'قاصدک'],
+                like: ['صدف حلزونی', 'صدف ماهی', 'مرجان', 'صدف', 'توتیا']
+            }
+        },
+        {
+            id: 38,
+            name: 'Victor (SVE)',
+            emoji: '📚',
+            birthday: 'بهار ۲۱',
+            type: 'marriage',
+            source: 'sve',
+            gifts: {
+                love: ['کیک شکلاتی', 'وین', 'ترافل'],
+                like: ['میوه‌ها', 'قهوه'],
+                hate: ['ماهی']
+            }
+        }
+    ];
+
+    // ============================================
+    // متغیرهای فیلتر
+    // ============================================
+    let currentFilter = 'all';
+    let searchQuery = '';
+
+    // ============================================
+    // رندر کردن NPCها
+    // ============================================
+    function renderNPCs() {
+        const grid = document.getElementById('npcGrid');
+        grid.innerHTML = '';
+
+        let filtered = npcData;
+
+        // فیلتر
+        if (currentFilter !== 'all') {
+            filtered = filtered.filter(n => n.source === currentFilter || n.type === currentFilter);
+        }
+
+        // جستجو
+        if (searchQuery.trim()) {
+            const q = searchQuery.trim().toLowerCase();
+            filtered = filtered.filter(n => {
+                const nameMatch = n.name.toLowerCase().includes(q);
+                const giftMatch = Object.values(n.gifts).flat().some(g => g.toLowerCase().includes(q));
+                return nameMatch || giftMatch;
+            });
+        }
+
+        document.getElementById('npcCount').textContent = filtered.length;
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:rgba(255,255,255,0.05);">
+                    <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+                    <div style="font-size:14px;">هیچ شخصیتی با این جستجو پیدا نشد</div>
+                </div>
+            `;
+            return;
+        }
+
+        filtered.forEach(npc => {
+            const card = document.createElement('div');
+            card.className = 'npc-card';
+
+            // Header
+            const header = document.createElement('div');
+            header.className = 'npc-header';
+
+            const avatar = document.createElement('div');
+            avatar.className = 'avatar';
+            avatar.textContent = npc.emoji;
+
+            const info = document.createElement('div');
+            info.className = 'info';
+
+            const name = document.createElement('div');
+            name.className = 'name';
+            name.textContent = npc.name;
+
+            const birthday = document.createElement('div');
+            birthday.className = 'birthday';
+            birthday.textContent = `🎂 ${npc.birthday}`;
+
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = npc.source === 'sve' ? '🌟 SVE' : (npc.type === 'marriage' ? '💍 مجرد' : '👤');
+
+            info.appendChild(name);
+            info.appendChild(birthday);
+            info.appendChild(badge);
+
+            header.appendChild(avatar);
+            header.appendChild(info);
+            card.appendChild(header);
+
+            // Gifts
+            const giftSection = document.createElement('div');
+            giftSection.className = 'gift-section';
+
+            const giftTypes = [
+                { key: 'love', label: '❤️ عشق', cls: 'love' },
+                { key: 'like', label: '👍 دوست دارد', cls: 'like' },
+                { key: 'neutral', label: '⬜ بی‌تفاوت', cls: 'neutral' },
+                { key: 'dislike', label: '👎 دوست ندارد', cls: 'dislike' },
+                { key: 'hate', label: '💀 متنفر', cls: 'hate' }
+            ];
+
+            giftTypes.forEach(({ key, label, cls }) => {
+                const gifts = npc.gifts[key];
+                if (!gifts || gifts.length === 0) return;
+
+                const row = document.createElement('div');
+                row.className = 'gift-row';
+
+                const labelEl = document.createElement('span');
+                labelEl.className = 'gift-label';
+                labelEl.textContent = label;
+
+                row.appendChild(labelEl);
+
+                gifts.forEach(g => {
+                    const tag = document.createElement('span');
+                    tag.className = `gift-tag ${cls}`;
+                    tag.textContent = g;
+                    row.appendChild(tag);
+                });
+
+                giftSection.appendChild(row);
+            });
+
+            card.appendChild(giftSection);
+
+            // Footer
+            const footer = document.createElement('div');
+            footer.className = 'npc-footer';
+            footer.textContent = `📍 ${npc.source === 'sve' ? 'Stardew Valley Expanded' : 'Stardew Valley'}`;
+            card.appendChild(footer);
+
+            grid.appendChild(card);
+        });
+    }
+
+    // ============================================
+    // فیلترها
+    // ============================================
+    function setFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.filter === filter) {
+                btn.classList.add('active');
+            }
+        });
+        renderNPCs();
+    }
+
+    function filterNPCs() {
+        searchQuery = document.getElementById('searchInput').value;
+        renderNPCs();
+    }
+
+    // ============================================
+    // شروع
+    // ============================================
+    renderNPCs();
+
+    console.log('🎁 راهنمای هدایای NPCها - RSN');
+    console.log(`📊 تعداد شخصیت‌ها: ${npcData.length}`);
+</script>
+
+</body>
+  </html>
