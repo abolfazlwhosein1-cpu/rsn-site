@@ -22,13 +22,14 @@
             --border: rgba(255,255,255,0.06);
         }
 
-        body {
+        html, body {
             font-family: 'Vazirmatn', sans-serif;
             background: var(--bg);
             color: #fff;
             min-height: 100vh;
-            padding: 16px;
+            overflow-y: auto !important;
             overflow-x: hidden;
+            padding: 16px;
         }
 
         #particleCanvas {
@@ -39,13 +40,15 @@
             height: 100%;
             z-index: 0;
             background: radial-gradient(ellipse at center, #12121f, #0a0a0f);
+            pointer-events: none;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 900px;
             margin: 0 auto;
             position: relative;
             z-index: 1;
+            overflow: visible;
         }
 
         /* ===== Header ===== */
@@ -148,6 +151,8 @@
             flex-wrap: wrap;
             margin-bottom: 16px;
             justify-content: center;
+            max-height: none;
+            overflow: visible;
         }
 
         .filter-btn {
@@ -161,6 +166,8 @@
             font-family: 'Vazirmatn', sans-serif;
             font-size: 12px;
             font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .filter-btn:hover {
@@ -174,11 +181,12 @@
             color: var(--primary);
         }
 
-        /* ===== Item Grid ===== */
+        /* ===== Item Grid - 2 ستونه ===== */
         .item-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: 1fr 1fr;
             gap: 10px;
+            overflow: visible;
         }
 
         /* ===== Item Card ===== */
@@ -289,6 +297,7 @@
             font-size: 11px;
             border-top: 1px solid var(--border);
             margin-top: 30px;
+            position: relative;
         }
 
         .footer .creator {
@@ -330,7 +339,8 @@
         /* ===== Responsive ===== */
         @media (max-width: 600px) {
             .item-grid {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
             }
             .header h1 {
                 font-size: 24px;
@@ -346,11 +356,18 @@
             .item-card .id {
                 font-size: 10px;
             }
+            .filters {
+                flex-wrap: wrap;
+                justify-content: center;
+                max-height: none;
+                overflow: visible;
+            }
         }
 
         @media (max-width: 400px) {
             .item-grid {
-                grid-template-columns: repeat(3, 1fr);
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
             }
             .item-card {
                 padding: 6px 4px;
@@ -371,6 +388,10 @@
             .item-card .copy-btn {
                 font-size: 9px;
                 padding: 2px 8px;
+            }
+            .filter-btn {
+                font-size: 10px;
+                padding: 4px 10px;
             }
         }
 
@@ -1466,7 +1487,7 @@
     let copyCounter = 0;
 
     // ============================================
-    // رندر کردن آیتم‌ها
+    // رندر کردن آیتم‌ها (2 ستونه)
     // ============================================
     function renderItems() {
         const grid = document.getElementById('itemGrid');
@@ -1633,4 +1654,4 @@
 </script>
 
 </body>
-  </html>
+    </html>
