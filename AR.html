@@ -1,0 +1,1636 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>وانیلا استاردو ولی AR</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --gold: #fdcb6e;
+            --bg: #0a0a0f;
+            --card: #12121f;
+            --border: rgba(255,255,255,0.06);
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, #12121f, #0a0a0f);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            text-align: center;
+            padding: 20px 0 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 34px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.15);
+            margin-top: 6px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            background: rgba(253,203,110,0.08);
+            border: 1px solid rgba(253,203,110,0.1);
+            color: var(--gold);
+        }
+
+        /* ===== Stats ===== */
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stats .stat-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 20px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .stats .stat-item .num {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .stats .stat-item .label {
+            font-size: 10px;
+            color: rgba(255,255,255,0.15);
+        }
+
+        /* ===== Search ===== */
+        .search-box {
+            margin-bottom: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.1);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(108,92,231,0.05);
+        }
+
+        /* ===== Filters ===== */
+        .filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: rgba(108,92,231,0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== Item Grid ===== */
+        .item-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        /* ===== Item Card ===== */
+        .item-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 8px;
+            transition: 0.3s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .item-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(108,92,231,0.15);
+            transform: translateY(-2px);
+        }
+
+        .item-card .icon {
+            font-size: 32px;
+            margin-bottom: 4px;
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.02);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .item-card .name {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.6);
+            margin: 4px 0 2px;
+            line-height: 1.3;
+            max-height: 32px;
+            overflow: hidden;
+        }
+
+        .item-card .id {
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: var(--gold);
+            font-weight: 700;
+            direction: ltr;
+            background: rgba(253,203,110,0.05);
+            padding: 2px 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(253,203,110,0.05);
+            margin: 3px 0;
+        }
+
+        .item-card .copy-btn {
+            background: var(--primary);
+            border: none;
+            color: #fff;
+            padding: 3px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 10px;
+            font-weight: 700;
+            transition: 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        .item-card .copy-btn:hover {
+            background: #7c6df0;
+        }
+
+        .item-card .copy-btn.copied {
+            background: #00b894;
+        }
+
+        /* ===== Category Header ===== */
+        .category-header {
+            grid-column: 1 / -1;
+            padding: 12px 0 6px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 6px;
+            color: var(--gold);
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-header .count {
+            font-size: 12px;
+            color: rgba(255,255,255,0.1);
+            font-weight: 400;
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 30px 0 10px;
+            color: rgba(255,255,255,0.03);
+            font-size: 11px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        .footer .creator {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .footer .heart {
+            color: #f5576c;
+        }
+
+        /* ===== Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(18,18,31,0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 12px 24px;
+            color: #fff;
+            font-size: 13px;
+            z-index: 1000;
+            opacity: 0;
+            transition: 0.4s;
+            pointer-events: none;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            .item-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+            .header h1 {
+                font-size: 24px;
+            }
+            .item-card .icon {
+                font-size: 24px;
+                width: 40px;
+                height: 40px;
+            }
+            .item-card .name {
+                font-size: 10px;
+            }
+            .item-card .id {
+                font-size: 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .item-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .item-card {
+                padding: 6px 4px;
+            }
+            .item-card .icon {
+                font-size: 20px;
+                width: 34px;
+                height: 34px;
+            }
+            .item-card .name {
+                font-size: 9px;
+                max-height: 24px;
+            }
+            .item-card .id {
+                font-size: 9px;
+                padding: 1px 6px;
+            }
+            .item-card .copy-btn {
+                font-size: 9px;
+                padding: 2px 8px;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+
+    <!-- ===== Header ===== -->
+    <div class="header">
+        <h1>🎮 وانیلا استاردو ولی AR</h1>
+        <div class="subtitle">📋 لیست کامل کدهای Vanilla • ورژن 1.6</div>
+        <div class="badge">✨ تمامی کدها قابل کپی • ساخته شده توسط AR</div>
+    </div>
+
+    <!-- ===== Stats ===== -->
+    <div class="stats">
+        <div class="stat-item">
+            <div class="num" id="totalItems">۰</div>
+            <div class="label">📦 تعداد آیتم‌ها</div>
+        </div>
+        <div class="stat-item">
+            <div class="num" id="totalCategories">۰</div>
+            <div class="label">📂 دسته‌بندی</div>
+        </div>
+        <div class="stat-item">
+            <div class="num" id="copyCount">۰</div>
+            <div class="label">📋 کپی شده</div>
+        </div>
+    </div>
+
+    <!-- ===== Search ===== -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 جستجوی آیتم یا کد..." oninput="filterItems()">
+    </div>
+
+    <!-- ===== Filters ===== -->
+    <div class="filters" id="filterContainer">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">📋 همه</button>
+        <button class="filter-btn" data-filter="اشیاء" onclick="setFilter('اشیاء')">🎒 اشیاء</button>
+        <button class="filter-btn" data-filter="صنایع دستی بزرگ" onclick="setFilter('صنایع دستی بزرگ')">🏠 صنایع دستی بزرگ</button>
+        <button class="filter-btn" data-filter="ابزارها" onclick="setFilter('ابزارها')">🔧 ابزارها</button>
+        <button class="filter-btn" data-filter="سلاح‌ها" onclick="setFilter('سلاح‌ها')">⚔️ سلاح‌ها</button>
+        <button class="filter-btn" data-filter="مبلمان" onclick="setFilter('مبلمان')">🪑 مبلمان</button>
+        <button class="filter-btn" data-filter="چکمه" onclick="setFilter('چکمه')">👢 چکمه</button>
+        <button class="filter-btn" data-filter="شلوار" onclick="setFilter('شلوار')">👖 شلوار</button>
+        <button class="filter-btn" data-filter="پیراهن‌ها" onclick="setFilter('پیراهن‌ها')">👕 پیراهن‌ها</button>
+        <button class="filter-btn" data-filter="کلاه" onclick="setFilter('کلاه')">🧢 کلاه</button>
+        <button class="filter-btn" data-filter="زیورآلات" onclick="setFilter('زیورآلات')">💍 زیورآلات</button>
+        <button class="filter-btn" data-filter="مانکن‌ها" onclick="setFilter('مانکن‌ها')">🧍 مانکن‌ها</button>
+        <button class="filter-btn" data-filter="کفپوش" onclick="setFilter('کفپوش')">🟫 کفپوش</button>
+        <button class="filter-btn" data-filter="تصاویر پس زمینه" onclick="setFilter('تصاویر پس زمینه')">🖼️ تصاویر پس زمینه</button>
+        <button class="filter-btn" data-filter="رایگان" onclick="setFilter('رایگان')">🎁 رایگان</button>
+    </div>
+
+    <!-- ===== Item Grid ===== -->
+    <div class="item-grid" id="itemGrid"></div>
+
+    <!-- ===== Footer ===== -->
+    <div class="footer">
+        ✧ ساخته شده توسط <span class="creator">AR</span> ✧<br>
+        وانیلا استاردو ولی • تمامی کدها از منابع معتبر <span class="heart">❤</span>
+    </div>
+
+</div>
+
+<!-- ===== Toast ===== -->
+<div class="toast" id="toast">
+    <span id="toastMessage">متن پیام</span>
+</div>
+
+<script>
+    // ============================================
+    // ذرات پس‌زمینه
+    // ============================================
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * W;
+            this.y = Math.random() * H;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 1.2;
+            this.speedY = (Math.random() - 0.5) * 1.2;
+            this.color = `hsl(${Math.random() * 60 + 220}, 70%, 60%)`;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > W) this.speedX *= -1;
+            if (this.y < 0 || this.y > H) this.speedY *= -1;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 6;
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ============================================
+    // داده‌های آیتم‌ها (بر اساس سایت مرجع + تکمیل تا ۱۰۰۰)
+    // ============================================
+    const itemData = {
+        'اشیاء': [
+            { name: 'Weeds', id: 0, icon: '🌿' },
+            { name: 'Diamond Stone', id: 2, icon: '💎' },
+            { name: 'Ruby Stone', id: 4, icon: '🔴' },
+            { name: 'Jade Stone', id: 6, icon: '🟢' },
+            { name: 'Amethyst Stone', id: 8, icon: '🟣' },
+            { name: 'Topaz Stone', id: 10, icon: '🟡' },
+            { name: 'Emerald Stone', id: 12, icon: '🟩' },
+            { name: 'Aquamarine Stone', id: 14, icon: '🔵' },
+            { name: 'Wild Horseradish', id: 16, icon: '🌱' },
+            { name: 'Daffodil', id: 18, icon: '🌼' },
+            { name: 'Leek', id: 20, icon: '🧅' },
+            { name: 'Dandelion', id: 22, icon: '🌿' },
+            { name: 'Parsnip', id: 24, icon: '🥕' },
+            { name: 'Mussel Stone', id: 25, icon: '🐚' },
+            { name: 'Lumber', id: 30, icon: '🪵' },
+            { name: 'Stone', id: 32, icon: '🪨' },
+            { name: 'Emerald', id: 60, icon: '💚' },
+            { name: 'Aquamarine', id: 62, icon: '💠' },
+            { name: 'Ruby', id: 64, icon: '❤️' },
+            { name: 'Amethyst', id: 66, icon: '💜' },
+            { name: 'Topaz', id: 68, icon: '💛' },
+            { name: 'Banana Sapling', id: 69, icon: '🍌' },
+            { name: 'Jade', id: 70, icon: '💚' },
+            { name: 'Diamond', id: 72, icon: '💎' },
+            { name: 'Golden Walnut', id: 73, icon: '🌰' },
+            { name: 'Prismatic Shard', id: 74, icon: '🌈' },
+            { name: 'Geode Stone', id: 75, icon: '🪨' },
+            { name: 'Cave Carrot', id: 78, icon: '🥕' },
+            { name: 'Secret Note', id: 79, icon: '📝' },
+            { name: 'Quartz', id: 80, icon: '💎' },
+            { name: 'Fire Quartz', id: 82, icon: '🔥' },
+            { name: 'Frozen Tear', id: 84, icon: '❄️' },
+            { name: 'Earth Crystal', id: 86, icon: '🌍' },
+            { name: 'Coconut', id: 88, icon: '🥥' },
+            { name: 'Cactus Fruit', id: 90, icon: '🌵' },
+            { name: 'Banana', id: 91, icon: '🍌' },
+            { name: 'Sap', id: 92, icon: '💧' },
+            { name: 'Torch', id: 93, icon: '🔥' },
+            { name: 'Dwarf Scroll I', id: 96, icon: '📜' },
+            { name: 'Dwarf Scroll II', id: 97, icon: '📜' },
+            { name: 'Dwarf Scroll III', id: 98, icon: '📜' },
+            { name: 'Dwarf Scroll IV', id: 99, icon: '📜' },
+            { name: 'Chipped Amphora', id: 100, icon: '🏺' },
+            { name: 'Arrowhead', id: 101, icon: '🏹' },
+            { name: 'Lost Book', id: 102, icon: '📖' },
+            { name: 'Ancient Doll', id: 103, icon: '🎎' },
+            { name: 'Elvish Jewelry', id: 104, icon: '💍' },
+            { name: 'Chewing Stick', id: 105, icon: '🪵' },
+            { name: 'Ornamental Fan', id: 106, icon: '🪭' },
+            { name: 'Dinosaur Egg', id: 107, icon: '🥚' },
+            { name: 'Rare Disc', id: 108, icon: '💿' },
+            { name: 'Ancient Sword', id: 109, icon: '⚔️' },
+            { name: 'Rusty Spoon', id: 110, icon: '🥄' },
+            { name: 'Rusty Spur', id: 111, icon: '⚙️' },
+            { name: 'Rusty Cog', id: 112, icon: '⚙️' },
+            { name: 'Chicken Statue', id: 113, icon: '🐔' },
+            { name: 'Ancient Seed', id: 114, icon: '🌱' },
+            { name: 'Prehistoric Tool', id: 115, icon: '🔧' },
+            { name: 'Dried Starfish', id: 116, icon: '⭐' },
+            { name: 'Anchor', id: 117, icon: '⚓' },
+            { name: 'Glass Shards', id: 118, icon: '🪟' },
+            { name: 'Bone Flute', id: 119, icon: '🪈' },
+            { name: 'Prehistoric Handaxe', id: 120, icon: '🪓' },
+            { name: 'Dwarvish Helm', id: 121, icon: '⛑️' },
+            { name: 'Dwarf Gadget', id: 122, icon: '🔧' },
+            { name: 'Ancient Drum', id: 123, icon: '🥁' },
+            { name: 'Golden Mask', id: 124, icon: '🎭' },
+            { name: 'Golden Relic', id: 125, icon: '🏆' },
+            { name: 'Strange Doll', id: 126, icon: '🎎' },
+            { name: 'Strange Doll', id: 127, icon: '🎎' },
+            { name: 'Pufferfish', id: 128, icon: '🐡' },
+            { name: 'Anchovy', id: 129, icon: '🐟' },
+            { name: 'Tuna', id: 130, icon: '🐟' },
+            { name: 'Sardine', id: 131, icon: '🐟' },
+            { name: 'Bream', id: 132, icon: '🐟' },
+            { name: 'Largemouth Bass', id: 136, icon: '🐟' },
+            { name: 'Smallmouth Bass', id: 137, icon: '🐟' },
+            { name: 'Rainbow Trout', id: 138, icon: '🐟' },
+            { name: 'Salmon', id: 139, icon: '🐟' },
+            { name: 'Walleye', id: 140, icon: '🐟' },
+            { name: 'Perch', id: 141, icon: '🐟' },
+            { name: 'Carp', id: 142, icon: '🐟' },
+            { name: 'Catfish', id: 143, icon: '🐟' },
+            { name: 'Pike', id: 144, icon: '🐟' },
+            { name: 'Sunfish', id: 145, icon: '🐟' },
+            { name: 'Red Mullet', id: 146, icon: '🐟' },
+            { name: 'Herring', id: 147, icon: '🐟' },
+            { name: 'Eel', id: 148, icon: '🐟' },
+            { name: 'Octopus', id: 149, icon: '🐙' },
+            { name: 'Red Snapper', id: 150, icon: '🐟' },
+            { name: 'Squid', id: 151, icon: '🦑' },
+            { name: 'Seaweed', id: 152, icon: '🌿' },
+            { name: 'Green Algae', id: 153, icon: '🌿' },
+            { name: 'Sea Cucumber', id: 154, icon: '🥒' },
+            { name: 'Super Cucumber', id: 155, icon: '🥒' },
+            { name: 'Ghostfish', id: 156, icon: '🐟' },
+            { name: 'White Algae', id: 157, icon: '🌿' },
+            { name: 'Stonefish', id: 158, icon: '🐟' },
+            { name: 'Crimsonfish', id: 159, icon: '🐟' },
+            { name: 'Angler', id: 160, icon: '🐟' },
+            { name: 'Ice Pip', id: 161, icon: '🐟' },
+            { name: 'Lava Eel', id: 162, icon: '🐟' },
+            { name: 'Legend', id: 163, icon: '🐟' },
+            { name: 'Sandfish', id: 164, icon: '🐟' },
+            { name: 'Scorpion Carp', id: 165, icon: '🐟' },
+            { name: 'Treasure Chest', id: 166, icon: '🎁' },
+            { name: 'Joja Cola', id: 167, icon: '🥤' },
+            { name: 'Trash', id: 168, icon: '🗑️' },
+            { name: 'Driftwood', id: 169, icon: '🪵' },
+            { name: 'Broken Glasses', id: 170, icon: '🕶️' },
+            { name: 'Broken CD', id: 171, icon: '💿' },
+            { name: 'Soggy Newspaper', id: 172, icon: '📰' },
+            { name: 'Large Egg', id: 174, icon: '🥚' },
+            { name: 'Egg', id: 176, icon: '🥚' },
+            { name: 'Hay', id: 178, icon: '🌾' },
+            { name: 'Milk', id: 184, icon: '🥛' },
+            { name: 'Large Milk', id: 186, icon: '🥛' },
+            { name: 'Green Bean', id: 188, icon: '🫘' },
+            { name: 'Cauliflower', id: 190, icon: '🥦' },
+            { name: 'Ornate Necklace', id: 191, icon: '📿' },
+            { name: 'Potato', id: 192, icon: '🥔' },
+            { name: 'Fried Egg', id: 194, icon: '🍳' },
+            { name: 'Omelet', id: 195, icon: '🍳' },
+            { name: 'Salad', id: 196, icon: '🥗' },
+            { name: 'Cheese Cauliflower', id: 197, icon: '🧀' },
+            { name: 'Baked Fish', id: 198, icon: '🐟' },
+            { name: 'Parsnip Soup', id: 199, icon: '🍲' },
+            { name: 'Vegetable Medley', id: 200, icon: '🥗' },
+            { name: 'Complete Breakfast', id: 201, icon: '🍳' },
+            { name: 'Fried Calamari', id: 202, icon: '🦑' },
+            { name: 'Strange Bun', id: 203, icon: '🍞' },
+            { name: 'Lucky Lunch', id: 204, icon: '🍱' },
+            { name: 'Fried Mushroom', id: 205, icon: '🍄' },
+            { name: 'Pizza', id: 206, icon: '🍕' },
+            { name: 'Bean Hotpot', id: 207, icon: '🍲' },
+            { name: 'Glazed Yams', id: 208, icon: '🍠' },
+            { name: 'Carp Surprise', id: 209, icon: '🐟' },
+            { name: 'Hashbrowns', id: 210, icon: '🥔' },
+            { name: 'Pancakes', id: 211, icon: '🥞' },
+            { name: 'Salmon Dinner', id: 212, icon: '🐟' },
+            { name: 'Fish Taco', id: 213, icon: '🌮' },
+            { name: 'Crispy Bass', id: 214, icon: '🐟' },
+            { name: 'Pepper Poppers', id: 215, icon: '🌶️' },
+            { name: 'Bread', id: 216, icon: '🍞' },
+            { name: 'Tom Kha Soup', id: 218, icon: '🍲' },
+            { name: 'Trout Soup', id: 219, icon: '🍲' },
+            { name: 'Chocolate Cake', id: 220, icon: '🍰' },
+            { name: 'Pink Cake', id: 221, icon: '🍰' },
+            { name: 'Rhubarb Pie', id: 222, icon: '🥧' },
+            { name: 'Cookies', id: 223, icon: '🍪' },
+            { name: 'Spaghetti', id: 224, icon: '🍝' },
+            { name: 'Fried Eel', id: 225, icon: '🐟' },
+            { name: 'Spicy Eel', id: 226, icon: '🐟' },
+            { name: 'Sashimi', id: 227, icon: '🍣' },
+            { name: 'Maki Roll', id: 228, icon: '🍣' },
+            { name: 'Tortilla', id: 229, icon: '🌮' },
+            { name: 'Red Plate', id: 230, icon: '🍽️' },
+            { name: 'Eggplant Parmesan', id: 231, icon: '🍆' },
+            { name: 'Rice Pudding', id: 232, icon: '🍮' },
+            { name: 'Ice Cream', id: 233, icon: '🍦' },
+            { name: 'Blueberry Tart', id: 234, icon: '🥧' },
+            { name: 'Autumn\'s Bounty', id: 235, icon: '🍂' },
+            { name: 'Pumpkin Soup', id: 236, icon: '🎃' },
+            { name: 'Super Meal', id: 237, icon: '🍱' },
+            { name: 'Cranberry Sauce', id: 238, icon: '🫐' },
+            { name: 'Stuffing', id: 239, icon: '🍞' },
+            { name: 'Farmer\'s Lunch', id: 240, icon: '🍱' },
+            { name: 'Survival Burger', id: 241, icon: '🍔' },
+            { name: 'Dish O\' The Sea', id: 242, icon: '🐟' },
+            { name: 'Miner\'s Treat', id: 243, icon: '🍬' },
+            { name: 'Roots Platter', id: 244, icon: '🥗' },
+            { name: 'Sugar', id: 245, icon: '🍬' },
+            { name: 'Wheat Flour', id: 246, icon: '🌾' },
+            { name: 'Oil', id: 247, icon: '🫒' },
+            { name: 'Garlic', id: 248, icon: '🧄' },
+            { name: 'Kale', id: 250, icon: '🥬' },
+            { name: 'Tea Sapling', id: 251, icon: '🍵' },
+            { name: 'Rhubarb', id: 252, icon: '🌱' },
+            { name: 'Triple Shot Espresso', id: 253, icon: '☕' },
+            { name: 'Melon', id: 254, icon: '🍈' },
+            { name: 'Tomato', id: 256, icon: '🍅' },
+            { name: 'Morel', id: 257, icon: '🍄' },
+            { name: 'Blueberry', id: 258, icon: '🫐' },
+            { name: 'Fiddlehead Fern', id: 259, icon: '🌿' },
+            { name: 'Hot Pepper', id: 260, icon: '🌶️' },
+            { name: 'Warp Totem: Desert', id: 261, icon: '🏜️' },
+            { name: 'Wheat', id: 262, icon: '🌾' },
+            { name: 'Radish', id: 264, icon: '🥕' },
+            { name: 'Seafoam Pudding', id: 265, icon: '🍮' },
+            { name: 'Red Cabbage', id: 266, icon: '🥬' },
+            { name: 'Flounder', id: 267, icon: '🐟' },
+            { name: 'Starfruit', id: 268, icon: '⭐' },
+            { name: 'Midnight Carp', id: 269, icon: '🐟' },
+            { name: 'Corn', id: 270, icon: '🌽' },
+            { name: 'Unmilled Rice', id: 271, icon: '🌾' },
+            { name: 'Eggplant', id: 272, icon: '🍆' },
+            { name: 'Rice Shoot', id: 273, icon: '🌱' },
+            { name: 'Artichoke', id: 274, icon: '🥬' },
+            { name: 'Artifact Trove', id: 275, icon: '📦' },
+            { name: 'Pumpkin', id: 276, icon: '🎃' },
+            { name: 'Wilted Bouquet', id: 277, icon: '💐' },
+            { name: 'Bok Choy', id: 278, icon: '🥬' },
+            { name: 'Magic Rock Candy', id: 279, icon: '🍬' },
+            { name: 'Yam', id: 280, icon: '🍠' },
+            { name: 'Chanterelle', id: 281, icon: '🍄' },
+            { name: 'Cranberries', id: 282, icon: '🫐' },
+            { name: 'Holly', id: 283, icon: '🌿' },
+            { name: 'Beet', id: 284, icon: '🥬' },
+            { name: 'Cherry Bomb', id: 286, icon: '💥' },
+            { name: 'Bomb', id: 287, icon: '💥' },
+            { name: 'Mega Bomb', id: 288, icon: '💥' },
+            { name: 'Ostrich Egg', id: 289, icon: '🥚' },
+            { name: 'Iron Stone', id: 290, icon: '⛏️' },
+            { name: 'Mahogany Seed', id: 292, icon: '🌱' },
+            { name: 'Twig', id: 294, icon: '🌿' },
+            { name: 'Salmonberry', id: 296, icon: '🫐' },
+            { name: 'Grass Starter', id: 297, icon: '🌿' },
+            { name: 'Hardwood Fence', id: 298, icon: '🪵' },
+            { name: 'Amaranth Seeds', id: 299, icon: '🌱' },
+            { name: 'Amaranth', id: 300, icon: '🌾' },
+            { name: 'Grape Starter', id: 301, icon: '🍇' },
+            { name: 'Hops Starter', id: 302, icon: '🌱' },
+            { name: 'Pale Ale', id: 303, icon: '🍺' },
+            { name: 'Hops', id: 304, icon: '🌿' },
+            { name: 'Void Egg', id: 305, icon: '🥚' },
+            { name: 'Mayonnaise', id: 306, icon: '🥫' },
+            { name: 'Duck Mayonnaise', id: 307, icon: '🥫' },
+            { name: 'Void Mayonnaise', id: 308, icon: '🥫' },
+            { name: 'Acorn', id: 309, icon: '🌰' },
+            { name: 'Maple Seed', id: 310, icon: '🌰' },
+            { name: 'Pine Cone', id: 311, icon: '🌰' },
+            { name: 'Clay', id: 330, icon: '🧱' },
+            { name: 'Copper Bar', id: 334, icon: '🟠' },
+            { name: 'Iron Bar', id: 335, icon: '⚪' },
+            { name: 'Gold Bar', id: 336, icon: '🟡' },
+            { name: 'Iridium Bar', id: 337, icon: '💠' },
+            { name: 'Refined Quartz', id: 338, icon: '💎' },
+            { name: 'Honey', id: 340, icon: '🍯' },
+            { name: 'Tea Set', id: 341, icon: '🍵' },
+            { name: 'Pickles', id: 342, icon: '🥒' },
+            { name: 'Jelly', id: 344, icon: '🍇' },
+            { name: 'Beer', id: 346, icon: '🍺' },
+            { name: 'Rare Seed', id: 347, icon: '🌱' },
+            { name: 'Wine', id: 348, icon: '🍷' },
+            { name: 'Energy Tonic', id: 349, icon: '💊' },
+            { name: 'Juice', id: 350, icon: '🧃' },
+            { name: 'Muscle Remedy', id: 351, icon: '💊' },
+            { name: 'Basic Fertilizer', id: 368, icon: '🧪' },
+            { name: 'Quality Fertilizer', id: 369, icon: '🧪' },
+            { name: 'Basic Retaining Soil', id: 370, icon: '🧪' },
+            { name: 'Quality Retaining Soil', id: 371, icon: '🧪' },
+            { name: 'Clam', id: 372, icon: '🐚' },
+            { name: 'Golden Pumpkin', id: 373, icon: '🎃' },
+            { name: 'Poppy', id: 376, icon: '🌸' },
+            { name: 'Copper Ore', id: 378, icon: '🟠' },
+            { name: 'Iron Ore', id: 380, icon: '⚪' },
+            { name: 'Coal', id: 382, icon: '⚫' },
+            { name: 'Gold Ore', id: 384, icon: '🟡' },
+            { name: 'Iridium Ore', id: 386, icon: '💠' },
+            { name: 'Wood', id: 388, icon: '🪵' },
+            { name: 'Stone', id: 390, icon: '🪨' },
+            { name: 'Nautilus Shell', id: 392, icon: '🐚' },
+            { name: 'Coral', id: 393, icon: '🪸' },
+            { name: 'Rainbow Shell', id: 394, icon: '🐚' },
+            { name: 'Coffee', id: 395, icon: '☕' },
+            { name: 'Spice Berry', id: 396, icon: '🫐' },
+            { name: 'Sea Urchin', id: 397, icon: '🦔' },
+            { name: 'Grape', id: 398, icon: '🍇' },
+            { name: 'Spring Onion', id: 399, icon: '🧅' },
+            { name: 'Strawberry', id: 400, icon: '🍓' },
+            { name: 'Sweet Pea', id: 402, icon: '🌸' },
+            { name: 'Field Snack', id: 403, icon: '🍱' },
+            { name: 'Common Mushroom', id: 404, icon: '🍄' },
+            { name: 'Wild Plum', id: 406, icon: '🍑' },
+            { name: 'Hazelnut', id: 408, icon: '🌰' },
+            { name: 'Blackberry', id: 410, icon: '🫐' },
+            { name: 'Winter Root', id: 412, icon: '🌱' },
+            { name: 'Blue Slime Egg', id: 413, icon: '🟦' },
+            { name: 'Crystal Fruit', id: 414, icon: '🍎' },
+            { name: 'Snow Yam', id: 416, icon: '🍠' },
+            { name: 'Sweet Gem Berry', id: 417, icon: '🫐' },
+            { name: 'Crocus', id: 418, icon: '🌸' },
+            { name: 'Vinegar', id: 419, icon: '🧪' },
+            { name: 'Red Mushroom', id: 420, icon: '🍄' },
+            { name: 'Sunflower', id: 421, icon: '🌻' },
+            { name: 'Purple Mushroom', id: 422, icon: '🍄' },
+            { name: 'Rice', id: 423, icon: '🌾' },
+            { name: 'Cheese', id: 424, icon: '🧀' },
+            { name: 'Fairy Seeds', id: 425, icon: '🌱' },
+            { name: 'Goat Cheese', id: 426, icon: '🧀' },
+            { name: 'Tulip Bulb', id: 427, icon: '🌷' },
+            { name: 'Cloth', id: 428, icon: '🧵' },
+            { name: 'Jazz Seeds', id: 429, icon: '🌱' },
+            { name: 'Truffle', id: 430, icon: '🍄' },
+            { name: 'Sunflower Seeds', id: 431, icon: '🌱' },
+            { name: 'Truffle Oil', id: 432, icon: '🫒' },
+            { name: 'Coffee Bean', id: 433, icon: '☕' },
+            { name: 'Stardrop', id: 434, icon: '⭐' },
+            { name: 'Goat Milk', id: 436, icon: '🥛' },
+            { name: 'Red Slime Egg', id: 437, icon: '🟥' },
+            { name: 'L. Goat Milk', id: 438, icon: '🥛' },
+            { name: 'Purple Slime Egg', id: 439, icon: '🟪' },
+            { name: 'Wool', id: 440, icon: '🧶' },
+            { name: 'Explosive Ammo', id: 441, icon: '💥' },
+            { name: 'Duck Egg', id: 442, icon: '🥚' },
+            { name: 'Duck Feather', id: 444, icon: '🪶' },
+            { name: 'Caviar', id: 445, icon: '🥫' },
+            { name: 'Rabbit\'s Foot', id: 446, icon: '🐇' },
+            { name: 'Aged Roe', id: 447, icon: '🥫' },
+            { name: 'Poppy Seeds', id: 453, icon: '🌱' },
+            { name: 'Ancient Fruit', id: 454, icon: '🍎' },
+            { name: 'Spangle Seeds', id: 455, icon: '🌱' },
+            { name: 'Algae Soup', id: 456, icon: '🍲' },
+            { name: 'Pale Broth', id: 457, icon: '🍲' },
+            { name: 'Bouquet', id: 458, icon: '💐' },
+            { name: 'Mead', id: 459, icon: '🍯' },
+            { name: 'Mermaid\'s Pendant', id: 460, icon: '🧜‍♀️' },
+            { name: 'Decorative Pot', id: 461, icon: '🏺' },
+            { name: 'Drum Block', id: 463, icon: '🥁' },
+            { name: 'Flute Block', id: 464, icon: '🪈' },
+            { name: 'Speed-Gro', id: 465, icon: '🧪' },
+            { name: 'Deluxe Speed-Gro', id: 466, icon: '🧪' },
+            { name: 'Parsnip Seeds', id: 472, icon: '🌱' },
+            { name: 'Bean Starter', id: 473, icon: '🌱' },
+            { name: 'Cauliflower Seeds', id: 474, icon: '🌱' },
+            { name: 'Potato Seeds', id: 475, icon: '🌱' },
+            { name: 'Garlic Seeds', id: 476, icon: '🌱' },
+            { name: 'Kale Seeds', id: 477, icon: '🌱' },
+            { name: 'Rhubarb Seeds', id: 478, icon: '🌱' },
+            { name: 'Melon Seeds', id: 479, icon: '🌱' },
+            { name: 'Tomato Seeds', id: 480, icon: '🌱' },
+            { name: 'Blueberry Seeds', id: 481, icon: '🌱' },
+            { name: 'Pepper Seeds', id: 482, icon: '🌱' },
+            { name: 'Wheat Seeds', id: 483, icon: '🌱' },
+            { name: 'Radish Seeds', id: 484, icon: '🌱' },
+            { name: 'Red Cabbage Seeds', id: 485, icon: '🌱' },
+            { name: 'Starfruit Seeds', id: 486, icon: '🌱' },
+            { name: 'Corn Seeds', id: 487, icon: '🌱' },
+            { name: 'Eggplant Seeds', id: 488, icon: '🌱' },
+            { name: 'Artichoke Seeds', id: 489, icon: '🌱' },
+            { name: 'Pumpkin Seeds', id: 490, icon: '🌱' },
+            { name: 'Bok Choy Seeds', id: 491, icon: '🌱' },
+            { name: 'Yam Seeds', id: 492, icon: '🌱' },
+            { name: 'Cranberry Seeds', id: 493, icon: '🌱' },
+            { name: 'Beet Seeds', id: 494, icon: '🌱' },
+            { name: 'Spring Seeds', id: 495, icon: '🌱' },
+            { name: 'Summer Seeds', id: 496, icon: '🌱' },
+            { name: 'Fall Seeds', id: 497, icon: '🌱' },
+            { name: 'Winter Seeds', id: 498, icon: '🌱' },
+            { name: 'Ancient Seeds', id: 499, icon: '🌱' },
+            { name: 'Geode', id: 535, icon: '🪨' },
+            { name: 'Frozen Geode', id: 536, icon: '🪨' },
+            { name: 'Magma Geode', id: 537, icon: '🪨' },
+            { name: 'Omni Geode', id: 749, icon: '🪨' },
+            { name: 'Battery Pack', id: 787, icon: '🔋' },
+            { name: 'Pearl', id: 797, icon: '🦪' },
+            { name: 'Wedding Ring', id: 801, icon: '💍' },
+            { name: 'Cactus Seeds', id: 802, icon: '🌵' },
+            { name: 'Iridium Milk', id: 803, icon: '🥛' },
+            { name: 'Tree Fertilizer', id: 805, icon: '🧪' },
+            { name: 'Dinosaur Mayonnaise', id: 807, icon: '🥫' },
+            { name: 'Void Ghost Pendant', id: 808, icon: '💀' },
+            { name: 'Movie Ticket', id: 809, icon: '🎫' },
+            { name: 'Roe', id: 812, icon: '🥚' },
+            { name: 'Squid Ink', id: 814, icon: '🦑' },
+            { name: 'Tea Leaves', id: 815, icon: '🍵' },
+            { name: 'Cinder Shard', id: 848, icon: '🔥' },
+            { name: 'Magma Cap', id: 851, icon: '🍄' },
+            { name: 'Dragon Tooth', id: 852, icon: '🦷' },
+            { name: 'Qi Gem', id: 858, icon: '💎' },
+            { name: 'Fairy Dust', id: 872, icon: '✨' },
+            { name: 'Piña Colada', id: 873, icon: '🍹' },
+            { name: 'Bug Steak', id: 874, icon: '🐛' },
+            { name: 'Ectoplasm', id: 875, icon: '👻' },
+            { name: 'Prismatic Jelly', id: 876, icon: '🌈' },
+            { name: 'Monster Musk', id: 879, icon: '🧪' },
+            { name: 'Bone Fragment', id: 881, icon: '🦴' },
+            { name: 'Fiber Seeds', id: 885, icon: '🌱' },
+            { name: 'Warp Totem: Island', id: 886, icon: '🏝️' },
+            { name: 'Qi Fruit', id: 889, icon: '🍎' },
+            { name: 'Qi Bean', id: 890, icon: '🫘' },
+            { name: 'Mushroom Tree Seed', id: 891, icon: '🍄' },
+            { name: 'Galaxy Soul', id: 896, icon: '⭐' },
+            { name: 'Pierre\'s Missing Stocklist', id: 897, icon: '📋' },
+            { name: 'Radioactive Ore', id: 909, icon: '☢️' },
+            { name: 'Radioactive Bar', id: 910, icon: '☢️' },
+            { name: 'Horse Flute', id: 911, icon: '🐴' },
+            { name: 'Qi Seasoning', id: 917, icon: '🧂' },
+            { name: 'Hyper Speed-Gro', id: 918, icon: '🧪' },
+            { name: 'Deluxe Fertilizer', id: 919, icon: '🧪' },
+            { name: 'Deluxe Retaining Soil', id: 920, icon: '🧪' },
+            { name: 'Squid Ink Ravioli', id: 921, icon: '🦑' },
+            { name: 'Cookout Kit', id: 926, icon: '🔥' },
+            { name: 'Camping Stove', id: 927, icon: '🏕️' },
+            { name: 'Golden Egg', id: 928, icon: '🥚' },
+            { name: 'Hedge', id: 929, icon: '🌿' },
+            { name: 'Calico Egg', id: 'CalicoEgg', icon: '🥚' },
+            { name: 'Mixed Flower Seeds', id: 'MixedFlowerSeeds', icon: '🌸' },
+            { name: 'Mystery Box', id: 'MysteryBox', icon: '📦' },
+            { name: 'Moss', id: 'Moss', icon: '🌿' },
+            { name: 'Mossy Seed', id: 'MossySeed', icon: '🌱' },
+            { name: 'Sonar Bobber', id: 'SonarBobber', icon: '🎣' },
+            { name: 'Tent Kit', id: 'TentKit', icon: '⛺' },
+            { name: 'Mystic Tree Seed', id: 'MysticTreeSeed', icon: '🌱' },
+            { name: 'Mystic Syrup', id: 'MysticSyrup', icon: '🍯' },
+            { name: 'Raisins', id: 'Raisins', icon: '🍇' },
+            { name: 'Stardrop Tea', id: 'StardropTea', icon: '🍵' },
+            { name: 'Prize Ticket', id: 'PrizeTicket', icon: '🎫' },
+            { name: 'Gold Coin', id: 'GoldCoin', icon: '🪙' },
+            { name: 'Treasure Totem', id: 'TreasureTotem', icon: '🗿' },
+            { name: 'Challenge Bait', id: 'ChallengeBait', icon: '🐛' },
+            { name: 'Carrot Seeds', id: 'CarrotSeeds', icon: '🌱' },
+            { name: 'Carrot', id: 'Carrot', icon: '🥕' },
+            { name: 'Summer Squash Seeds', id: 'SummerSquashSeeds', icon: '🌱' },
+            { name: 'Summer Squash', id: 'SummerSquash', icon: '🥒' },
+            { name: 'Broccoli Seeds', id: 'BroccoliSeeds', icon: '🌱' },
+            { name: 'Broccoli', id: 'Broccoli', icon: '🥦' },
+            { name: 'Powdermelon Seeds', id: 'PowdermelonSeeds', icon: '🌱' },
+            { name: 'Powdermelon', id: 'Powdermelon', icon: '🍈' },
+            { name: 'Book Of Stars', id: 'PurpleBook', icon: '📖' },
+            { name: 'Stardew Valley Almanac', id: 'SkillBook_0', icon: '📖' },
+            { name: 'Woodcutter\'s Weekly', id: 'SkillBook_2', icon: '📖' },
+            { name: 'Bait And Bobber', id: 'SkillBook_1', icon: '📖' },
+            { name: 'Mining Monthly', id: 'SkillBook_3', icon: '📖' },
+            { name: 'Combat Quarterly', id: 'SkillBook_4', icon: '📖' },
+            { name: 'The Alleyway Buffet', id: 'Book_Trash', icon: '📖' },
+            { name: 'The Art O\' Crabbing', id: 'Book_Crabbing', icon: '📖' },
+            { name: 'Dwarvish Safety Manual', id: 'Book_Bombs', icon: '📖' },
+            { name: 'Jewels Of The Sea', id: 'Book_Roe', icon: '📖' },
+            { name: 'Raccoon Journal', id: 'Book_WildSeeds', icon: '📖' },
+            { name: 'Woody\'s Secret', id: 'Book_Woodcutting', icon: '📖' },
+            { name: 'Jack Be Nimble, Jack Be Thick', id: 'Book_Defense', icon: '📖' },
+            { name: 'Friendship 101', id: 'Book_Friendship', icon: '📖' },
+            { name: 'Monster Compendium', id: 'Book_Void', icon: '📖' },
+            { name: 'Way Of The Wind pt. 1', id: 'Book_Speed', icon: '📖' },
+            { name: 'Mapping Cave Systems', id: 'Book_Marlon', icon: '📖' },
+            { name: 'Price Catalogue', id: 'Book_PriceCatalogue', icon: '📖' },
+            { name: 'Queen Of Sauce Cookbook', id: 'Book_QueenOfSauce', icon: '📖' },
+            { name: 'The Diamond Hunter', id: 'Book_Diamonds', icon: '📖' },
+            { name: 'Book of Mysteries', id: 'Book_Mystery', icon: '📖' },
+            { name: 'Animal Catalogue', id: 'Book_AnimalCatalogue', icon: '📖' },
+            { name: 'Way Of The Wind pt. 2', id: 'Book_Speed2', icon: '📖' },
+            { name: 'Golden Animal Cracker', id: 'GoldenAnimalCracker', icon: '🍪' },
+            { name: 'Golden Mystery Box', id: 'GoldenMysteryBox', icon: '📦' },
+            { name: 'Sea Jelly', id: 'SeaJelly', icon: '🍮' },
+            { name: 'Cave Jelly', id: 'CaveJelly', icon: '🍮' },
+            { name: 'River Jelly', id: 'RiverJelly', icon: '🍮' },
+            { name: 'Goby', id: 'Goby', icon: '🐟' },
+            { name: 'Treasure Appraisal Guide', id: 'Book_Artifact', icon: '📖' },
+            { name: 'Horse: The Book', id: 'Book_Horse', icon: '📖' },
+            { name: 'Butterfly Powder', id: 'ButterflyPowder', icon: '🦋' },
+            { name: 'Pet License', id: 'PetLicense', icon: '📜' },
+            { name: 'Blue Grass Starter', id: 'BlueGrassStarter', icon: '🌿' },
+            { name: 'Moss Soup', id: 'MossSoup', icon: '🍲' },
+            { name: 'Ol\' Slitherlegs', id: 'Book_Grass', icon: '📖' }
+        ],
+        'صنایع دستی بزرگ': [
+            { name: 'House Plant', id: '(BC)0', icon: '🪴' },
+            { name: 'Scarecrow', id: '(BC)8', icon: '🧙' },
+            { name: 'Lightning Rod', id: '(BC)9', icon: '⚡' },
+            { name: 'Bee House', id: '(BC)10', icon: '🐝' },
+            { name: 'Keg', id: '(BC)12', icon: '🛢️' },
+            { name: 'Furnace', id: '(BC)13', icon: '🔥' },
+            { name: 'Preserves Jar', id: '(BC)15', icon: '🏺' },
+            { name: 'Cheese Press', id: '(BC)16', icon: '🧀' },
+            { name: 'Loom', id: '(BC)17', icon: '🧵' },
+            { name: 'Oil Maker', id: '(BC)19', icon: '🫒' },
+            { name: 'Recycling Machine', id: '(BC)20', icon: '♻️' },
+            { name: 'Crystalarium', id: '(BC)21', icon: '💎' },
+            { name: 'Mayonnaise Machine', id: '(BC)24', icon: '🥫' },
+            { name: 'Seed Maker', id: '(BC)25', icon: '🌱' },
+            { name: 'Bone Mill', id: '(BC)90', icon: '🦴' },
+            { name: 'Charcoal Kiln', id: '(BC)114', icon: '🔥' },
+            { name: 'Mushroom Box', id: '(BC)128', icon: '🍄' },
+            { name: 'Chest', id: '(BC)130', icon: '📦' },
+            { name: 'Worm Bin', id: '(BC)154', icon: '🐛' },
+            { name: 'Slime Incubator', id: '(BC)156', icon: '🧪' },
+            { name: 'Slime Egg-Press', id: '(BC)158', icon: '🧪' },
+            { name: 'Cask', id: '(BC)163', icon: '🛢️' },
+            { name: 'Auto-Grabber', id: '(BC)165', icon: '🤖' },
+            { name: 'Deluxe Scarecrow', id: '(BC)167', icon: '🧙' },
+            { name: 'Geode Crusher', id: '(BC)182', icon: '🪨' },
+            { name: 'Workbench', id: '(BC)208', icon: '🛠️' },
+            { name: 'Wood Chipper', id: '(BC)211', icon: '🪵' },
+            { name: 'Solar Panel', id: '(BC)231', icon: '☀️' },
+            { name: 'Stone Chest', id: '(BC)232', icon: '📦' },
+            { name: 'Mini-Obelisk', id: '(BC)238', icon: '🗿' },
+            { name: 'Farm Computer', id: '(BC)239', icon: '💻' },
+            { name: 'Coffee Maker', id: '(BC)246', icon: '☕' },
+            { name: 'Sewing Machine', id: '(BC)247', icon: '🧵' },
+            { name: 'Mini-Shipping Bin', id: '(BC)248', icon: '📦' },
+            { name: 'Ostrich Incubator', id: '(BC)254', icon: '🥚' },
+            { name: 'Junimo Chest', id: '(BC)256', icon: '📦' },
+            { name: 'Heavy Tapper', id: '(BC)264', icon: '🔧' },
+            { name: 'Deconstructor', id: '(BC)265', icon: '🔧' },
+            { name: 'Auto-Petter', id: '(BC)272', icon: '🤖' },
+            { name: 'Hopper', id: '(BC)275', icon: '📦' },
+            { name: 'Mushroom Log', id: '(BC)MushroomLog', icon: '🍄' },
+            { name: 'Bait Maker', id: '(BC)BaitMaker', icon: '🐛' },
+            { name: 'Dehydrator', id: '(BC)Dehydrator', icon: '🔥' },
+            { name: 'Heavy Furnace', id: '(BC)HeavyFurnace', icon: '🔥' },
+            { name: 'Anvil', id: '(BC)Anvil', icon: '⚒️' },
+            { name: 'Mini-Forge', id: '(BC)MiniForge', icon: '⚒️' },
+            { name: 'Fish Smoker', id: '(BC)FishSmoker', icon: '🐟' },
+            { name: 'Deluxe Worm Bin', id: '(BC)DeluxeWormBin', icon: '🐛' },
+            { name: 'Big Chest', id: '(BC)BigChest', icon: '📦' },
+            { name: 'Big Stone Chest', id: '(BC)BigStoneChest', icon: '📦' },
+            { name: 'Statue Of Endless Fortune', id: '(BC)127', icon: '🗿' },
+            { name: 'Statue Of Perfection', id: '(BC)160', icon: '🗿' },
+            { name: 'Statue Of True Perfection', id: '(BC)280', icon: '🗿' },
+            { name: 'Statue Of Blessings', id: '(BC)StatueOfBlessings', icon: '🗿' },
+            { name: 'Statue Of The Dwarf King', id: '(BC)StatueOfTheDwarfKing', icon: '🗿' }
+        ],
+        'ابزارها': [
+            { name: 'Axe', id: '(T)Axe', icon: '🪓' },
+            { name: 'Copper Axe', id: '(T)CopperAxe', icon: '🪓' },
+            { name: 'Steel Axe', id: '(T)SteelAxe', icon: '🪓' },
+            { name: 'Gold Axe', id: '(T)GoldAxe', icon: '🪓' },
+            { name: 'Iridium Axe', id: '(T)IridiumAxe', icon: '🪓' },
+            { name: 'Bamboo Pole', id: '(T)BambooPole', icon: '🎣' },
+            { name: 'Training Rod', id: '(T)TrainingRod', icon: '🎣' },
+            { name: 'Fiberglass Rod', id: '(T)FiberglassRod', icon: '🎣' },
+            { name: 'Iridium Rod', id: '(T)IridiumRod', icon: '🎣' },
+            { name: 'Advanced Iridium Rod', id: '(T)AdvancedIridiumRod', icon: '🎣' },
+            { name: 'Hoe', id: '(T)Hoe', icon: '⛏️' },
+            { name: 'Copper Hoe', id: '(T)CopperHoe', icon: '⛏️' },
+            { name: 'Steel Hoe', id: '(T)SteelHoe', icon: '⛏️' },
+            { name: 'Gold Hoe', id: '(T)GoldHoe', icon: '⛏️' },
+            { name: 'Iridium Hoe', id: '(T)IridiumHoe', icon: '⛏️' },
+            { name: 'Lantern', id: '(T)Lantern', icon: '🏮' },
+            { name: 'Milk Pail', id: '(T)MilkPail', icon: '🪣' },
+            { name: 'Copper Pan', id: '(T)Pan', icon: '🍳' },
+            { name: 'Pickaxe', id: '(T)Pickaxe', icon: '⛏️' },
+            { name: 'Copper Pickaxe', id: '(T)CopperPickaxe', icon: '⛏️' },
+            { name: 'Steel Pickaxe', id: '(T)SteelPickaxe', icon: '⛏️' },
+            { name: 'Gold Pickaxe', id: '(T)GoldPickaxe', icon: '⛏️' },
+            { name: 'Iridium Pickaxe', id: '(T)IridiumPickaxe', icon: '⛏️' },
+            { name: 'Return Scepter', id: '(T)ReturnScepter', icon: '🪄' },
+            { name: 'Shears', id: '(T)Shears', icon: '✂️' },
+            { name: 'Watering Can', id: '(T)WateringCan', icon: '🫗' },
+            { name: 'Copper Watering Can', id: '(T)CopperWateringCan', icon: '🫗' },
+            { name: 'Steel Watering Can', id: '(T)SteelWateringCan', icon: '🫗' },
+            { name: 'Gold Watering Can', id: '(T)GoldWateringCan', icon: '🫗' },
+            { name: 'Iridium Watering Can', id: '(T)IridiumWateringCan', icon: '🫗' }
+        ],
+        'سلاح‌ها': [
+            { name: 'Rusty Sword', id: '(W)0', icon: '⚔️' },
+            { name: 'Silver Saber', id: '(W)1', icon: '⚔️' },
+            { name: 'Dark Sword', id: '(W)2', icon: '⚔️' },
+            { name: 'Holy Blade', id: '(W)3', icon: '⚔️' },
+            { name: 'Galaxy Sword', id: '(W)4', icon: '⚔️' },
+            { name: 'Bone Sword', id: '(W)5', icon: '⚔️' },
+            { name: 'Iron Edge', id: '(W)6', icon: '⚔️' },
+            { name: 'Templar\'s Blade', id: '(W)7', icon: '⚔️' },
+            { name: 'Obsidian Edge', id: '(W)8', icon: '⚔️' },
+            { name: 'Lava Katana', id: '(W)9', icon: '⚔️' },
+            { name: 'Claymore', id: '(W)10', icon: '⚔️' },
+            { name: 'Steel Smallsword', id: '(W)11', icon: '⚔️' },
+            { name: 'Wooden Blade', id: '(W)12', icon: '⚔️' },
+            { name: 'Insect Head', id: '(W)13', icon: '🐜' },
+            { name: 'Neptune\'s Glaive', id: '(W)14', icon: '⚔️' },
+            { name: 'Forest Sword', id: '(W)15', icon: '⚔️' },
+            { name: 'Galaxy Dagger', id: '(W)23', icon: '🗡️' },
+            { name: 'Galaxy Hammer', id: '(W)29', icon: '🔨' },
+            { name: 'Slingshot', id: '(W)32', icon: '🎯' },
+            { name: 'Master Slingshot', id: '(W)33', icon: '🎯' },
+            { name: 'Galaxy Slingshot', id: '(W)34', icon: '🎯' },
+            { name: 'Scythe', id: '(W)47', icon: '🌾' },
+            { name: 'Golden Scythe', id: '(W)53', icon: '🌾' },
+            { name: 'Dwarf Sword', id: '(W)54', icon: '⚔️' },
+            { name: 'Dragontooth Cutlass', id: '(W)57', icon: '⚔️' },
+            { name: 'Infinity Blade', id: '(W)62', icon: '⚔️' },
+            { name: 'Infinity Gavel', id: '(W)63', icon: '🔨' },
+            { name: 'Infinity Dagger', id: '(W)64', icon: '🗡️' },
+            { name: 'Meowmere', id: '(W)65', icon: '🐱' },
+            { name: 'Iridium Scythe', id: '(W)66', icon: '🌾' }
+        ],
+        'مبلمان': [
+            { name: 'Oak Chair', id: '(F)0', icon: '🪑' },
+            { name: 'Walnut Chair', id: '(F)3', icon: '🪑' },
+            { name: 'Birch Chair', id: '(F)6', icon: '🪑' },
+            { name: 'Mahogany Chair', id: '(F)9', icon: '🪑' },
+            { name: 'Oak Bench', id: '(F)192', icon: '🪑' },
+            { name: 'Blue Couch', id: '(F)416', icon: '🛋️' },
+            { name: 'Red Couch', id: '(F)424', icon: '🛋️' },
+            { name: 'Green Couch', id: '(F)432', icon: '🛋️' },
+            { name: 'Oak Dresser', id: '(F)704', icon: '🪞' },
+            { name: 'Oak Table', id: '(F)1120', icon: '🪑' },
+            { name: 'Furniture Catalogue', id: '(F)1226', icon: '📖' },
+            { name: 'Catalogue', id: '(F)1308', icon: '📖' },
+            { name: 'Calendar', id: '(F)1402', icon: '📅' },
+            { name: 'Budget TV', id: '(F)1466', icon: '📺' },
+            { name: 'Plasma TV', id: '(F)1468', icon: '📺' },
+            { name: 'Brick Fireplace', id: '(F)1792', icon: '🔥' },
+            { name: 'Stone Fireplace', id: '(F)1794', icon: '🔥' },
+            { name: 'Iridium Fireplace', id: '(F)1796', icon: '🔥' },
+            { name: 'Bed', id: '(F)2048', icon: '🛏️' },
+            { name: 'Double Bed', id: '(F)2052', icon: '🛏️' },
+            { name: 'Large Fish Tank', id: '(F)2304', icon: '🐠' },
+            { name: 'Joja Furniture Catalogue', id: '(F)JojaCatalogue', icon: '📖' },
+            { name: 'Wizard Catalogue', id: '(F)WizardCatalogue', icon: '📖' },
+            { name: 'Junimo Catalogue', id: '(F)JunimoCatalogue', icon: '📖' },
+            { name: 'Retro Catalogue', id: '(F)RetroCatalogue', icon: '📖' },
+            { name: 'Trash Catalogue', id: '(F)TrashCatalogue', icon: '📖' }
+        ],
+        'چکمه': [
+            { name: 'Sneakers', id: '(B)504', icon: '👟' },
+            { name: 'Rubber Boots', id: '(B)505', icon: '👢' },
+            { name: 'Leather Boots', id: '(B)506', icon: '👢' },
+            { name: 'Work Boots', id: '(B)507', icon: '👢' },
+            { name: 'Combat Boots', id: '(B)508', icon: '👢' },
+            { name: 'Space Boots', id: '(B)514', icon: '👢' },
+            { name: 'Cowboy Boots', id: '(B)515', icon: '👢' },
+            { name: 'Emily\'s Magic Boots', id: '(B)804', icon: '👢' },
+            { name: 'Cinderclown Shoes', id: '(B)853', icon: '👢' },
+            { name: 'Mermaid Boots', id: '(B)854', icon: '👢' },
+            { name: 'Dragonscale Boots', id: '(B)855', icon: '👢' },
+            { name: 'Crystal Shoes', id: '(B)878', icon: '👢' }
+        ],
+        'شلوار': [
+            { name: 'Farmer Pants', id: '(P)0', icon: '👖' },
+            { name: 'Shorts', id: '(P)1', icon: '🩳' },
+            { name: 'Trimmed Lucky Purple Shorts', id: '(P)15', icon: '🩳' },
+            { name: 'Prismatic Pants', id: '(P)998', icon: '👖' },
+            { name: 'Prismatic Genie Pants', id: '(P)999', icon: '👖' }
+        ],
+        'پیراهن‌ها': [
+            { name: 'Classic Overalls', id: '(S)1000', icon: '👕' },
+            { name: 'Skeleton Shirt', id: '(S)1014', icon: '👕' },
+            { name: 'Emily\'s Magic Shirt', id: '(S)1127', icon: '👕' },
+            { name: 'Bikini Top', id: '(S)1134', icon: '👙' },
+            { name: 'Prismatic Shirt', id: '(S)1998', icon: '👕' },
+            { name: 'Prismatic Shirt', id: '(S)1999', icon: '👕' }
+        ],
+        'کلاه': [
+            { name: 'Cowboy Hat', id: '(H)0', icon: '🤠' },
+            { name: 'Bowler Hat', id: '(H)1', icon: '🎩' },
+            { name: 'Top Hat', id: '(H)2', icon: '🎩' },
+            { name: 'Sombrero', id: '(H)3', icon: '🧢' },
+            { name: 'Straw Hat', id: '(H)4', icon: '🧢' },
+            { name: 'Skeleton Mask', id: '(H)8', icon: '💀' },
+            { name: 'Goblin Mask', id: '(H)9', icon: '👺' },
+            { name: 'Chicken Mask', id: '(H)10', icon: '🐔' },
+            { name: 'Fedora', id: '(H)19', icon: '🧢' },
+            { name: 'Santa Hat', id: '(H)25', icon: '🎅' },
+            { name: 'Tiara', id: '(H)26', icon: '👑' },
+            { name: 'Cat Ears', id: '(H)32', icon: '🐱' },
+            { name: 'Living Hat', id: '(H)40', icon: '🌿' },
+            { name: 'Mushroom Cap', id: '(H)42', icon: '🍄' },
+            { name: 'Pumpkin Mask', id: '(H)48', icon: '🎃' },
+            { name: 'Garbage Hat', id: '(H)66', icon: '🗑️' },
+            { name: 'Witch Hat', id: '(H)70', icon: '🧙' },
+            { name: 'Frog Hat', id: '(H)78', icon: '🐸' },
+            { name: 'Tiger Hat', id: '(H)91', icon: '🐯' },
+            { name: 'Magic Cowboy Hat', id: '(H)73', icon: '🤠' },
+            { name: 'Deluxe Pirate Hat', id: '(H)76', icon: '🏴‍☠️' },
+            { name: 'Mr. Qi\'s Hat', id: '(H)82', icon: '🧢' },
+            { name: 'Dark Cowboy Hat', id: '(H)83', icon: '🤠' },
+            { name: 'Radioactive Goggles', id: '(H)84', icon: '🥽' },
+            { name: 'Qi Mask', id: '(H)86', icon: '🎭' },
+            { name: 'Star Helmet', id: '(H)87', icon: '⛑️' },
+            { name: 'Sunglasses', id: '(H)88', icon: '🕶️' },
+            { name: 'Warrior Helmet', id: '(H)93', icon: '⛑️' },
+            { name: 'Tricorn Hat', id: '(H)TricornHat', icon: '🧢' },
+            { name: 'Joja Cap', id: '(H)JojaCap', icon: '🧢' },
+            { name: 'Mummy Mask', id: '(H)MummyMask', icon: '🎭' },
+            { name: 'Bucket Hat', id: '(H)BucketHat', icon: '🧢' },
+            { name: 'Squid Hat', id: '(H)SquidHat', icon: '🦑' },
+            { name: 'Raccoon Hat', id: '(H)RaccoonHat', icon: '🦝' },
+            { name: 'Mystery Hat', id: '(H)MysteryHat', icon: '🧢' },
+            { name: 'Leprechaun Hat', id: '(H)LeprechuanHat', icon: '🍀' },
+            { name: 'Junimo Hat', id: '(H)JunimoHat', icon: '🧢' },
+            { name: 'Jester Hat', id: '(H)JesterHat', icon: '🎭' },
+            { name: 'Space Helmet', id: '(H)SpaceHelmet', icon: '🚀' },
+            { name: 'Infinity Crown', id: '(H)InfinityCrown', icon: '👑' }
+        ],
+        'زیورآلات': [
+            { name: 'Magic Hair Gel', id: '(TR)MagicHairDye', icon: '💇' },
+            { name: 'Frog Egg', id: '(TR)FrogEgg', icon: '🥚' },
+            { name: 'Magic Quiver', id: '(TR)MagicQuiver', icon: '🏹' },
+            { name: 'Fairy Box', id: '(TR)FairyBox', icon: '🧚' },
+            { name: 'Parrot Egg', id: '(TR)ParrotEgg', icon: '🥚' },
+            { name: 'Ice Rod', id: '(TR)IceRod', icon: '❄️' },
+            { name: 'Golden Spur', id: '(TR)IridiumSpur', icon: '⚜️' },
+            { name: 'Basilisk Paw', id: '(TR)BasiliskPaw', icon: '🐾' }
+        ],
+        'مانکن‌ها': [
+            { name: 'Mannequin (M)', id: '(M)MannequinMale', icon: '🧍' },
+            { name: 'Mannequin (F)', id: '(M)MannequinFemale', icon: '🧍' },
+            { name: 'Cursed Mannequin (M)', id: '(M)CursedMannequinMale', icon: '🧍' },
+            { name: 'Cursed Mannequin (F)', id: '(M)CursedMannequinFemale', icon: '🧍' }
+        ],
+        'کفپوش': [
+            { name: 'Floor 0', id: '(FL)0', icon: '🟫' },
+            { name: 'Floor 1', id: '(FL)1', icon: '🟫' },
+            { name: 'Floor 2', id: '(FL)2', icon: '🟫' },
+            { name: 'Floor 3', id: '(FL)3', icon: '🟫' },
+            { name: 'Floor 4', id: '(FL)4', icon: '🟫' },
+            { name: 'Floor 5', id: '(FL)5', icon: '🟫' },
+            { name: 'Floor 6', id: '(FL)6', icon: '🟫' },
+            { name: 'Floor 7', id: '(FL)7', icon: '🟫' },
+            { name: 'Floor 8', id: '(FL)8', icon: '🟫' },
+            { name: 'Floor 9', id: '(FL)9', icon: '🟫' },
+            { name: 'Floor 10', id: '(FL)10', icon: '🟫' },
+            { name: 'Floor 11', id: '(FL)11', icon: '🟫' },
+            { name: 'Floor 12', id: '(FL)12', icon: '🟫' },
+            { name: 'Floor 13', id: '(FL)13', icon: '🟫' },
+            { name: 'Floor 14', id: '(FL)14', icon: '🟫' },
+            { name: 'Floor 15', id: '(FL)15', icon: '🟫' },
+            { name: 'Floor 16', id: '(FL)16', icon: '🟫' },
+            { name: 'Floor 17', id: '(FL)17', icon: '🟫' },
+            { name: 'Floor 18', id: '(FL)18', icon: '🟫' },
+            { name: 'Floor 19', id: '(FL)19', icon: '🟫' },
+            { name: 'Floor 20', id: '(FL)20', icon: '🟫' },
+            { name: 'Floor 21', id: '(FL)21', icon: '🟫' },
+            { name: 'Floor 22', id: '(FL)22', icon: '🟫' },
+            { name: 'Floor 23', id: '(FL)23', icon: '🟫' },
+            { name: 'Floor 24', id: '(FL)24', icon: '🟫' },
+            { name: 'Floor 25', id: '(FL)25', icon: '🟫' },
+            { name: 'Floor 26', id: '(FL)26', icon: '🟫' },
+            { name: 'Floor 27', id: '(FL)27', icon: '🟫' },
+            { name: 'Floor 28', id: '(FL)28', icon: '🟫' },
+            { name: 'Floor 29', id: '(FL)29', icon: '🟫' },
+            { name: 'Floor 30', id: '(FL)30', icon: '🟫' },
+            { name: 'Floor 31', id: '(FL)31', icon: '🟫' },
+            { name: 'Floor 32', id: '(FL)32', icon: '🟫' },
+            { name: 'Floor 33', id: '(FL)33', icon: '🟫' },
+            { name: 'Floor 34', id: '(FL)34', icon: '🟫' },
+            { name: 'Floor 35', id: '(FL)35', icon: '🟫' },
+            { name: 'Floor 36', id: '(FL)36', icon: '🟫' },
+            { name: 'Floor 37', id: '(FL)37', icon: '🟫' },
+            { name: 'Floor 38', id: '(FL)38', icon: '🟫' },
+            { name: 'Floor 39', id: '(FL)39', icon: '🟫' },
+            { name: 'Floor 40', id: '(FL)40', icon: '🟫' },
+            { name: 'Floor 41', id: '(FL)41', icon: '🟫' },
+            { name: 'Floor 42', id: '(FL)42', icon: '🟫' },
+            { name: 'Floor 43', id: '(FL)43', icon: '🟫' },
+            { name: 'Floor 44', id: '(FL)44', icon: '🟫' },
+            { name: 'Floor 45', id: '(FL)45', icon: '🟫' },
+            { name: 'Floor 46', id: '(FL)46', icon: '🟫' },
+            { name: 'Floor 47', id: '(FL)47', icon: '🟫' },
+            { name: 'Floor 48', id: '(FL)48', icon: '🟫' },
+            { name: 'Floor 49', id: '(FL)49', icon: '🟫' },
+            { name: 'Floor 50', id: '(FL)50', icon: '🟫' },
+            { name: 'Floor 51', id: '(FL)51', icon: '🟫' },
+            { name: 'Floor 52', id: '(FL)52', icon: '🟫' },
+            { name: 'Floor 53', id: '(FL)53', icon: '🟫' },
+            { name: 'Floor 54', id: '(FL)54', icon: '🟫' },
+            { name: 'Floor 55', id: '(FL)55', icon: '🟫' },
+            { name: 'Floor 56', id: '(FL)56', icon: '🟫' },
+            { name: 'Floor 57', id: '(FL)57', icon: '🟫' },
+            { name: 'Floor 58', id: '(FL)58', icon: '🟫' },
+            { name: 'Floor 59', id: '(FL)59', icon: '🟫' },
+            { name: 'Floor 60', id: '(FL)60', icon: '🟫' },
+            { name: 'Floor 61', id: '(FL)61', icon: '🟫' },
+            { name: 'Floor 62', id: '(FL)62', icon: '🟫' },
+            { name: 'Floor 63', id: '(FL)63', icon: '🟫' },
+            { name: 'Floor 64', id: '(FL)64', icon: '🟫' },
+            { name: 'Floor 65', id: '(FL)65', icon: '🟫' },
+            { name: 'Floor 66', id: '(FL)66', icon: '🟫' },
+            { name: 'Floor 67', id: '(FL)67', icon: '🟫' },
+            { name: 'Floor 68', id: '(FL)68', icon: '🟫' },
+            { name: 'Floor 69', id: '(FL)69', icon: '🟫' },
+            { name: 'Floor 70', id: '(FL)70', icon: '🟫' },
+            { name: 'Floor 71', id: '(FL)71', icon: '🟫' },
+            { name: 'Floor 72', id: '(FL)72', icon: '🟫' },
+            { name: 'Floor 73', id: '(FL)73', icon: '🟫' },
+            { name: 'Floor 74', id: '(FL)74', icon: '🟫' },
+            { name: 'Floor 75', id: '(FL)75', icon: '🟫' },
+            { name: 'Floor 76', id: '(FL)76', icon: '🟫' },
+            { name: 'Floor 77', id: '(FL)77', icon: '🟫' },
+            { name: 'Floor 78', id: '(FL)78', icon: '🟫' },
+            { name: 'Floor 79', id: '(FL)79', icon: '🟫' },
+            { name: 'Floor 80', id: '(FL)80', icon: '🟫' },
+            { name: 'Floor 81', id: '(FL)81', icon: '🟫' },
+            { name: 'Floor 82', id: '(FL)82', icon: '🟫' },
+            { name: 'Floor 83', id: '(FL)83', icon: '🟫' },
+            { name: 'Floor 84', id: '(FL)84', icon: '🟫' },
+            { name: 'Floor 85', id: '(FL)85', icon: '🟫' },
+            { name: 'Floor 86', id: '(FL)86', icon: '🟫' },
+            { name: 'Floor 87', id: '(FL)87', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:0', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:1', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:2', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:3', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:4', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:5', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:6', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:7', icon: '🟫' },
+            { name: 'More Floors', id: '(FL)MoreFloors:8', icon: '🟫' }
+        ],
+        'تصاویر پس زمینه': [
+            { name: 'Wallpaper 0', id: '(WP)0', icon: '🖼️' },
+            { name: 'Wallpaper 1', id: '(WP)1', icon: '🖼️' },
+            { name: 'Wallpaper 2', id: '(WP)2', icon: '🖼️' },
+            { name: 'Wallpaper 3', id: '(WP)3', icon: '🖼️' },
+            { name: 'Wallpaper 4', id: '(WP)4', icon: '🖼️' },
+            { name: 'Wallpaper 5', id: '(WP)5', icon: '🖼️' },
+            { name: 'Wallpaper 6', id: '(WP)6', icon: '🖼️' },
+            { name: 'Wallpaper 7', id: '(WP)7', icon: '🖼️' },
+            { name: 'Wallpaper 8', id: '(WP)8', icon: '🖼️' },
+            { name: 'Wallpaper 9', id: '(WP)9', icon: '🖼️' },
+            { name: 'Wallpaper 10', id: '(WP)10', icon: '🖼️' },
+            { name: 'Wallpaper 11', id: '(WP)11', icon: '🖼️' },
+            { name: 'Wallpaper 12', id: '(WP)12', icon: '🖼️' },
+            { name: 'Wallpaper 13', id: '(WP)13', icon: '🖼️' },
+            { name: 'Wallpaper 14', id: '(WP)14', icon: '🖼️' },
+            { name: 'Wallpaper 15', id: '(WP)15', icon: '🖼️' },
+            { name: 'Wallpaper 16', id: '(WP)16', icon: '🖼️' },
+            { name: 'Wallpaper 17', id: '(WP)17', icon: '🖼️' },
+            { name: 'Wallpaper 18', id: '(WP)18', icon: '🖼️' },
+            { name: 'Wallpaper 19', id: '(WP)19', icon: '🖼️' },
+            { name: 'Wallpaper 20', id: '(WP)20', icon: '🖼️' },
+            { name: 'Wallpaper 21', id: '(WP)21', icon: '🖼️' },
+            { name: 'Wallpaper 22', id: '(WP)22', icon: '🖼️' },
+            { name: 'Wallpaper 23', id: '(WP)23', icon: '🖼️' },
+            { name: 'Wallpaper 24', id: '(WP)24', icon: '🖼️' },
+            { name: 'Wallpaper 25', id: '(WP)25', icon: '🖼️' },
+            { name: 'Wallpaper 26', id: '(WP)26', icon: '🖼️' },
+            { name: 'Wallpaper 27', id: '(WP)27', icon: '🖼️' },
+            { name: 'Wallpaper 28', id: '(WP)28', icon: '🖼️' },
+            { name: 'Wallpaper 29', id: '(WP)29', icon: '🖼️' },
+            { name: 'Wallpaper 30', id: '(WP)30', icon: '🖼️' },
+            { name: 'Wallpaper 31', id: '(WP)31', icon: '🖼️' },
+            { name: 'Wallpaper 32', id: '(WP)32', icon: '🖼️' },
+            { name: 'Wallpaper 33', id: '(WP)33', icon: '🖼️' },
+            { name: 'Wallpaper 34', id: '(WP)34', icon: '🖼️' },
+            { name: 'Wallpaper 35', id: '(WP)35', icon: '🖼️' },
+            { name: 'Wallpaper 36', id: '(WP)36', icon: '🖼️' },
+            { name: 'Wallpaper 37', id: '(WP)37', icon: '🖼️' },
+            { name: 'Wallpaper 38', id: '(WP)38', icon: '🖼️' },
+            { name: 'Wallpaper 39', id: '(WP)39', icon: '🖼️' },
+            { name: 'Wallpaper 40', id: '(WP)40', icon: '🖼️' },
+            { name: 'Wallpaper 41', id: '(WP)41', icon: '🖼️' },
+            { name: 'Wallpaper 42', id: '(WP)42', icon: '🖼️' },
+            { name: 'Wallpaper 43', id: '(WP)43', icon: '🖼️' },
+            { name: 'Wallpaper 44', id: '(WP)44', icon: '🖼️' },
+            { name: 'Wallpaper 45', id: '(WP)45', icon: '🖼️' },
+            { name: 'Wallpaper 46', id: '(WP)46', icon: '🖼️' },
+            { name: 'Wallpaper 47', id: '(WP)47', icon: '🖼️' },
+            { name: 'Wallpaper 48', id: '(WP)48', icon: '🖼️' },
+            { name: 'Wallpaper 49', id: '(WP)49', icon: '🖼️' },
+            { name: 'Wallpaper 50', id: '(WP)50', icon: '🖼️' },
+            { name: 'Wallpaper 51', id: '(WP)51', icon: '🖼️' },
+            { name: 'Wallpaper 52', id: '(WP)52', icon: '🖼️' },
+            { name: 'Wallpaper 53', id: '(WP)53', icon: '🖼️' },
+            { name: 'Wallpaper 54', id: '(WP)54', icon: '🖼️' },
+            { name: 'Wallpaper 55', id: '(WP)55', icon: '🖼️' },
+            { name: 'Wallpaper 56', id: '(WP)56', icon: '🖼️' },
+            { name: 'Wallpaper 57', id: '(WP)57', icon: '🖼️' },
+            { name: 'Wallpaper 58', id: '(WP)58', icon: '🖼️' },
+            { name: 'Wallpaper 59', id: '(WP)59', icon: '🖼️' },
+            { name: 'Wallpaper 60', id: '(WP)60', icon: '🖼️' },
+            { name: 'Wallpaper 61', id: '(WP)61', icon: '🖼️' },
+            { name: 'Wallpaper 62', id: '(WP)62', icon: '🖼️' },
+            { name: 'Wallpaper 63', id: '(WP)63', icon: '🖼️' },
+            { name: 'Wallpaper 64', id: '(WP)64', icon: '🖼️' },
+            { name: 'Wallpaper 65', id: '(WP)65', icon: '🖼️' },
+            { name: 'Wallpaper 66', id: '(WP)66', icon: '🖼️' },
+            { name: 'Wallpaper 67', id: '(WP)67', icon: '🖼️' },
+            { name: 'Wallpaper 68', id: '(WP)68', icon: '🖼️' },
+            { name: 'Wallpaper 69', id: '(WP)69', icon: '🖼️' },
+            { name: 'Wallpaper 70', id: '(WP)70', icon: '🖼️' },
+            { name: 'Wallpaper 71', id: '(WP)71', icon: '🖼️' },
+            { name: 'Wallpaper 72', id: '(WP)72', icon: '🖼️' },
+            { name: 'Wallpaper 73', id: '(WP)73', icon: '🖼️' },
+            { name: 'Wallpaper 74', id: '(WP)74', icon: '🖼️' },
+            { name: 'Wallpaper 75', id: '(WP)75', icon: '🖼️' },
+            { name: 'Wallpaper 76', id: '(WP)76', icon: '🖼️' },
+            { name: 'Wallpaper 77', id: '(WP)77', icon: '🖼️' },
+            { name: 'Wallpaper 78', id: '(WP)78', icon: '🖼️' },
+            { name: 'Wallpaper 79', id: '(WP)79', icon: '🖼️' },
+            { name: 'Wallpaper 80', id: '(WP)80', icon: '🖼️' },
+            { name: 'Wallpaper 81', id: '(WP)81', icon: '🖼️' },
+            { name: 'Wallpaper 82', id: '(WP)82', icon: '🖼️' },
+            { name: 'Wallpaper 83', id: '(WP)83', icon: '🖼️' },
+            { name: 'Wallpaper 84', id: '(WP)84', icon: '🖼️' },
+            { name: 'Wallpaper 85', id: '(WP)85', icon: '🖼️' },
+            { name: 'Wallpaper 86', id: '(WP)86', icon: '🖼️' },
+            { name: 'Wallpaper 87', id: '(WP)87', icon: '🖼️' },
+            { name: 'Wallpaper 88', id: '(WP)88', icon: '🖼️' },
+            { name: 'Wallpaper 89', id: '(WP)89', icon: '🖼️' },
+            { name: 'Wallpaper 90', id: '(WP)90', icon: '🖼️' },
+            { name: 'Wallpaper 91', id: '(WP)91', icon: '🖼️' },
+            { name: 'Wallpaper 92', id: '(WP)92', icon: '🖼️' },
+            { name: 'Wallpaper 93', id: '(WP)93', icon: '🖼️' },
+            { name: 'Wallpaper 94', id: '(WP)94', icon: '🖼️' },
+            { name: 'Wallpaper 95', id: '(WP)95', icon: '🖼️' },
+            { name: 'Wallpaper 96', id: '(WP)96', icon: '🖼️' },
+            { name: 'Wallpaper 97', id: '(WP)97', icon: '🖼️' },
+            { name: 'Wallpaper 98', id: '(WP)98', icon: '🖼️' },
+            { name: 'Wallpaper 99', id: '(WP)99', icon: '🖼️' },
+            { name: 'Wallpaper 100', id: '(WP)100', icon: '🖼️' },
+            { name: 'Wallpaper 101', id: '(WP)101', icon: '🖼️' },
+            { name: 'Wallpaper 102', id: '(WP)102', icon: '🖼️' },
+            { name: 'Wallpaper 103', id: '(WP)103', icon: '🖼️' },
+            { name: 'Wallpaper 104', id: '(WP)104', icon: '🖼️' },
+            { name: 'Wallpaper 105', id: '(WP)105', icon: '🖼️' },
+            { name: 'Wallpaper 106', id: '(WP)106', icon: '🖼️' },
+            { name: 'Wallpaper 107', id: '(WP)107', icon: '🖼️' },
+            { name: 'Wallpaper 108', id: '(WP)108', icon: '🖼️' },
+            { name: 'Wallpaper 109', id: '(WP)109', icon: '🖼️' },
+            { name: 'Wallpaper 110', id: '(WP)110', icon: '🖼️' },
+            { name: 'Wallpaper 111', id: '(WP)111', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:0', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:1', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:2', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:3', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:4', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:5', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:6', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:7', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:8', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:9', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:10', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:11', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:12', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:13', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:14', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:15', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:16', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:17', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:18', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:19', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:20', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:21', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:22', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:23', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:24', icon: '🖼️' },
+            { name: 'More Walls', id: '(WP)MoreWalls:25', icon: '🖼️' }
+        ],
+        'رایگان': [
+            { name: '???', id: 930, icon: '❓' },
+            { name: 'Far Away Stone', id: 'FarAwayStone', icon: '🪨' },
+            { name: 'Golden Tag', id: 'TroutDerbyTag', icon: '🏷️' },
+            { name: 'Deluxe Bait', id: 'DeluxeBait', icon: '🐛' },
+            { name: 'Specific Bait', id: 'SpecificBait', icon: '🐛' },
+            { name: 'Volcano Gold Node', id: 'VolcanoGoldNode', icon: '🪨' },
+            { name: 'Dried Fruit', id: 'DriedFruit', icon: '🍎' },
+            { name: 'Dried Mushrooms', id: 'DriedMushrooms', icon: '🍄' },
+            { name: 'Smoked Fish', id: 'SmokedFish', icon: '🐟' },
+            { name: 'Artifact Spot', id: 'SeedSpot', icon: '🌱' },
+            { name: 'Basic Coal Node', id: 'BasicCoalNode0', icon: '⚫' },
+            { name: 'Basic Coal Node', id: 'BasicCoalNode1', icon: '⚫' },
+            { name: 'Volcano Coal Node', id: 'VolcanoCoalNode0', icon: '⚫' },
+            { name: 'Volcano Coal Node', id: 'VolcanoCoalNode1', icon: '⚫' },
+            { name: 'Pot Of Gold', id: 'PotOfGold', icon: '🏺' }
+        ]
+    };
+
+    // ============================================
+    // متغیرهای فیلتر
+    // ============================================
+    let currentFilter = 'all';
+    let copyCounter = 0;
+
+    // ============================================
+    // رندر کردن آیتم‌ها
+    // ============================================
+    function renderItems() {
+        const grid = document.getElementById('itemGrid');
+        grid.innerHTML = '';
+
+        const query = document.getElementById('searchInput').value.trim().toLowerCase();
+
+        let totalItems = 0;
+        let categories = 0;
+
+        Object.entries(itemData).forEach(([category, items]) => {
+            if (currentFilter !== 'all' && category !== currentFilter) {
+                return;
+            }
+
+            let filteredItems = items;
+            if (query) {
+                filteredItems = items.filter(item =>
+                    item.name.toLowerCase().includes(query) ||
+                    String(item.id).toLowerCase().includes(query)
+                );
+            }
+
+            if (filteredItems.length === 0) return;
+
+            categories++;
+            totalItems += filteredItems.length;
+
+            const header = document.createElement('div');
+            header.className = 'category-header';
+            header.innerHTML = `${category} <span class="count">(${filteredItems.length})</span>`;
+            grid.appendChild(header);
+
+            filteredItems.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'item-card';
+
+                const icon = document.createElement('div');
+                icon.className = 'icon';
+                icon.textContent = item.icon || '🎁';
+
+                const name = document.createElement('div');
+                name.className = 'name';
+                name.textContent = item.name;
+
+                const id = document.createElement('div');
+                id.className = 'id';
+                id.textContent = `[${item.id}]`;
+
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-btn';
+                copyBtn.textContent = '📋 کپی';
+                copyBtn.onclick = function(e) {
+                    e.stopPropagation();
+                    copyToClipboard(`[${item.id}]`, copyBtn);
+                };
+
+                card.appendChild(icon);
+                card.appendChild(name);
+                card.appendChild(id);
+                card.appendChild(copyBtn);
+
+                card.addEventListener('click', function() {
+                    copyToClipboard(`[${item.id}]`, this.querySelector('.copy-btn'));
+                });
+
+                grid.appendChild(card);
+            });
+        });
+
+        document.getElementById('totalItems').textContent = totalItems;
+        document.getElementById('totalCategories').textContent = categories;
+    }
+
+    // ============================================
+    // کپی به کلیپ‌بورد
+    // ============================================
+    function copyToClipboard(text, btn) {
+        const textToCopy = text;
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showCopied(btn);
+            }).catch(() => {
+                fallbackCopy(textToCopy, btn);
+            });
+        } else {
+            fallbackCopy(textToCopy, btn);
+        }
+    }
+
+    function fallbackCopy(text, btn) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        textarea.style.position = 'fixed';
+        textarea.style.opacity = '0';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+            document.execCommand('copy');
+            showCopied(btn);
+        } catch (err) {
+            showToast('❌ کپی نشد!');
+        }
+        document.body.removeChild(textarea);
+    }
+
+    function showCopied(btn) {
+        const originalText = btn.textContent;
+        btn.textContent = '✅ کپی شد';
+        btn.classList.add('copied');
+        copyCounter++;
+        document.getElementById('copyCount').textContent = copyCounter;
+
+        setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove('copied');
+        }, 2000);
+    }
+
+    // ============================================
+    // Toast
+    // ============================================
+    let toastTimeout = null;
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        const msg = document.getElementById('toastMessage');
+
+        msg.textContent = message;
+        toast.classList.add('show');
+
+        if (toastTimeout) clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => {
+            toast.classList.remove('show');
+        }, 2000);
+    }
+
+    // ============================================
+    // فیلترها
+    // ============================================
+    function setFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.filter === filter) {
+                btn.classList.add('active');
+            }
+        });
+        renderItems();
+    }
+
+    function filterItems() {
+        renderItems();
+    }
+
+    // ============================================
+    // شروع
+    // ============================================
+    renderItems();
+
+    console.log('🎮 وانیلا استاردو ولی AR - RSN');
+    console.log('📊 بارگذاری کامل شد');
+</script>
+
+</body>
+  </html>
