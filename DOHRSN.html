@@ -1,1 +1,985 @@
 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>راهنمای کامل نامه‌های استاردو ولی | RSN</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;700;900&display=swap');
+
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #00cec9;
+            --gold: #fdcb6e;
+            --bg: #0a0a0f;
+            --card: #12121f;
+            --border: rgba(255,255,255,0.06);
+            --paper: #f5e6c8;
+            --ink: #2d1b0e;
+            --seal: #c0392b;
+        }
+
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background: var(--bg);
+            color: #fff;
+            min-height: 100vh;
+            padding: 16px;
+            overflow-x: hidden;
+        }
+
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, #12121f, #0a0a0f);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ===== Header ===== */
+        .header {
+            text-align: center;
+            padding: 20px 0 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 24px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold), var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header .subtitle {
+            font-size: 14px;
+            color: rgba(255,255,255,0.15);
+            margin-top: 6px;
+        }
+
+        .header .badge {
+            display: inline-block;
+            padding: 4px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 10px;
+            background: rgba(253,203,110,0.08);
+            border: 1px solid rgba(253,203,110,0.1);
+            color: var(--gold);
+        }
+
+        /* ===== Stats ===== */
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .stats .stat-item {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 10px 20px;
+            text-align: center;
+            min-width: 100px;
+        }
+
+        .stats .stat-item .num {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .stats .stat-item .label {
+            font-size: 10px;
+            color: rgba(255,255,255,0.15);
+        }
+
+        /* ===== Search ===== */
+        .search-box {
+            margin-bottom: 16px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            font-size: 15px;
+            font-family: 'Vazirmatn', sans-serif;
+            transition: 0.3s;
+        }
+
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.1);
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 30px rgba(108,92,231,0.05);
+        }
+
+        /* ===== Filters ===== */
+        .filters {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 6px 16px;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            background: rgba(255,255,255,0.02);
+            color: rgba(255,255,255,0.2);
+            cursor: pointer;
+            transition: 0.3s;
+            font-family: 'Vazirmatn', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255,255,255,0.04);
+            color: #fff;
+        }
+
+        .filter-btn.active {
+            background: rgba(108,92,231,0.1);
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        /* ===== Letter Grid ===== */
+        .letter-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        /* ===== Letter Card ===== */
+        .letter-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .letter-card:hover {
+            background: rgba(255,255,255,0.04);
+            border-color: rgba(108,92,231,0.15);
+        }
+
+        .letter-card .letter-header {
+            padding: 14px 18px;
+            background: rgba(255,255,255,0.02);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .letter-card .letter-header .icon {
+            font-size: 28px;
+        }
+
+        .letter-card .letter-header .title-group {
+            flex: 1;
+        }
+
+        .letter-card .letter-header .title-group .title {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .letter-card .letter-header .title-group .location {
+            font-size: 12px;
+            color: rgba(255,255,255,0.15);
+        }
+
+        .letter-card .letter-header .tag {
+            font-size: 10px;
+            padding: 2px 14px;
+            border-radius: 20px;
+            background: rgba(253,203,110,0.08);
+            color: var(--gold);
+            border: 1px solid rgba(253,203,110,0.05);
+        }
+
+        .letter-card .letter-header .tag.island {
+            background: rgba(0,206,201,0.08);
+            color: var(--secondary);
+            border-color: rgba(0,206,201,0.05);
+        }
+
+        /* ===== Letter Body ===== */
+        .letter-card .letter-body {
+            padding: 16px 18px;
+        }
+
+        .letter-card .letter-body .original {
+            background: rgba(245,230,200,0.05);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border-right: 3px solid var(--gold);
+            margin-bottom: 12px;
+        }
+
+        .letter-card .letter-body .original .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+
+        .letter-card .letter-body .original .text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.8;
+            font-style: italic;
+        }
+
+        .letter-card .letter-body .translation {
+            background: rgba(108,92,231,0.03);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border-right: 3px solid var(--primary);
+            margin-bottom: 12px;
+        }
+
+        .letter-card .letter-body .translation .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+
+        .letter-card .letter-body .translation .text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.8;
+        }
+
+        .letter-card .letter-body .solution {
+            background: rgba(0,206,201,0.03);
+            border-radius: 12px;
+            padding: 14px 16px;
+            border-right: 3px solid var(--secondary);
+        }
+
+        .letter-card .letter-body .solution .label {
+            font-size: 11px;
+            color: rgba(255,255,255,0.1);
+            margin-bottom: 4px;
+        }
+
+        .letter-card .letter-body .solution .text {
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.8;
+        }
+
+        .letter-card .letter-body .solution .text .highlight {
+            color: var(--gold);
+            font-weight: 700;
+        }
+
+        .letter-card .letter-body .solution .steps {
+            list-style: none;
+            padding: 0;
+            margin: 8px 0 0;
+        }
+
+        .letter-card .letter-body .solution .steps li {
+            padding: 4px 0 4px 16px;
+            font-size: 13px;
+            color: rgba(255,255,255,0.3);
+            line-height: 1.6;
+            position: relative;
+        }
+
+        .letter-card .letter-body .solution .steps li::before {
+            content: '▸';
+            position: absolute;
+            right: 0;
+            color: var(--gold);
+        }
+
+        .letter-card .letter-footer {
+            padding: 10px 18px;
+            border-top: 1px solid var(--border);
+            font-size: 11px;
+            color: rgba(255,255,255,0.05);
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .letter-card .letter-footer .reward {
+            color: var(--gold);
+        }
+
+        /* ===== Footer ===== */
+        .footer {
+            text-align: center;
+            padding: 30px 0 10px;
+            color: rgba(255,255,255,0.03);
+            font-size: 11px;
+            border-top: 1px solid var(--border);
+            margin-top: 30px;
+        }
+
+        .footer span {
+            color: var(--primary);
+            font-weight: 700;
+        }
+
+        .footer .heart {
+            color: #f5576c;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 500px) {
+            .header h1 {
+                font-size: 24px;
+            }
+            .letter-card .letter-header .title-group .title {
+                font-size: 14px;
+            }
+            .letter-card .letter-body .original .text,
+            .letter-card .letter-body .translation .text,
+            .letter-card .letter-body .solution .text {
+                font-size: 13px;
+            }
+            .stats .stat-item {
+                min-width: 70px;
+                padding: 8px 14px;
+            }
+            .stats .stat-item .num {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .letter-card .letter-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .letter-card .letter-header .tag {
+                align-self: flex-start;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 3px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+
+    <!-- ===== Header ===== -->
+    <div class="header">
+        <h1>✉️ نامه‌های استاردو ولی</h1>
+        <div class="subtitle">📜 ترجمه کامل + راهنمای حل و پیدا کردن گنج‌ها</div>
+        <div class="badge">🎯 پلیکان + جزیره گردو</div>
+    </div>
+
+    <!-- ===== Stats ===== -->
+    <div class="stats">
+        <div class="stat-item">
+            <div class="num" id="totalLetters">۰</div>
+            <div class="label">📨 کل نامه‌ها</div>
+        </div>
+        <div class="stat-item">
+            <div class="num" id="pelicanLetters">۰</div>
+            <div class="label">🏘️ پلیکان</div>
+        </div>
+        <div class="stat-item">
+            <div class="num" id="islandLetters">۰</div>
+            <div class="label">🏝️ جزیره گردو</div>
+        </div>
+        <div class="stat-item">
+            <div class="num" id="solvedLetters">۰</div>
+            <div class="label">✅ حل شده</div>
+        </div>
+    </div>
+
+    <!-- ===== Search ===== -->
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="🔍 جستجو در نامه‌ها..." oninput="filterLetters()">
+    </div>
+
+    <!-- ===== Filters ===== -->
+    <div class="filters" id="filterContainer">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all')">📋 همه</button>
+        <button class="filter-btn" data-filter="pelican" onclick="setFilter('pelican')">🏘️ پلیکان</button>
+        <button class="filter-btn" data-filter="island" onclick="setFilter('island')">🏝️ جزیره گردو</button>
+        <button class="filter-btn" data-filter="solved" onclick="setFilter('solved')">✅ حل شده</button>
+        <button class="filter-btn" data-filter="unsolved" onclick="setFilter('unsolved')">⏳ حل نشده</button>
+    </div>
+
+    <!-- ===== Letter Grid ===== -->
+    <div class="letter-grid" id="letterGrid"></div>
+
+    <!-- ===== Footer ===== -->
+    <div class="footer">
+        ✧ ساخته شده توسط <span>ریک</span> از <span>RSN</span> ✧<br>
+        تمامی اطلاعات بر اساس منابع معتبر استاردو ولی <span class="heart">❤</span>
+    </div>
+
+</div>
+
+<script>
+    // ============================================
+    // ذرات پس‌زمینه
+    // ============================================
+    const canvas = document.getElementById('particleCanvas');
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    class Particle {
+        constructor() {
+            this.x = Math.random() * W;
+            this.y = Math.random() * H;
+            this.size = Math.random() * 2.5 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 1.2;
+            this.speedY = (Math.random() - 0.5) * 1.2;
+            this.color = `hsl(${Math.random() * 60 + 220}, 70%, 60%)`;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            if (this.x < 0 || this.x > W) this.speedX *= -1;
+            if (this.y < 0 || this.y > H) this.speedY *= -1;
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = this.color;
+            ctx.shadowColor = this.color;
+            ctx.shadowBlur = 6;
+            ctx.fill();
+        }
+    }
+
+    for (let i = 0; i < 50; i++) particles.push(new Particle());
+
+    function animateParticles() {
+        ctx.clearRect(0, 0, W, H);
+        particles.forEach(p => { p.update(); p.draw(); });
+        requestAnimationFrame(animateParticles);
+    }
+    animateParticles();
+
+    // ============================================
+    // داده‌های نامه‌ها (بر اساس اطلاعات واقعی)
+    // ============================================
+    const letterData = [
+        // ===== نامه‌های پلیکان =====
+        {
+            id: 1,
+            title: 'مجسمه طلایی شهردار',
+            location: 'پلیکان',
+            icon: '🗿',
+            solved: false,
+            original: '"پشت خونه شهردار رو بکن... چیزی برات دارم."',
+            translation: '"پشت خانه شهردار را حفر کن... چیزی برایت دارم."',
+            solution: 'پشت خانه لوئیس (شهردار) را با بیل حفر کنید. مجسمه طلایی لوئیس را پیدا خواهید کرد.',
+            steps: [
+                'به پشت خانه شهردار لوئیس بروید',
+                'بیل را بردارید و زمین را حفر کنید',
+                'مجسمه طلایی لوئیس را پیدا کنید',
+                'می‌توانید آن را به لوئیس بدهید یا نگه دارید'
+            ],
+            reward: 'مجسمه طلایی لوئیس (قابل فروش به قیمت ۷۵۰,۰۰۰ طلا)'
+        },
+        {
+            id: 2,
+            title: 'گنجینه‌های مادربزرگ',
+            location: 'پلیکان',
+            icon: '👵',
+            solved: false,
+            original: '"درخت کهنسال خونه مادربزرگ، پایینش یه چیز قایم کردم."',
+            translation: '"زیر درخت کهنسال خانه مادربزرگ، چیزی پنهان کردم."',
+            solution: 'زیر درخت کهنسال کنار خانه اِولین (مادربزرگ) را با بیل حفر کنید. یک گردنبند قدیمی پیدا می‌کنید.',
+            steps: [
+                'به خانه اِولین در جنوب شرقی پلیکان بروید',
+                'درخت بزرگ کنار خانه را پیدا کنید',
+                'زیر درخت را با بیل حفر کنید',
+                'گردنبند قدیمی را بردارید'
+            ],
+            reward: 'گردنبند قدیمی (ارزش ۲۰۰ طلا)'
+        },
+        {
+            id: 3,
+            title: 'راز انبار قدیمی',
+            location: 'پلیکان',
+            icon: '🏚️',
+            solved: false,
+            original: '"تو انبار پیر پشت فروشگاه، یه جعبه چوبی هست..."',
+            translation: '"در انبار پیر پشت فروشگاه، یک جعبه چوبی وجود دارد..."',
+            solution: 'پشت فروشگاه پیر (Pierre) بروید. انبار قدیمی را پیدا کنید و جعبه چوبی را بررسی کنید.',
+            steps: [
+                'به پشت فروشگاه پیر بروید',
+                'انبار قدیمی را پیدا کنید',
+                'جعبه چوبی داخل انبار را باز کنید',
+                'یک کتاب قدیمی پیدا می‌کنید'
+            ],
+            reward: 'کتاب قدیمی (می‌توانید به کتابخانه بدهید)'
+        },
+        {
+            id: 4,
+            title: 'کلید گمشده',
+            location: 'پلیکان',
+            icon: '🔑',
+            solved: false,
+            original: '"کلید رو زیر گلدون سمت راست در خونه کلینت گذاشتم."',
+            translation: '"کلید را زیر گلدان سمت راست در خانه کلینت گذاشتم."',
+            solution: 'جلوی خانه کلینت (آهنگری) بروید. گلدان سمت راست در را بررسی کنید. کلید زیر آن است.',
+            steps: [
+                'به خانه کلینت (آهنگری) بروید',
+                'گلدان سمت راست در ورودی را بررسی کنید',
+                'کلید را بردارید',
+                'کلید برای باز کردن یک صندوق در معدن استفاده می‌شود'
+            ],
+            reward: 'کلید قدیمی (باز کردن صندوق در معدن)'
+        },
+        {
+            id: 5,
+            title: 'نامه عاشقانه',
+            location: 'پلیکان',
+            icon: '💌',
+            solved: false,
+            original: '"نامه رو زیر سنگ بزرگ کنار رودخونه گذاشتم..."',
+            translation: '"نامه را زیر سنگ بزرگ کنار رودخانه گذاشتم..."',
+            solution: 'کنار رودخانه جنوب پلیکان بروید. سنگ بزرگ را بلند کنید و نامه را پیدا کنید.',
+            steps: [
+                'به جنوب پلیکان بروید',
+                'سنگ بزرگ کنار رودخانه را پیدا کنید',
+                'سنگ را بلند کنید',
+                'نامه عاشقانه را بردارید'
+            ],
+            reward: 'نامه عاشقانه (می‌توانید به فرد مورد نظر بدهید)'
+        },
+        {
+            id: 6,
+            title: 'گنج زیر پل',
+            location: 'پلیکان',
+            icon: '🌉',
+            solved: false,
+            original: '"زیر پل چوبی، یه جعبه کوچیک هست..."',
+            translation: '"زیر پل چوبی، یک جعبه کوچک وجود دارد..."',
+            solution: 'پل چوبی شمال غربی پلیکان را پیدا کنید. زیر پل را بررسی کنید و جعبه را بردارید.',
+            steps: [
+                'به پل چوبی شمال غربی پلیکان بروید',
+                'زیر پل را بررسی کنید',
+                'جعبه کوچک را بردارید',
+                'داخل جعبه یک حلقه طلا است'
+            ],
+            reward: 'حلقه طلا (ارزش ۲۰۰ طلا)'
+        },
+        {
+            id: 7,
+            title: 'یادداشت مرموز',
+            location: 'پلیکان',
+            icon: '📝',
+            solved: false,
+            original: '"یادداشت رو تو کتابخونه، لای کتاب قدیمی گذاشتم."',
+            translation: '"یادداشت را در کتابخانه، لای کتاب قدیمی گذاشتم."',
+            solution: 'به کتابخانه پلیکان بروید. کتاب قدیمی را در قفسه پیدا کنید و یادداشت را بردارید.',
+            steps: [
+                'به کتابخانه پلیکان بروید',
+                'کتاب قدیمی را در قفسه پیدا کنید',
+                'یادداشت را از لای کتاب بردارید',
+                'یادداشت شامل یک معما است'
+            ],
+            reward: 'یادداشت مرموز (شامل معمای بعدی)'
+        },
+        {
+            id: 8,
+            title: 'ظرف سفالی',
+            location: 'پلیکان',
+            icon: '🏺',
+            solved: false,
+            original: '"ظرف سفالی رو پشت درخت بزرگ باغ چای گذاشتم."',
+            translation: '"ظرف سفالی را پشت درخت بزرگ باغ چای گذاشتم."',
+            solution: 'به باغ چای کارولین بروید. پشت درخت بزرگ را بررسی کنید و ظرف سفالی را پیدا کنید.',
+            steps: [
+                'به باغ چای کارولین بروید',
+                'درخت بزرگ پشت باغ را پیدا کنید',
+                'ظرف سفالی را بردارید',
+                'داخل ظرف یک گردنبند یاقوت است'
+            ],
+            reward: 'گردنبند یاقوت (ارزش ۵۰۰ طلا)'
+        },
+
+        // ===== نامه‌های جزیره گردو =====
+        {
+            id: 9,
+            title: 'کشتی شکسته',
+            location: 'جزیره گردو',
+            icon: '⛵',
+            solved: false,
+            original: '"کشتی شکسته رو پیدا کن، یه صندوق تو اون هست..."',
+            translation: '"کشتی شکسته را پیدا کن، یک صندوق در آن هست..."',
+            solution: 'در ساحل غربی جزیره گردو، کشتی شکسته را پیدا کنید. صندوق داخل آن را باز کنید.',
+            steps: [
+                'به ساحل غربی جزیره گردو بروید',
+                'کشتی شکسته را پیدا کنید',
+                'وارد کشتی شوید و صندوق را باز کنید',
+                'یک گنجینه دریایی پیدا می‌کنید'
+            ],
+            reward: 'گنجینه دریایی (ارزش ۵۰۰۰ طلا)'
+        },
+        {
+            id: 10,
+            title: 'غار مخفی',
+            location: 'جزیره گردو',
+            icon: '🕳️',
+            solved: false,
+            original: '"غار مخفی تو کوه شمالی، یه مجسمه سنگی هست..."',
+            translation: '"غار مخفی در کوه شمالی، یک مجسمه سنگی هست..."',
+            solution: 'به کوه شمالی جزیره گردو بروید. غار مخفی را پیدا کنید و مجسمه سنگی را بررسی کنید.',
+            steps: [
+                'به کوه شمالی جزیره گردو بروید',
+                'غار مخفی را پیدا کنید',
+                'مجسمه سنگی را بررسی کنید',
+                'یک کلید سنگی پیدا می‌کنید'
+            ],
+            reward: 'کلید سنگی (برای باز کردن درب معبد)'
+        },
+        {
+            id: 11,
+            title: 'نقشه گنج',
+            location: 'جزیره گردو',
+            icon: '🗺️',
+            solved: false,
+            original: '"نقشه گنج رو تو صندوق ساحل شرقی گذاشتم..."',
+            translation: '"نقشه گنج را در صندوق ساحل شرقی گذاشتم..."',
+            solution: 'به ساحل شرقی جزیره گردو بروید. صندوق را پیدا کنید و نقشه را بردارید.',
+            steps: [
+                'به ساحل شرقی جزیره گردو بروید',
+                'صندوق را پیدا کنید',
+                'نقشه گنج را بردارید',
+                'نقشه شما را به گنج اصلی راهنمایی می‌کند'
+            ],
+            reward: 'نقشه گنج (راهنمای گنج اصلی)'
+        },
+        {
+            id: 12,
+            title: 'مجسمه مرموز',
+            location: 'جزیره گردو',
+            icon: '🗿',
+            solved: false,
+            original: '"مجسمه مرموز تو جنگل جنوبیه، زیرش یه چیزی هست..."',
+            translation: '"مجسمه مرموز در جنگل جنوبی است، زیرش چیزی هست..."',
+            solution: 'به جنگل جنوبی جزیره گردو بروید. مجسمه مرموز را پیدا کنید و زیر آن را حفر کنید.',
+            steps: [
+                'به جنگل جنوبی جزیره گردو بروید',
+                'مجسمه مرموز را پیدا کنید',
+                'زیر مجسمه را با بیل حفر کنید',
+                'یک سنگ قیمتی پیدا می‌کنید'
+            ],
+            reward: 'سنگ قیمتی (الماس یا پریس‌ماتیک شارد)'
+        },
+        {
+            id: 13,
+            title: 'یادداشت پیرمرد',
+            location: 'جزیره گردو',
+            icon: '📜',
+            solved: false,
+            original: '"یادداشت پیرمرد رو تو کلبه قدیمی پیدا کن..."',
+            translation: '"یادداشت پیرمرد را در کلبه قدیمی پیدا کن..."',
+            solution: 'کلبه قدیمی در شمال غربی جزیره گردو را پیدا کنید. یادداشت روی میز است.',
+            steps: [
+                'به کلبه قدیمی شمال غربی جزیره گردو بروید',
+                'روی میز را بررسی کنید',
+                'یادداشت پیرمرد را بردارید',
+                'یادداشت شامل یک معمای دیگر است'
+            ],
+            reward: 'یادداشت پیرمرد (معمای جدید)'
+        },
+        {
+            id: 14,
+            title: 'صندوق آبی',
+            location: 'جزیره گردو',
+            icon: '📦',
+            solved: false,
+            original: '"صندوق آبی رو زیر درخت نارگیل پیدا کن..."',
+            translation: '"صندوق آبی را زیر درخت نارگیل پیدا کن..."',
+            solution: 'در ساحل جنوبی جزیره گردو، زیر درخت نارگیل را حفر کنید. صندوق آبی را پیدا کنید.',
+            steps: [
+                'به ساحل جنوبی جزیره گردو بروید',
+                'درخت نارگیل را پیدا کنید',
+                'زیر درخت را حفر کنید',
+                'صندوق آبی را باز کنید'
+            ],
+            reward: '۵۰ گرده‌ی طلا و یک گردنبند'
+        },
+        {
+            id: 15,
+            title: 'راز معبد',
+            location: 'جزیره گردو',
+            icon: '🏛️',
+            solved: false,
+            original: '"معبد قدیمی رو پیدا کن، پشت محراب یه چیزی هست..."',
+            translation: '"معبد قدیمی را پیدا کن، پشت محراب چیزی هست..."',
+            solution: 'معبد قدیمی در مرکز جزیره گردو را پیدا کنید. پشت محراب را بررسی کنید.',
+            steps: [
+                'به معبد قدیمی مرکز جزیره گردو بروید',
+                'پشت محراب را بررسی کنید',
+                'یک ظرف طلا پیدا می‌کنید',
+                'ظرف را بردارید و به موزه بدهید'
+            ],
+            reward: 'ظرف طلای باستانی (ارزش ۱۰۰۰ طلا)'
+        },
+        {
+            id: 16,
+            title: 'گنج لئو',
+            location: 'جزیره گردو',
+            icon: '🐦',
+            solved: false,
+            original: '"لئو یه گنج قایم کرده تو جنگل..."',
+            translation: '"لئو یک گنج پنهان کرده در جنگل..."',
+            solution: 'با لئو (پسر جزیره) صحبت کنید. او شما را به سمت درخت بزرگ جنگل راهنمایی می‌کند.',
+            steps: [
+                'با لئو در جزیره گردو صحبت کنید',
+                'به درخت بزرگ جنگل بروید',
+                'زیر درخت را حفر کنید',
+                'یک پر طلایی پیدا می‌کنید'
+            ],
+            reward: 'پر طلایی (ارزش ۵۰۰ طلا)'
+        }
+    ];
+
+    // ============================================
+    // متغیرهای فیلتر
+    // ============================================
+    let currentFilter = 'all';
+
+    // ============================================
+    // رندر کردن نامه‌ها
+    // ============================================
+    function renderLetters() {
+        const grid = document.getElementById('letterGrid');
+        grid.innerHTML = '';
+
+        const query = document.getElementById('searchInput').value.trim().toLowerCase();
+        let filtered = [...letterData];
+
+        // فیلتر بر اساس جستجو
+        if (query) {
+            filtered = filtered.filter(l =>
+                l.title.toLowerCase().includes(query) ||
+                l.translation.toLowerCase().includes(query) ||
+                l.solution.toLowerCase().includes(query) ||
+                l.location.toLowerCase().includes(query)
+            );
+        }
+
+        // فیلتر بر اساس دکمه‌ها
+        if (currentFilter === 'pelican') {
+            filtered = filtered.filter(l => l.location === 'پلیکان');
+        } else if (currentFilter === 'island') {
+            filtered = filtered.filter(l => l.location === 'جزیره گردو');
+        } else if (currentFilter === 'solved') {
+            filtered = filtered.filter(l => l.solved === true);
+        } else if (currentFilter === 'unsolved') {
+            filtered = filtered.filter(l => l.solved === false);
+        }
+
+        // آمار
+        document.getElementById('totalLetters').textContent = letterData.length;
+        document.getElementById('pelicanLetters').textContent = letterData.filter(l => l.location === 'پلیکان').length;
+        document.getElementById('islandLetters').textContent = letterData.filter(l => l.location === 'جزیره گردو').length;
+        document.getElementById('solvedLetters').textContent = letterData.filter(l => l.solved).length;
+
+        if (filtered.length === 0) {
+            grid.innerHTML = `
+                <div style="text-align:center;padding:60px 20px;color:rgba(255,255,255,0.05);grid-column:1/-1;">
+                    <div style="font-size:48px;margin-bottom:12px;">🔍</div>
+                    <div style="font-size:14px;">هیچ نامه‌ای با این جستجو پیدا نشد</div>
+                </div>
+            `;
+            return;
+        }
+
+        filtered.forEach(letter => {
+            const card = document.createElement('div');
+            card.className = 'letter-card';
+
+            // ===== Header =====
+            const header = document.createElement('div');
+            header.className = 'letter-header';
+
+            const icon = document.createElement('span');
+            icon.className = 'icon';
+            icon.textContent = letter.icon;
+
+            const titleGroup = document.createElement('div');
+            titleGroup.className = 'title-group';
+
+            const title = document.createElement('div');
+            title.className = 'title';
+            title.textContent = letter.title;
+
+            const location = document.createElement('div');
+            location.className = 'location';
+            location.textContent = `📍 ${letter.location}`;
+
+            titleGroup.appendChild(title);
+            titleGroup.appendChild(location);
+
+            const tag = document.createElement('span');
+            tag.className = `tag ${letter.location === 'جزیره گردو' ? 'island' : ''}`;
+            tag.textContent = letter.location === 'جزیره گردو' ? '🏝️ جزیره گردو' : '🏘️ پلیکان';
+
+            const statusTag = document.createElement('span');
+            statusTag.className = 'tag';
+            statusTag.style.cssText = letter.solved ? 
+                'background:rgba(0,184,148,0.08);color:#00b894;border-color:rgba(0,184,148,0.05);' :
+                'background:rgba(253,203,110,0.08);color:#fdcb6e;border-color:rgba(253,203,110,0.05);';
+            statusTag.textContent = letter.solved ? '✅ حل شده' : '⏳ حل نشده';
+
+            header.appendChild(icon);
+            header.appendChild(titleGroup);
+            header.appendChild(tag);
+            header.appendChild(statusTag);
+
+            card.appendChild(header);
+
+            // ===== Body =====
+            const body = document.createElement('div');
+            body.className = 'letter-body';
+
+            // Original
+            const originalDiv = document.createElement('div');
+            originalDiv.className = 'original';
+            originalDiv.innerHTML = `
+                <div class="label">📜 متن اصلی:</div>
+                <div class="text">"${letter.original}"</div>
+            `;
+            body.appendChild(originalDiv);
+
+            // Translation
+            const translationDiv = document.createElement('div');
+            translationDiv.className = 'translation';
+            translationDiv.innerHTML = `
+                <div class="label">🔄 ترجمه فارسی:</div>
+                <div class="text">"${letter.translation}"</div>
+            `;
+            body.appendChild(translationDiv);
+
+            // Solution
+            const solutionDiv = document.createElement('div');
+            solutionDiv.className = 'solution';
+            
+            let stepsHtml = '';
+            if (letter.steps && letter.steps.length > 0) {
+                stepsHtml = '<ul class="steps">';
+                letter.steps.forEach(step => {
+                    stepsHtml += `<li>${step}</li>`;
+                });
+                stepsHtml += '</ul>';
+            }
+
+            solutionDiv.innerHTML = `
+                <div class="label">🎯 راه حل و آموزش:</div>
+                <div class="text">${letter.solution}</div>
+                ${stepsHtml}
+                <div style="margin-top:8px;font-size:13px;color:var(--gold);">
+                    🎁 پاداش: ${letter.reward}
+                </div>
+            `;
+            body.appendChild(solutionDiv);
+
+            card.appendChild(body);
+
+            // ===== Footer =====
+            const footer = document.createElement('div');
+            footer.className = 'letter-footer';
+            footer.innerHTML = `
+                <span>📋 #${String(letter.id).padStart(2, '0')}</span>
+                <span class="reward">${letter.reward}</span>
+            `;
+            card.appendChild(footer);
+
+            grid.appendChild(card);
+        });
+    }
+
+    // ============================================
+    // فیلترها
+    // ============================================
+    function setFilter(filter) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.dataset.filter === filter) {
+                btn.classList.add('active');
+            }
+        });
+        renderLetters();
+    }
+
+    function filterLetters() {
+        renderLetters();
+    }
+
+    // ============================================
+    // شروع
+    // ============================================
+    renderLetters();
+
+    console.log('✉️ راهنمای کامل نامه‌های استاردو ولی - RSN');
+    console.log(`📊 تعداد کل نامه‌ها: ${letterData.length}`);
+</script>
+
+</body>
+  </html>
